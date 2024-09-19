@@ -1,0 +1,72 @@
+.Chart_Container {
+    width: 452px;
+    height: 264px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    padding: 2vh 1vw 2vh 1vw;
+}
+
+/* 파이 차트 제목, 게이지 차트 제목 */
+.Chart_Container > div:first-child {
+    font-family: Pretendard-Regular;
+    font-weight: 500;
+    font-size: 16px;
+    color: #25262b;
+    text-align: center;
+    padding: 2vh 0 0 0;
+}
+
+.Chart_Container > div:nth-child(2) {
+    display: flex;
+    justify-content: center;
+}
+
+/* 게이지 차트 */
+.Chart_Container > div:nth-child(2) > div {
+    margin: 2vh 0 0 0;
+    width: 300px;
+    height: 132px;
+}
+
+/* 게이지 차트 설명 */
+.Chart_Container > div:nth-child(3) {
+    text-align: center;
+    margin: 1vh 0 2vh 0;
+}
+
+.Chart_Container > div:nth-child(4) {
+    width: fit-content;
+    margin: 1vh auto 0 auto;
+}
+
+/* 게이지 차트 버튼 */
+.Chart_Container > div:nth-child(4) > button {
+    width: 64px;
+    height: 24px;
+    font-size: 12px;
+    margin: 0 0.5vw 0 0.5vw;
+    color: #25262b;
+    border: 1px solid #25262b;
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.Chart_Container > div:nth-child(4) > button:hover,
+.Chart_Container > div:nth-child(4) > button:focus {
+    border: none;
+    color: #ffffff;
+    background-color: #8b8b8b;
+}
+
+/* 대시보드 */
+.Dashboard_Container {
+    display: grid;
+    grid-template-rows: 300px 300px;
+    grid-template-columns: 504px 504px;
+    row-gap: 24px;
+    column-gap: 24px;
+    justify-content: center;
+    margin: 24px 0 0 0;
+}

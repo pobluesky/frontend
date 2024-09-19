@@ -1,0 +1,26 @@
+.Error_404 {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: absolute;
+    margin: 20vh 0 0 0;
+}
+
+.Error_404 > div:nth-child(1) {
+    font-size: 120px;
+    font-family: SBAggroB;
+    color: #25262b;
+}
+
+.Error_404 > div:nth-child(2) {
+    font-size: 48px;
+    color: #25262b;
+    margin: 0 0 3vh 0;
+}
+
+.Error_404 > :nth-child(3):hover {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    border: none !important;
+    background-color: #1748ac !important;
+}

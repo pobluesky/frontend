@@ -1,0 +1,169 @@
+/******************************************************************/
+/* 헤더 ***********************************************************/
+/******************************************************************/
+.Header_Container > div {
+    width: 100%;
+    height: 80px;
+    margin: 0 auto 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0 0 8px 0;
+    font-family: 'Pretendard-Regular';
+    font-weight: 600;
+}
+
+.Header_Container > div > div {
+    display: flex;
+}
+
+/* 상단 섹션 */
+.Header_Container > div > div:first-child {
+    width: 1320px;
+    align-content: center;
+    margin: 8px auto 0 auto;
+    font-size: 14px;
+}
+
+.Header_Container > div hr {
+    width: 100%;
+    border: 1px solid #d5dbe2;
+}
+
+/* 하단 섹션 */
+.Header_Container > div > div:nth-child(3) {
+    width: 1320px;
+    margin: 0 auto 0 auto;
+}
+
+/* pobluesky 로고 + 상세 메뉴 + 프로필 사진 + 회원명 */
+.Header_Container > div > div:nth-child(3) > div:nth-child(1),
+.Header_Container > div > div:nth-child(3) > div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+/* pobluesky 로고 */
+.Header_Container
+    > div
+    > div:nth-child(3)
+    > div:nth-child(1)
+    > div:nth-child(1)
+    img {
+    width: 96px;
+    height: 100%;
+    cursor: pointer;
+    margin: 0 36px 0 0;
+}
+
+/* 프로필 사진 + 회원명 */
+.Header_Container > div > div:nth-child(3) > div:nth-child(2) {
+    margin: 0 0 0 auto;
+}
+
+/* 프로필 사진 */
+.Header_Container
+    > div
+    > div:nth-child(3)
+    > div:nth-child(2)
+    > div:nth-child(1)
+    img {
+    height: 36px;
+    margin: 4px 0 0 0;
+}
+
+/* 프로필 사진, 회원명 간 간격 */
+.Header_Container > div > div:nth-child(3) > div:nth-child(2) > :nth-child(n) {
+    margin: 0 0 0 24px;
+}
+
+.Header_Container button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/******************************************************************/
+/* 사용자 정보 모달 ************************************************/
+/******************************************************************/
+.User_Modal_Container {
+    position: absolute;
+    width: 1320px;
+    top: 5px;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1;
+}
+
+.User_Modal_Container > div {
+    position: relative;
+    width: 132px;
+    padding: 20px;
+    height: fit-content;
+    border: 1px solid #d5dbe2;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    float: right;
+}
+
+.User_Modal_Container > div Button:hover {
+    border: 2px solid #25262b !important;
+    color: #25262b !important;
+    font-weight: 600;
+}
+
+/******************************************************************/
+/* 알림 모달 *******************************************************/
+/******************************************************************/
+.Notify_Modal_Container {
+    position: absolute;
+    width: 1320px;
+    top: 5px;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1;
+}
+
+.Notify_Modal_Container > div {
+    width: 300px;
+    float: right;
+    padding: 20px;
+    border: 1px solid #d5dbe2;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 새 알림, 읽은 알림 */
+.Notify_Modal_Container > div > div:first-child {
+    display: flex;
+    margin: 0 0 20px 0;
+}
+
+/* 알림 목록 그룹 */
+.Notify_Modal_Container > div > div:nth-child(2) > div:first-child {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.Notify_Modal_Container
+    > div
+    > div:nth-child(2)
+    > div:first-child
+    > div
+    > div:nth-child(2) {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.Notify_Modal_Container
+    > div
+    > div:nth-child(2)
+    > div:first-child
+    > div
+    > div:nth-child(2)
+    span {
+    font-weight: 400;
+}

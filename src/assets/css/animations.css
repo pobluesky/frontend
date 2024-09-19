@@ -1,0 +1,12 @@
+@keyframes fillLine {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.line-animation {
+  animation: fillLine 1s ease-out forwards;
+}

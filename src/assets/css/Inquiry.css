@@ -1,0 +1,218 @@
+._Label {
+  border-radius: 10px 10px 0 0;
+  border: 1px solid #C1C1C1;
+  width: 160px;
+  height: 20px;
+  padding: 3px;
+  margin-left: 7vh;
+  margin-bottom: 10vh;
+}
+
+._text1 {
+  color: #616161;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+._text2 {
+  color: #007AFF;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+._InquiryItem {
+  display: grid;
+  grid-template-rows: 1fr;
+  padding: 10px 80px 30px 80px;
+  color: inherit;
+  cursor: pointer;
+}
+
+._InquiryBox {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr 1.5fr;
+  justify-content: center;
+  border-radius: 20px;
+  border: 1px solid #C1C1C1;
+}
+
+._InquiryBox:hover {
+  background-color: #cbefff;
+}
+
+._Inquiry {
+  display: grid;
+}
+
+._Product {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5vh;
+  margin-top: 0.2vh;
+  font-size: 25px;
+}
+
+._Size {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  margin-top: -2vh;
+}
+
+._InquirySearch {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  height: 240px;
+  border-radius: 10px;
+  border: 1px solid #C1C1C1;
+  padding: 5px;
+  margin-top: 40px;
+}
+
+._InquirySearchBox {
+  display: grid;
+  grid-template-rows: auto auto auto;
+}
+
+._SearchBox {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 2fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
+  grid-template-rows: repeat(2, 50px); /* 3행의 높이를 50px로 설정 */
+  margin-right: 20px;
+}
+
+._Text {
+  color: #49454F;
+  font-size: 26px;
+  font-weight: 800;
+  margin-left: 25px;
+}
+
+._Title {
+  color: #49454F;
+  font-size: 15px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-top: -4px;
+  margin-left: 25px;
+}
+
+._Input {
+  width: 120px;
+  height: 25px;
+  border-radius: 7px;
+  font-size: 16px;
+  border: 1px solid #c1c1c1;
+  color: #c1c1c1;
+  margin-left: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+}
+
+._Date {
+  width: 120px;
+  height: 25px;
+  border-radius: 7px;
+  font-size: 10px;
+  border: 1px solid #c1c1c1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+._searchCount {
+  color: #F02323;
+  font-weight: bold;
+}
+
+._Link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+._Link:hover {
+  color: #007AFF;
+  transition: color 0.1s ease-in-out;
+  font-weight: bolder;
+}
+
+._IntroMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Paging {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.PagingButton {
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid #C1C1C1;
+  background-color: #ffffff;
+  color: #49454F;
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.PagingButton:hover {
+  background-color: #2f4f79;
+  color: #ffffff;
+  transition: background-color 0.1s ease-in-out;
+  font-weight: bold;
+}
+
+.PagingArrowButton {
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid #C1C1C1;
+  background-color: #ffffff;
+  color: #49454F;
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.PagingArrowButton:disabled {
+  background-color: #ffffff;
+  color: #03507D;
+  cursor: not-allowed;
+  border: none;
+}
+
+.PagingButton:disabled {
+  background-color: #cbefff;
+  color: #03507D;
+  cursor: not-allowed;
+  border: 1px solid #c1c1c1;
+}
+
+.InqTableContainer {
+  width: 95%;
+  margin: 10px 0 50px 0;
+  padding: 50px;
+}
+
+._Table {
+  cursor: pointer;
+}
+
+._Table:hover {
+  background-color: #f4f4f3;
+}

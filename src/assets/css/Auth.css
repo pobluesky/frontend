@@ -1,0 +1,124 @@
+/******************************************************************/
+/* 회원가입, 로그인 ************************************************/
+/******************************************************************/
+.SignIn,
+.SignUp {
+    width: 1320px;
+    height: 600px;
+    margin: auto;
+    text-align: center;
+}
+
+.SignIn > div,
+.SignUp > div {
+    width: 420px;
+    margin: 0 auto 0 auto;
+}
+
+/* 로그인 */
+.SignIn > div > div:first-child,
+.SignUp > div > div:first-child {
+    font-size: 36px;
+    color: #03507d;
+    margin: 60px 0 0 0;
+}
+
+/* 이메일과 비밀번호를 입력해주세요 */
+.SignIn > div > div:nth-child(2) {
+    color: #03507d;
+    margin: 24px 0 48px 0;
+}
+
+/* '로그인 버튼' 하단 여백 */
+.SignIn > div > div:nth-child(5) {
+    margin: 0 0 36px 0;
+}
+
+/* 회원이 아니신가요? */
+.SignIn > div > div:nth-child(6) a {
+    text-decoration: none;
+    color: #c1c1c1;
+}
+
+.SignIn > div > div:nth-child(6) a:hover {
+    color: #808080;
+}
+
+/* 이름, 고유 코드 그룹 */
+.SignUp > div > div:nth-child(2) {
+    margin: 48px 0 0 0;
+}
+
+/* 역할 조회 버튼, 권한 부여 버튼 */
+.SignUp > div > div:nth-child(3) {
+    margin: 48px 0 0 0;
+}
+
+/* 품질 담당자, 판매 담당자 Hover */
+.SignUp > div > div:nth-child(2) Button:hover {
+    background-color: #007aff !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+/* 품질 담당자, 판매 담당자 Focus */
+.SignUp > div > div:nth-child(2) Button:focus {
+    background-color: #03507d !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+/* 부서명 */
+.SignUp > div > div > div:nth-child(4) {
+    width: 360px;
+    color: #03507d;
+    margin: 0 auto 12px auto;
+    text-align: left;
+}
+
+/* 부서명 선택 */
+.SignUp select {
+    appearance: none;
+    width: 360px;
+    height: 48px;
+    margin: 0 0 24px 0;
+    padding: 0 0 0 0;
+    border: solid 1px #c1c1c1;
+    border-radius: 12px;
+    font-size: 16px;
+    -webkit-appearance: none; /* 크롬 화살표 없애기 */
+    -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
+    appearance: none; /* 화살표 없애기 */
+}
+
+/******************************************************************/
+/* 사용자 정보 *****************************************************/
+/******************************************************************/
+.User_Account {
+    margin: 10vh 0 0 0;
+}
+
+.User_Account_Overview {
+    width: 420px;
+    height: fit-content;
+    margin: 36px auto 5vh auto;
+    padding: 24px 0 24px 0;
+    border: solid 1px #c1c1c1;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.User_Account_Overview > div {
+    width: 356px;
+    margin: 24px auto 24px auto;
+}
+
+.User_Account_Exsisting > div {
+    width: 356px;
+    margin: 0 auto 24px auto;
+}
+
+.User_Account_Editing > div {
+    width: 356px;
+    margin: 0 auto 24px auto;
+}
