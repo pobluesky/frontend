@@ -57,7 +57,7 @@ module.exports = function () {
             proxy: [
                 {
                     context: ['/api'],
-                    target: 'http://15.165.29.164:8000',
+                    target: 'https://ApiGatewayALB-1427322812.ap-northeast-2.elb.amazonaws.com',
                     changeOrigin: true,
                 },
             ],
