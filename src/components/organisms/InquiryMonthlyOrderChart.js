@@ -7,7 +7,7 @@ class InquiryMonthlyOrderChart extends Component {
     constructor(props) {
         super(props);
 
-        const { data } = props;
+        const { data, name } = props;
 
         const managerMaxRange = data.manager.reduce((max, current) => {
             return current[1] > max[1] ? current : max;
@@ -143,7 +143,7 @@ class InquiryMonthlyOrderChart extends Component {
                     },
                 },
                 title: {
-                    text: '월별 Inquiry 접수-주문 체결 평균 처리 기간',
+                    text: `${name}님의 월별 Inquiry 접수-주문 체결 평균 처리 기간`,
                     align: 'center',
                     margin: 5,
                     floating: false,
@@ -179,8 +179,8 @@ class InquiryMonthlyOrderChart extends Component {
                     options={this.state.options}
                     series={this.state.series}
                     type="line"
-                    width="450"
-                    height="240"
+                    width="100%"
+                    height="85%"
                 />
             </div>
         );

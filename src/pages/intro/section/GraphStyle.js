@@ -5,7 +5,7 @@ export const GraphContainer = styled.div`
     align-items: flex-end;
     justify-content: center;
     gap: 40px;
-    margin-bottom: 30px;
+    margin: 0 0 30px 0;
     padding: 10px;
 `;
 
@@ -34,12 +34,12 @@ export const Value = styled.span`
 `;
 
 export const Label = styled.span`
-    margin-top: 10px;
+    margin: 10px 0 0 0;
     font-size: 17px;
     font-weight: ${(props) => props.fontWeight};
     color: ${(props) => props.color};
 `;
 
 export const Arrow = styled.img`
-    margin-bottom: 50px;
+    margin: 0 0 50px 0;
 `;

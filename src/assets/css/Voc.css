@@ -1,13 +1,36 @@
-.Question_Dashboard {
+.Voc_Dashboard {
+    display: flex;
     width: 1320px;
-    margin: 0 auto 24px auto;
+    height: 36px;
+    align-items: center;
+    margin: 24px auto 24px auto;
     font-size: 16px;
     color: #25262b;
 }
 
-.Question_Dashboard span {
+.Voc_Dashboard > div:nth-child(n + 2) {
+    width: max-content;
+    height: 28px;
+    line-height: 28px;
+    margin: 0 0 0 8px;
+    padding: 0 12px;
+    background-color: #efefee;
+    border: solid 1px #c1c1c1;
+    border-radius: 100px;
+}
+
+.Voc_Dashboard span {
+    margin: 0 0 0 4px;
     color: #ff0000;
     font-weight: 600;
+}
+
+.Voc_Dashboard button {
+    margin: 0 0 0 auto;
+}
+
+.Voc_Dashboard button:hover {
+    background-color: #f3f3f3 !important;
 }
 
 /******************************************************************/
@@ -67,6 +90,7 @@
     appearance: none; /* 기본 브라우저에서 기본 스타일 제거 */
     width: 18px;
     height: 18px;
+    margin: 0 8px 0 0;
     border: 2px solid #8b8b8b; /* 체크되지 않았을 때의 테두리 색상 */
     border-radius: 50%;
     outline: none; /* focus 시에 나타나는 기본 스타일 제거 */
@@ -97,7 +121,7 @@
     height: 28px;
     line-height: 28px;
     font-weight: 600;
-    color: #1748ac;
+    color: #03507d;
 }
 
 /******************************************************************/
@@ -143,6 +167,10 @@
     margin: 0 12px;
 }
 
+.Question_Input > div:nth-child(1) > :nth-child(4) button:hover {
+    background-color: #f3f3f3 !important;
+}
+
 /* 첨부파일명 길이 제한 */
 .Question_Input > div:nth-child(1) > :nth-child(5) {
     width: 180px;
@@ -166,7 +194,7 @@
 /******************************************************************/
 /* Inquiry 번호 조회 모달 컴포넌트 **********************************/
 /******************************************************************/
-.Question_Inquiry_Modal_Container {
+.Question_Inquiry_Modal {
     position: fixed;
     left: 50%;
     top: 50%;
@@ -178,7 +206,7 @@
 }
 
 /* Inquiry 조회 그룹 모달 위치 고정 */
-.Question_Inquiry_Modal {
+.Question_Inquiry_Modal > div:nth-child(1) {
     position: fixed;
     left: 50%;
     top: 30%;
@@ -186,112 +214,120 @@
 }
 
 /* Inquiry 조회 그룹 */
-.Question_Inquiry_Modal {
-    width: 900px;
-    height: 600px;
+.Question_Inquiry_Modal > div:nth-child(1) {
+    width: 65vw;
+    height: 80vh;
     margin: 0 auto 0 auto;
     border: solid 1px #ffffff;
     border-radius: 12px;
     background-color: #ffffff;
 }
 
-/* Inquiry 번호 검색창 그룹 */
-.Question_Inquiry_Modal > div:nth-child(1) {
-    display: grid;
-    height: 48px;
-    margin: 48px 0 24px 84px;
-    grid-template-columns: 120px 244px 336px 64px;
-    align-items: center;
-    font-size: 20px;
-    font-weight: 600;
-    color: #25262b;
+/* 검색창, Inquiry 선택, 검색 버튼, 닫기 버튼 */
+.Question_Inquiry_Modal > div:nth-child(1) > div:nth-child(1) {
+    display: flex;
+    width: 60vw;
+    margin: 4vh auto 0 auto;
 }
 
-/* Inquiry 목록 그룹 */
-.Question_Inquiry_Modal > div:nth-child(2) {
-    width: 792px;
-    max-height: 408px;
-    margin: 0px auto 0px auto;
-    overflow-y: auto;
-}
-
-/* Inquiry 목록 그룹 */
-.Question_Inquiry_Modal > div:nth-child(2)::-webkit-scrollbar {
-    display: block;
-    height: 8px;
-}
-
-.Question_Inquiry_Modal > div:nth-child(2)::-webkit-scrollbar-thumb {
-    background-color: #8b8b8b;
-    border-radius: 10px;
-}
-
-/* Inquiry 목록별 속성 */
-.Question_Inquiry_Modal > div:nth-child(2) > div:nth-child(n + 1) {
-    display: grid;
-    grid-template-columns: 1.5fr 2fr 4fr 4fr 2fr 2fr;
-    column-gap: 8px;
-    margin: 0px auto 24px auto;
-    padding: 0px 24px 0px 24px;
-    width: 684px;
-    height: 72px;
-    border: 1px solid #c1c1c1;
-    border-radius: 24px;
-    text-align: center;
-    align-items: center;
-}
-
+/* 닫기 버튼 호버 */
 .Question_Inquiry_Modal
-    > div:nth-child(2)
-    > div:nth-child(n)
-    > div:nth-child(n + 2) {
-    font-size: 20px;
-    font-weight: 600;
-    color: #25262b;
+    > div:nth-child(1)
+    > div:nth-child(1)
+    > div
+    > button:hover {
+    background-color: #f8f8f8 !important;
+    border-radius: 4px !important;
 }
 
-/* 기존에 작성한 Inquiry가 없을 경우 */
-.Question_Inquiry_Modal .Data_Doesnt_Exist {
-    width: 100%;
-    height: 408px;
-    border: #03507d 1px solid;
+/* 닫기 버튼 */
+.Question_Inquiry_Modal
+    > div:nth-child(1)
+    > div:nth-child(1)
+    > div:nth-child(5) {
+    margin: 0 0 0 auto;
+}
+
+/* 테이블 부모 */
+.Question_Inquiry_Modal > div:nth-child(1) > div:nth-child(2) {
+    max-width: 60vw;
+    max-height: 62vh;
+    margin: 4vh auto 0 auto;
+    overflow: auto;
+}
+
+.Question_Inquiry_Modal table {
+    width: 70vw;
+    height: 100%;
+    font-size: 16px;
     text-align: center;
-    font-size: 24px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.Question_Inquiry_Modal table td,
+.Question_Inquiry_Modal table th {
+    padding: 8px;
+    border: 1px solid #c1c1c1;
+}
+
+.Question_Inquiry_Modal table td:nth-child(1):hover {
+    color: blue;
     font-weight: 600;
-    line-height: 408px;
+}
+
+.Question_Inquiry_Modal table th:nth-child(n) {
+    width: 180px;
+}
+
+.Question_Inquiry_Modal thead {
+    color: #8b8b8b;
+}
+
+.Question_Inquiry_Modal tbody tr:hover {
+    cursor: pointer;
+    background-color: #f8f8f8 !important;
 }
 
 /******************************************************************/
-/* 질문 현황 정보 그룹 *********************************************/
+/* VoC 현황 정보 그룹 **********************************************/
 /******************************************************************/
-.Question_Overview {
+.Voc_Overview {
     width: 1320px;
     border: 1px solid #adb0b4;
     border-radius: 8px;
-    margin: 36px auto 24px auto;
-    padding: 8px 0;
+    margin: 36px auto 0 auto;
+    padding: 16px 0;
 }
 
-.Question_Overview > div:first-child {
-    display: grid;
+.Voc_Overview > div:nth-child(1) {
+    display: flex;
     justify-content: center;
-}
-
-/* 전체 문의 그룹, 답변 대기 그룹, 답변 완료 그룹 */
-.Question_Overview > div:first-child > div {
-    display: grid;
-    grid-template-rows: 42px 42px;
-    font-size: 20px;
-    color: #25262b;
     text-align: center;
-    justify-content: center;
-    align-items: center;
 }
 
-.Question_Overview > div:first-child > div > div:first-child {
-    width: 96px;
-    height: 28px;
-    line-height: 28px;
+.Voc_Overview > div:nth-child(1) svg {
+    width: 48px;
+    height: 48px;
+}
+
+.Voc_Overview > div:nth-child(1) > div {
+    width: 100%;
+}
+
+.Voc_Overview > div:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.Voc_Overview > div:nth-child(2) > div {
+    width: 100%;
+}
+
+.Voc_Overview > div:nth-child(2) > div span {
+    font-size: 24px;
+    color: #25262b;
 }
 
 /******************************************************************/
@@ -321,10 +357,6 @@
     width: 108px;
 }
 
-.Question_Filter_Input_Container > div:nth-child(2) > div:nth-last-child(1) {
-    width: 996px;
-}
-
 .Selected hr {
     border: 1px solid #25262b;
     border-radius: 12px;
@@ -344,7 +376,15 @@
     justify-content: space-around;
 }
 
+.Question_Filter_Input > button:hover,
+.Question_Filter_Input > select:hover,
+.Question_Filter_Input > div:hover {
+    outline: solid 1px #64636a !important;
+    border-radius: 8px !important;
+}
+
 .Question_Filter_Input select {
+    text-align: center;
     width: 84px;
     height: 34px;
     border: solid 1px #c1c1c1;
@@ -352,6 +392,7 @@
     font-weight: 600;
     color: #adb0b4;
     outline: none;
+    cursor: pointer;
     background-color: #ffffff;
     -webkit-appearance: none; /* 크롬 화살표 없애기 */
     -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
@@ -411,8 +452,8 @@
     color: #ffffff;
     font-size: 12px;
     font-weight: 600;
-    border: 1px solid #1748ac;
-    background-color: #1748ac;
+    border: 1px solid #03507d;
+    background-color: #03507d;
     border-radius: 100px;
     text-align: center;
 }
@@ -463,6 +504,29 @@
     margin: 0 0 0 24px;
 }
 
+/* 페이지 버튼 */
+.Voc_Page_Button {
+    width: 1320px;
+    height: 24px;
+    margin: 24px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.Voc_Page_Button button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.Voc_Page_Button > div > button {
+    width: max-content;
+    margin: 0 0 0 12px;
+}
+
 /******************************************************************/
 /* 답변 화면에서 보이는 질문 상세 그룹 *******************************/
 /******************************************************************/
@@ -501,25 +565,43 @@
     color: #ffffff;
     font-size: 12px;
     font-weight: 600;
-    border: 1px solid #1748ac;
-    background-color: #1748ac;
+    border: 1px solid #03507d;
+    background-color: #03507d;
     border-radius: 100px;
     text-align: center;
-    cursor: pointer;
 }
 
 /* 제목 */
 .Question_Viewer > div:nth-child(1) > div:nth-child(2) {
-    width: 960px;
+    width: max-content;
     height: 28px;
+    margin: 0 8px 0 0;
     line-height: 28px;
     color: #25262b;
     font-size: 20px;
     font-weight: 600;
 }
 
-/* 첨부파일 */
+/* Inquiry 링크 */
 .Question_Viewer > div:nth-child(1) > div:nth-child(3) {
+    width: max-content;
+    height: 28px;
+    padding: 0 8px;
+    line-height: 28px;
+    color: blue;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+}
+
+.Question_Viewer > div:nth-child(1) > div:nth-child(3):hover {
+    color: #25262b;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+}
+
+/* 첨부파일 */
+.Question_Viewer > div:nth-child(1) > div:nth-child(4) {
     width: 144px;
     height: 28px;
     line-height: 28px;
@@ -595,6 +677,10 @@
 /* 파일 업로드 버튼 */
 .Answer_Input .Ready > div:nth-child(1) > :nth-child(4) {
     margin: 0 12px;
+}
+
+.Answer_Input .Ready > div:nth-child(1) > :nth-child(4) button:hover {
+    background-color: #f3f3f3 !important;
 }
 
 /* 첨부파일명 길이 제한 */
@@ -716,101 +802,238 @@
 }
 
 /******************************************************************/
-/* 협업 목록 조회 시 사용하는 조건 그룹 ******************************/
+/* 협업 번호, 협업 담당자 검색 시 사용하는 검색창 *********************/
 /******************************************************************/
-.Collaboration_Filter_Pannel {
+.Col_Search_Input {
     width: 1320px;
-    height: 288px;
-    margin: 36px auto 0 auto;
-    border: solid 1px #c1c1c1;
-    border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-}
-
-.Collaboration_Filter_Pannel > div:first-child {
-    display: grid;
-    grid-template-rows: 52px 52px 52px 36px 32px;
-    margin: 36px 0 0 36px;
-}
-
-/* 아이콘 + VoC 협업 조회 */
-.Collaboration_Filter_Pannel > div > div:nth-child(1) {
-    display: grid;
-    grid-template-columns: 48px 156px;
-    align-items: start;
-    font-size: 24px;
+    height: max-content;
+    line-height: 28px;
+    color: #25262b;
+    font-size: 20px;
     font-weight: 600;
-    color: #25262b;
+    margin: 24px auto 0 auto;
+    display: flex;
+    justify-content: space-between;
 }
 
-/* 협업 번호 + 협업 담당자 + 조회 버튼 */
-.Collaboration_Filter_Pannel > div > div:nth-child(2) > :nth-child(1) {
-    display: grid;
-    grid-template-columns: 120px 320px 120px 320px 1fr;
-    align-items: center;
-    font-size: 16px;
-    color: #25262b;
-}
-
-/* 협업 등록일 */
-.Collaboration_Filter_Pannel > div > div:nth-child(3) > :nth-child(1) {
-    display: grid;
-    grid-template-columns: 120px 180px 28px 180px;
-    align-items: center;
-    font-size: 16px;
-    color: #25262b;
-}
-
-/* 정렬 조건 + 정렬 버튼 */
-.Collaboration_Filter_Pannel > div > div:nth-last-child(3) {
-    display: grid;
-    grid-template-columns: 120px 96px 96px 96px;
-    align-items: center;
-    font-size: 16px;
-    color: #25262b;
-}
-
-/* 정렬 조건 + 정렬 버튼 */
-.Collaboration_Filter_Pannel > div > div:nth-last-child(3) select {
-    width: 96px;
-    height: 28px;
-    background: none;
-    border: solid 1px #c1c1c1;
-    border-radius: 20px;
-    -webkit-appearance: none; /* 크롬 화살표 없애기 */
-    -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
-    appearance: none; /* 화살표 없애기 */
-}
-
-/* 검색 결과 */
-.Collaboration_Filter_Pannel > div > div:nth-last-child(2) {
-    display: grid;
-    grid-template-columns: 30fr 1fr 0.5fr 1fr;
-    align-items: center;
-    font-size: 16px;
-    color: #25262b;
-    text-align: right;
-}
-
-/* 검색 결과 개수 */
-.Collaboration_Filter_Pannel > div > div:nth-last-child(2) > div {
-    margin: 0 0 0 12px;
-    font-size: 24px;
-    font-weight: 600;
-    color: red;
+.Col_Search_Input select {
+    text-align: center;
+    width: 144px;
+    height: 38px;
+    cursor: pointer;
 }
 
 /******************************************************************/
 /* 협업 목록 조회 테이블 ********************************************/
 /******************************************************************/
-.Select {
+.Col_Table {
+    width: 1320px;
+    margin: 24px auto 0 auto;
+    font-size: 16px;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.Col_Table th:nth-child(1) {
+    width: 10%;
+}
+
+.Col_Table th:nth-child(2) {
+    width: 10%;
+}
+
+.Col_Table th:nth-child(3) {
+    width: 10%;
+}
+
+.Col_Table th:nth-child(4) {
+    width: 40%;
+}
+
+.Col_Table th:nth-child(5) {
+    width: 15%;
+}
+
+.Col_Table th:nth-child(6) {
+    width: 15%;
+}
+
+.Col_Table td,
+.Col_Table th {
+    padding: 8px;
+    border: 1px solid #c1c1c1;
+}
+
+.Col_Table thead {
+    color: #8b8b8b;
+}
+
+.Col_Table thead th:nth-child(2):hover,
+.Col_Table thead th:nth-child(3):hover,
+.Col_Table thead th:nth-child(n + 5):hover,
+.Col_Table tbody tr:hover {
     cursor: pointer;
+    background-color: #f8f8f8;
 }
 
-.Select:hover {
-    background-color: #cbefff;
+/* 협업 진행 현황 막대 */
+.Col_Table tbody tr td:nth-child(5) > div {
+    width: 80%;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 100px;
+    margin: 0 auto;
 }
 
+.Col_Status {
+    position: absolute;
+    margin: 12px 0 0 0;
+    width: 180px;
+    height: max-content;
+    color: #25262b;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.Col_Status > div {
+    width: 144px;
+    line-height: 32px;
+}
+
+.Col_Status > div:nth-child(1) {
+    margin: 12px auto 6px auto;
+}
+
+.Col_Status > div:nth-child(2) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Status > div:nth-child(3) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Status > div:nth-child(4) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Status > div:nth-child(5) {
+    margin: 6px auto 12px auto;
+}
+
+.Col_Status > div:nth-child(1):hover {
+    margin: 12px auto 6px auto;
+    border-radius: 100px;
+    background-color: #f8f8f8;
+}
+
+.Col_Status > div:nth-child(2):hover {
+    margin: 6px auto 6px auto;
+    border-radius: 100px;
+    background-color: #dbeddb;
+}
+
+.Col_Status > div:nth-child(3):hover {
+    margin: 6px auto 6px auto;
+    border-radius: 100px;
+    background-color: #f5e0e9;
+}
+
+.Col_Status > div:nth-child(4):hover {
+    margin: 6px auto 6px auto;
+    border-radius: 100px;
+    background-color: #d3e5ef;
+}
+
+.Col_Status > div:nth-child(5):hover {
+    margin: 6px auto 12px auto;
+    border-radius: 100px;
+    background-color: #efefee;
+}
+
+/* 협업 시간순 정렬 */
+.Col_Created_Date {
+    position: absolute;
+    margin: 12px 0 0 0;
+    width: 180px;
+    height: max-content;
+    color: #25262b;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.Col_Created_Date > div {
+    width: 144px;
+    line-height: 32px;
+}
+
+.Col_Created_Date > div:nth-child(1) {
+    margin: 12px auto 6px auto;
+}
+
+.Col_Created_Date > div:nth-child(2) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Created_Date > div:nth-child(3) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Created_Date > div:nth-child(4) {
+    margin: 6px auto 6px auto;
+}
+
+.Col_Created_Date > div:nth-child(5) {
+    margin: 6px auto 12px auto;
+}
+
+.Col_Created_Date > div:nth-child(-n + 3):hover,
+.Col_Created_Date > div:nth-child(1):hover {
+    border-radius: 100px;
+    background-color: #f8f8f8;
+}
+
+/* 나의 협업 모아보기 */
+.Col_Manager {
+    position: absolute;
+    margin: 12px 0 0 0;
+    width: 116px;
+    height: max-content;
+    color: #25262b;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.Col_Manager > div {
+    width: 76px;
+    line-height: 32px;
+}
+
+.Col_Manager > div:nth-child(1) {
+    margin: 12px auto 6px auto;
+}
+
+.Col_Manager > div:nth-child(2) {
+    margin: 6px auto 12px auto;
+}
+
+.Col_Manager > div:nth-child(1):hover {
+    margin: 12px auto 6px auto;
+    border-radius: 100px;
+    background-color: #f8f8f8;
+}
+
+.Col_Manager > div:nth-child(2):hover {
+    margin: 6px auto 12px auto;
+    border-radius: 100px;
+    background-color: #f8f8f8;
+}
+
+/******************************************************************/
+/* 협업 목록 조회 테이블 ********************************************/
+/******************************************************************/
 .Col_Res_Modal_Container {
     position: fixed;
     left: 50%;
@@ -877,16 +1100,6 @@
     overflow-y: auto;
 }
 
-/* .Col_Res_Modal > div:nth-child(3)::-webkit-scrollbar {
-    display: block;
-    width: 8px;
-}
-
-.Col_Res_Modal > div:nth-child(3)::-webkit-scrollbar-thumb {
-    background-color: #8b8b8b;
-    border-radius: 12px;
-} */
-
 /* 고객사 첨부파일 + 첨부파일 */
 .Col_Res_Modal > div:nth-child(4) {
     display: flex;
@@ -938,84 +1151,40 @@
 }
 
 /******************************************************************/
-/* 협업 요청 시 사용하는 담당자 조회 패널 ****************************/
-/******************************************************************/
-.Col_Find_Manager_Filter_Panel {
-    width: 1320px;
-    height: 160px;
-    margin: 36px auto 0 auto;
-    border: solid 1px #c1c1c1;
-    border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-}
-
-.Col_Find_Manager_Filter_Panel > div:first-child {
-    grid-template-rows: 52px 52px;
-    display: grid;
-    margin: 36px 0 0 36px;
-}
-
-/* 아이콘 + 협업 요청 */
-.Col_Find_Manager_Filter_Panel > div > div:nth-child(1) {
-    display: grid;
-    grid-template-columns: 48px 120px;
-    align-items: start;
-    font-size: 24px;
-    font-weight: 600;
-    color: #25262b;
-}
-
-/* 담당자 조회 */
-.Col_Find_Manager_Filter_Panel > div > div:nth-child(2) > :nth-child(1) {
-    display: grid;
-    grid-template-columns: 96px 132px 1fr;
-    align-items: center;
-    font-size: 16px;
-    color: #25262b;
-}
-
-/* 담당자 이름, 부서, 권한 */
-.Col_Find_Manager_Filter_Panel
-    > div
-    > div:nth-child(2)
-    > :nth-child(1)
-    > div:nth-child(3) {
-    font-weight: 600;
-}
-
-/******************************************************************/
 /* 협업 요청 시 사용하는 요청 사유 작성란 ****************************/
 /******************************************************************/
 .Col_Req_Input {
-    width: 1320px;
-    height: 580px;
-    margin: 36px auto 72px auto;
-    border: solid 1px #c1c1c1;
-    border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 24px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-}
-
-.Col_Req_Input > div:first-child {
-    display: grid;
-    margin: 8vh 0 0 0;
-}
-
-/* 텍스트 에디터 */
-.Col_Req_Input > div > div:nth-child(1) {
     margin: 0 auto 0 auto;
 }
 
-/* 협업 요청 버튼 */
-.Col_Req_Input > div > div:nth-child(2) {
-    margin: 4vh auto 0 auto;
+.Col_Req_Input > div:nth-child(2) {
+    width: 1320px;
+    text-align: right;
+    margin: 24px auto 24px auto;
+}
+
+/******************************************************************/
+/* 협업 요청 시 사용하는 품질 담당자 조회 버튼 ***********************/
+/******************************************************************/
+.Col_Find_Manager_Button {
+    width: 1320px;
+    margin: 24px auto 24px auto;
+}
+
+.Col_Find_Manager_Button > div:nth-child(1) {
+    display: flex;
+    margin: 0 auto 0 auto;
+}
+
+.Col_Find_Manager_Button > div:nth-child(1) > div {
+    margin: 0 0 0 24px;
+    line-height: 38px;
 }
 
 /******************************************************************/
 /* 협업 요청 시 사용하는 담당자 조회 모달 ****************************/
 /******************************************************************/
-.Col_Find_Manager_Modal_Container {
+.Col_Find_Manager_Modal {
     position: fixed;
     left: 50%;
     top: 50%;
@@ -1027,7 +1196,7 @@
 }
 
 /* Inquiry 조회 그룹 모달 위치 고정 */
-.Col_Find_Manager_Modal {
+.Col_Find_Manager_Modal > div:nth-child(1) {
     position: fixed;
     left: 50%;
     top: 30%;
@@ -1035,52 +1204,325 @@
 }
 
 /* Inquiry 조회 그룹 */
-.Col_Find_Manager_Modal {
-    width: 900px;
-    height: 600px;
+.Col_Find_Manager_Modal > div:nth-child(1) {
+    width: 65vw;
+    height: 80vh;
     margin: 0 auto 0 auto;
     border: solid 1px #ffffff;
     border-radius: 12px;
     background-color: #ffffff;
 }
 
-/* Inquiry 번호 검색창 그룹 */
-.Col_Find_Manager_Modal > div:nth-child(1) {
-    display: grid;
-    height: 48px;
-    margin: 48px 0 24px 84px;
-    grid-template-columns: 120px 244px 336px 64px;
+/* 검색창, 검색 버튼, 닫기 버튼 */
+.Col_Find_Manager_Modal > div:nth-child(1) > div:nth-child(1) {
+    display: flex;
+    width: 60vw;
+    margin: 4vh auto 0 auto;
+}
+
+/* 닫기 버튼 */
+.Col_Find_Manager_Modal
+    > div:nth-child(1)
+    > div:nth-child(1)
+    > div
+    > button:hover {
+    background-color: #c1c1c1 !important;
+    border-radius: 4px !important;
+}
+
+.Col_Find_Manager_Modal
+    > div:nth-child(1)
+    > div:nth-child(1)
+    > div:nth-child(4) {
+    margin: 0 0 0 auto;
+}
+
+/* 테이블 부모 */
+.Col_Find_Manager_Modal > div:nth-child(1) > div:nth-child(2) {
+    max-width: 60vw;
+    max-height: 62vh;
+    margin: 4vh auto 0 auto;
+    overflow: auto;
+}
+
+.Col_Find_Manager_Modal table {
+    width: 70vw;
+    height: 100%;
+    font-size: 16px;
+    text-align: center;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.Col_Find_Manager_Modal table td,
+.Col_Find_Manager_Modal table th {
+    padding: 8px;
+    border: 1px solid #c1c1c1;
+}
+
+.Col_Find_Manager_Modal table th:nth-child(n) {
+    width: 196px;
+}
+
+.Col_Find_Manager_Modal thead {
+    color: #8b8b8b;
+}
+
+.Col_Find_Manager_Modal tbody tr:hover {
+    cursor: pointer;
+    background-color: #f3f3f3;
+}
+
+/******************************************************************/
+/* 협업 요청 응답시 확인하는 협업 요청 사유 **************************/
+/******************************************************************/
+.Col_Req_Viewer > div:nth-child(1) {
+    width: 1320px;
+    height: fit-content;
+    margin: 24px auto 0 auto;
+    border: solid 1px #c1c1c1;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.Col_Req_Viewer > div:nth-child(1) > div:nth-child(-n + 2) {
+    display: flex;
+    width: 1224px;
     align-items: center;
+}
+
+.Col_Req_Viewer > div:nth-child(1) > div:nth-child(3) {
+    width: 1224px;
+    align-items: center;
+}
+
+.Col_Req_Viewer > div:nth-child(1) > div:nth-child(1) {
+    margin: 24px auto 0 auto;
+    height: 28px;
+}
+
+/* 협업 요청 사유 */
+.Col_Req_Viewer > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
+    width: 960px;
+    height: 28px;
+    line-height: 28px;
+    color: #25262b;
     font-size: 20px;
     font-weight: 600;
+}
+
+/* 협업 요청 날짜, 요청 담당자 정보 */
+.Col_Req_Viewer > div:nth-child(1) > div:nth-child(2) {
+    margin: 12px auto 0 auto;
+    height: 16px;
+    font-size: 12px;
+    color: #64636a;
+}
+
+/* 협업 요청 날짜 */
+.Col_Req_Viewer > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) {
+    width: 120px;
+    margin: 0 8px 0 0;
+}
+
+/* 요청 담당자 정보 */
+.Col_Req_Viewer > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) {
+    width: fit-content;
+    margin: 0 4px 0 0;
+}
+
+/* 내용 */
+.Col_Req_Viewer > div:nth-child(1) > div:nth-child(3) {
+    margin: 12px auto 24px auto;
+    font-size: 16px;
     color: #25262b;
 }
 
-/* Col Manager 목록 그룹 */
-.Col_Find_Manager_Modal > div:nth-child(2) {
-    width: 792px;
-    max-height: 408px;
-    margin: 0px auto 0px auto;
-    overflow-y: auto;
+/* 협업 요청 내용 수정 버튼 */
+.Col_Req_Viewer > div:nth-child(2) {
+    width: 1320px;
+    height: fit-content;
+    margin: 24px auto 24px auto;
+    text-align: right;
 }
 
-.Col_Find_Manager_Modal > div:nth-child(2)::-webkit-scrollbar {
-    display: block;
-    height: 8px;
+/******************************************************************/
+/* 협업 요청 응답시 체크하는 협업 수락 여부 **************************/
+/******************************************************************/
+.Col_Accpted_Selector {
+    width: 1320px;
+    height: fit-content;
+    margin: 24px auto 0 auto;
+    border: solid 1px #c1c1c1;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
-.Col_Find_Manager_Modal > div:nth-child(2)::-webkit-scrollbar-thumb {
-    background-color: #8b8b8b;
-    border-radius: 10px;
+.Col_Accpted_Selector > div {
+    display: flex;
+    width: 1224px;
+    align-items: center;
 }
 
-/* 기존에 작성한 Inquiry가 없을 경우 */
-.Col_Find_Manager_Modal .Data_Doesnt_Exist {
-    width: 100%;
-    height: 408px;
-    border: #03507d 1px solid;
-    text-align: center;
-    font-size: 24px;
+/* 라디오 버튼 그룹 */
+.Col_Accpted_Selector > div:nth-child(1) {
+    height: 28px;
+    margin: 24px auto 24px auto;
+    color: #25262b;
+    font-size: 16px;
+}
+
+.Col_Accpted_Selector > div:nth-child(1) > div:nth-child(even) {
+    margin: 0 auto 0 0;
+}
+
+.Col_Accpted_Selector input[type='radio'] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    margin: 0 8px 0 0;
+    border: 2px solid #8b8b8b;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    float: left;
+}
+
+.Col_Accpted_Selector input[type='radio']:checked {
+    background-color: #1748ac;
+    border: 3px solid white;
+    box-shadow: 0 0 0 1.6px #1748ac;
+    transition: 0.2s all linear;
+}
+
+/******************************************************************/
+/* 협업 요청 응답시 확인하는 협업 피드백 입력 폼 *********************/
+/******************************************************************/
+.Col_Res_Input {
+    width: 1320px;
+    margin: 24px auto 24px auto;
+}
+
+/* 피드백 입력 Text Editor */
+.Col_Res_Input > div:nth-child(1) {
+    margin: 0 0 24px 0;
+}
+
+/* 텍스트 에디터 하단 그룹 */
+.Col_Res_Input > div:nth-child(2) {
+    display: flex;
+}
+
+/* 파일 첨부 텍스트 */
+.Col_Res_Input > div:nth-child(2) > div:nth-child(3) {
+    margin: 0 0 0 12px;
+    width: 180px;
+    align-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 협업 수락 또는 협업 거절 버튼 */
+.Col_Res_Input > div:nth-child(2) > div:nth-child(4) {
+    margin: 0 0 0 auto;
+}
+
+/******************************************************************/
+/* 협업 상세 조회 화면에서 보이는 협업 피드백 그룹 ********************/
+/******************************************************************/
+.Col_Res_Viewer > div:nth-child(1) {
+    width: 1320px;
+    height: fit-content;
+    margin: 24px auto 0 auto;
+    border: solid 1px #c1c1c1;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.Col_Res_Viewer > div:nth-child(1) > div:nth-child(-n + 2) {
+    display: flex;
+    width: 1224px;
+    align-items: center;
+}
+
+.Col_Res_Viewer > div:nth-child(1) > div:nth-child(3) {
+    width: 1224px;
+    align-items: center;
+}
+
+.Col_Res_Viewer > div:nth-child(1) > div:nth-child(1) {
+    margin: 24px auto 0 auto;
+    height: 28px;
+}
+
+/* 거절, 수락, 완료 */
+.Col_Res_Viewer > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
+    width: 104px;
+    height: 26px;
+    line-height: 26px;
+    margin: 0 8px 0 0;
+    color: #25262b;
+    font-size: 12px;
     font-weight: 600;
-    line-height: 408px;
+    border-radius: 100px;
+    text-align: center;
+}
+
+/* 협업 요청 사유 */
+.Col_Res_Viewer > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) {
+    width: max-content;
+    height: 28px;
+    margin: 0 8px 0 0;
+    line-height: 28px;
+    color: #25262b;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* 첨부파일 */
+.Col_Res_Viewer > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) {
+    width: 144px;
+    height: 28px;
+    line-height: 28px;
+    margin: 0 0 0 auto;
+    font-weight: 600;
+    text-align: right;
+}
+
+/* 협업 요청 날짜, 요청 담당자 정보 */
+.Col_Res_Viewer > div:nth-child(1) > div:nth-child(2) {
+    margin: 12px auto 0 auto;
+    height: 16px;
+    font-size: 12px;
+    color: #64636a;
+}
+
+/* 협업 요청 날짜 */
+.Col_Res_Viewer > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) {
+    width: 120px;
+    margin: 0 8px 0 0;
+}
+
+/* 요청 담당자 정보 */
+.Col_Res_Viewer > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) {
+    width: fit-content;
+    margin: 0 4px 0 0;
+}
+
+/* 내용 */
+.Col_Res_Viewer > div:nth-child(1) > div:nth-child(3) {
+    margin: 12px auto 24px auto;
+    font-size: 16px;
+    color: #25262b;
+}
+
+/* 피드백 수정, 협업 완료 버튼 */
+.Col_Res_Viewer > div:nth-child(2) {
+    width: 1320px;
+    height: fit-content;
+    margin: 24px auto 24px auto;
+    text-align: right;
 }

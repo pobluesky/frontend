@@ -14,16 +14,13 @@ const ReviewTextFormItem = ({ formData }) => { // 1차 검토 조회
         <div className={Container} style={{ marginTop: '-2vh' }}>
             <div className={Sheet}>
                 <ToggleBar
-                    title={'검토내용'}
+                    title={'1차검토내용'}
                     isChecked={isChecked}
                     setCheck={setCheck}
                 />
                 {isChecked ? (
-                    <div className={Opend}>
+                    <div className={Opend} style={{ padding: '3vh'}}>
                         <ReviewTextItem
-                            title={'1차검토'}
-                            width="80px"
-                            height="80px"
                             formData={formData}
                         />
                     </div>

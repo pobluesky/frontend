@@ -19,9 +19,14 @@ import {
 } from './pages/inq-item';
 import { VocMain } from './pages/voc-main';
 import { VocQuestionList, VocColList } from './pages/voc-list';
-import { VocQuestionForm, VocAnswerForm, VocColForm } from './pages/voc-form';
+import {
+    VocQuestionForm,
+    VocAnswerForm,
+    VocColReqForm,
+    VocColResForm,
+} from './pages/voc-form';
 import { DashBoard } from './pages/dashboard';
-import Error404 from './pages/error/Error404'
+import Error404 from './pages/error/Error404';
 
 import { AuthProvider } from './context/auth/AuthContext';
 import Layout from './components/templates/Layout';
@@ -53,20 +58,60 @@ function App() {
                             <Route path="account" element={<UserAccount />} />
 
                             <Route path="inq-main" element={<InqMain />} />
-                            <Route path="inq-form/customer" element={<CustomerInqForm />} />
-                            <Route path="inq-list/customer" element={<CustomerInqTableList />} />
-                            <Route path="inq-list/sales" element={<SalesManagerInqTableList />} />
-                            <Route path="inq-list/quality" element={<QualityManagerInqTableList />} />
-                            <Route path="inq-list/customer/:id" element={<CustomerInqItem />} />
-                            <Route path="inq-list/sales/:id" element={<SalesManagerInqItem />} />
-                            <Route path="inq-list/quality/:id" element={<QualityManagerInqItem />} />
+                            <Route
+                                path="inq-form/customer"
+                                element={<CustomerInqForm />}
+                            />
+                            <Route
+                                path="inq-list/customer"
+                                element={<CustomerInqTableList />}
+                            />
+                            <Route
+                                path="inq-list/sales"
+                                element={<SalesManagerInqTableList />}
+                            />
+                            <Route
+                                path="inq-list/quality"
+                                element={<QualityManagerInqTableList />}
+                            />
+                            <Route
+                                path="inq-list/customer/:id"
+                                element={<CustomerInqItem />}
+                            />
+                            <Route
+                                path="inq-list/sales/:id"
+                                element={<SalesManagerInqItem />}
+                            />
+                            <Route
+                                path="inq-list/quality/:id"
+                                element={<QualityManagerInqItem />}
+                            />
 
                             <Route path="voc-main" element={<VocMain />} />
-                            <Route path="voc-form/question" element={<VocQuestionForm />} />
-                            <Route path="voc-form/answer" element={<VocAnswerForm />} />
-                            <Route path="voc-form/collaboration" element={<VocColForm />} />
-                            <Route path="voc-list/question" element={<VocQuestionList />} />
-                            <Route path="voc-list/collaboration" element={<VocColList />} />
+                            <Route
+                                path="voc-form/question"
+                                element={<VocQuestionForm />}
+                            />
+                            <Route
+                                path="voc-form/answer/:questionId"
+                                element={<VocAnswerForm />}
+                            />
+                            <Route
+                                path="voc-form/collaboration/req"
+                                element={<VocColReqForm />}
+                            />
+                            <Route
+                                path="voc-form/collaboration/res/:id/:id"
+                                element={<VocColResForm />}
+                            />
+                            <Route
+                                path="voc-list/question"
+                                element={<VocQuestionList />}
+                            />
+                            <Route
+                                path="voc-list/collaboration"
+                                element={<VocColList />}
+                            />
 
                             <Route path="dashboard" element={<DashBoard />} />
 

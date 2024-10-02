@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import bell from '../../assets/css/icons/bell.svg';
 import circle from '../../assets/css/icons/circle.svg';
 import readBell from '../../assets/css/icons/readBell.svg';
@@ -14,19 +13,35 @@ import {
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
 import { Notify_Modal_Container } from '../../assets/css/Header.css';
+import {
+    Grid,
+    Pagination,
+    Tabs,
+    Tab,
+    Card,
+    CardContent,
+    Typography,
+    Badge,
+    IconButton,
+    CircularProgress,
+} from '@mui/material';
 
 const NotificationModal = ({ onUpdateNotificationsCount }) => {
     const { role, userId } = useAuth();
-
     const [activeTab, setActiveTab] = useState('new');
     const [newNotificationList, setNewNotificationList] = useState([]);
     const [readNotificationList, setReadNotificationList] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [notificationsPerPage] = useState(6);
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
-    const switchTab = (tab) => {
-        setActiveTab(tab);
+    const switchTab = (event, newValue) => {
+        setActiveTab(newValue);
+        setCurrentPage(1);
     };
 
     const fetchNotifications = async () => {
+        setLoading(true); // 로딩 시작
         try {
             if (role === 'customer') {
                 const response = await getNotificationByCustomers(userId);
@@ -37,36 +52,27 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false); // 로딩 종료
         }
     };
 
     const fetchReadNotifications = async () => {
+        setLoading(true); // 로딩 시작
         try {
             let readNotificationData;
             if (role === 'customer') {
-                readNotificationData = await getReadNotificationByCustomers(
-                    userId,
-                );
+                readNotificationData = await getReadNotificationByCustomers(userId);
             } else if (role === 'quality' || role === 'sales') {
-                readNotificationData = await getReadNotificationByManagers(
-                    userId,
-                );
+                readNotificationData = await getReadNotificationByManagers(userId);
             }
             setReadNotificationList(readNotificationData);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false); // 로딩 종료
         }
     };
-
-    useEffect(() => {
-        fetchNotifications();
-    }, [userId]);
-
-    useEffect(() => {
-        if (activeTab === 'read') {
-            fetchReadNotifications();
-        }
-    }, [activeTab, userId]);
 
     const handleNotificationClick = async (notificationId) => {
         try {
@@ -87,95 +93,129 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
         }
     };
 
+    useEffect(() => {
+        fetchNotifications();
+    }, [userId]);
+
+    useEffect(() => {
+        if (activeTab === 'read') {
+            fetchReadNotifications();
+        }
+    }, [activeTab, userId]);
+
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+    };
+
+    const indexOfLastNotification = currentPage * notificationsPerPage;
+    const indexOfFirstNotification = indexOfLastNotification - notificationsPerPage;
+    const currentNotifications = newNotificationList.slice(indexOfFirstNotification, indexOfLastNotification);
+
     return (
         <div className={Notify_Modal_Container}>
             <div onClick={(e) => e.stopPropagation()}>
-                <div>
-                    <TabButton
-                        $active={activeTab === 'new'}
-                        onClick={() => switchTab('new')}
-                    >
-                        새 알림
-                    </TabButton>
-                    <TabButton
-                        $active={activeTab === 'read'}
-                        onClick={() => switchTab('read')}
-                    >
-                        읽은 알림
-                    </TabButton>
-                </div>
+                <Tabs
+                    value={activeTab}
+                    onChange={switchTab}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    centered
+                    sx={{ width: '100%' }}
+                >
+                    <Tab label="새 알림" value="new" sx={{ flex: 1 }} />
+                    <Tab label="읽은 알림" value="read" sx={{ flex: 1 }} />
+                </Tabs>
 
                 <div>
-                    {activeTab === 'new' ? (
+                    {loading ? ( // 로딩 상태에 따라 로딩 스피너 표시
+                        <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+                            <CircularProgress />
+                        </Grid>
+                    ) : activeTab === 'new' ? (
                         <div>
                             {newNotificationList.length > 0 ? (
-                                newNotificationList.map((notification) => (
-                                    <NotificationBox
+                                currentNotifications.map((notification) => (
+                                    <Card
                                         key={notification.id}
-                                        $read={false}
+                                        sx={{
+                                            marginBottom: 1,
+                                            cursor: 'pointer',
+                                            border: '1px solid #03507d',
+                                            borderRadius: '5px',
+                                            fontSize: '12px',
+                                            transition: 'background-color 0.3s, border 0.3s',
+                                            '&:hover': {
+                                                backgroundColor: '#f4f5ff',
+                                            },
+                                        }}
+                                        onClick={() => handleNotificationClick(notification.id)}
                                     >
-                                        <div>
-                                            <img
-                                                src={bell}
-                                                alt="notification"
-                                            />
-                                        </div>
-                                        <div
-                                            onClick={() =>
-                                                handleNotificationClick(
-                                                    notification.id,
-                                                )
-                                            }
-                                        >
-                                            {notification.date}
-                                            <br />
-                                            <span>{notification.contents}</span>
-                                        </div>
-                                        <div>
-                                            <img
-                                                src={circle}
-                                                alt="notification"
-                                            />
-                                        </div>
-                                    </NotificationBox>
+                                        <CardContent>
+                                            <Grid container spacing={2} alignItems="center">
+                                                <Grid item>
+                                                    <Badge badgeContent="" color="error" variant="dot">
+                                                        <img src={bell} alt="notification" />
+                                                    </Badge>
+                                                </Grid>
+                                                <Grid item xs>
+                                                    <Typography variant="body2" fontWeight="700">
+                                                        {notification.date}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="textSecondary">
+                                                        {notification.contents}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <img src={circle} alt="circle" />
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
                                 ))
                             ) : (
-                                <NoNotifications>
+                                <Typography variant="body2" color="textSecondary" align="center">
                                     새 알림이 없습니다.
-                                </NoNotifications>
+                                </Typography>
                             )}
+                            <Pagination
+                                count={Math.ceil(newNotificationList.length / notificationsPerPage)}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                                sx={{ marginTop: 2, display: 'flex', justifyContent: 'center', fontSize: '11px' }}
+                            />
                         </div>
                     ) : (
                         <div>
                             {readNotificationList.length > 0 ? (
                                 readNotificationList.map((notification) => (
-                                    <NotificationBox
+                                    <Card
                                         key={notification.id}
-                                        $read={true}
+                                        sx={{ marginBottom: 1, backgroundColor: '#f0f0f0', fontSize: '12px' }}
                                     >
-                                        <div>
-                                            <img
-                                                src={readBell}
-                                                alt="notification"
-                                            />
-                                        </div>
-                                        <div>
-                                            {notification.date}
-                                            <br />
-                                            <span>{notification.contents}</span>
-                                        </div>
-                                        <div>
-                                            <img
-                                                src={readCircle}
-                                                alt="notification"
-                                            />
-                                        </div>
-                                    </NotificationBox>
+                                        <CardContent>
+                                            <Grid container spacing={2} alignItems="center">
+                                                <Grid item>
+                                                    <img src={readBell} alt="read notification" />
+                                                </Grid>
+                                                <Grid item xs>
+                                                    <Typography variant="body2" fontWeight="700">
+                                                        {notification.date}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="textSecondary">
+                                                        {notification.contents}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <img src={readCircle} alt="read circle" />
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
                                 ))
                             ) : (
-                                <NoNotifications>
+                                <Typography variant="body2" color="textSecondary" align="center">
                                     읽은 알림이 없습니다.
-                                </NoNotifications>
+                                </Typography>
                             )}
                         </div>
                     )}
@@ -186,68 +226,3 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
 };
 
 export default NotificationModal;
-
-const TabButton = styled.button`
-    padding: 10px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-size: 16px;
-    width: 200px;
-    color: ${(props) => (props.$active ? '#03507d' : '#C1C1C1')};
-    font-weight: ${(props) => (props.$active ? '800' : '600')};
-    border-bottom: ${(props) => (props.$active ? '1px solid #03507d' : 'none')};
-`;
-
-const NotificationBox = styled.div`
-    padding: 15px;
-    margin: 0 0 10px 0;
-    border: 1px solid #03507d;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    text-align: center;
-    display: grid;
-    grid-template-columns: 0.3fr 5fr 0.3fr;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    transition: background-color 0.3s, border 0.3s;
-
-    span {
-        color: #121212;
-    }
-
-    &:hover {
-        ${({ $read }) =>
-            !$read &&
-            `
-      background-color: #9bccff;
-      border: 1px solid #c1c1c1;
-      color: #ffffff;
-      cursor: pointer;
-
-      span {
-        color: #ffffff;
-      }
-    `}
-    }
-
-    ${({ $read }) =>
-        $read &&
-        `
-      background-color: #ffffff;
-      border: 1px solid #ababab;
-      color: #ababab;
-
-      span {
-        color: #ababab;
-      }
-    `}
-`;
-
-const NoNotifications = styled.div`
-    text-align: center;
-    color: #999;
-    font-size: 14px;
-    margin: 20px 0 20px 0;
-`;

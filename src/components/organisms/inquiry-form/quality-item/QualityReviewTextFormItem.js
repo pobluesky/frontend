@@ -48,11 +48,8 @@ const QualityReviewTextFormItem = ({ formData }) => { // 품질검토정보 조�
               isChecked={true}
               setCheck={() => {}}
           />
-          <div className={Opend}>
+          <div className={Opend} style={{ padding: '3vh'}}>
             <QualityTextItem
-                title={'품질검토내용'}
-                width="115px"
-                height="100px"
                 content={commentsToDisplay.qualityComments}
             />
 

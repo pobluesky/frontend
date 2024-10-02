@@ -42,7 +42,7 @@ const InquiryHistoryFormItem = ({ productType, lineItemData }) => { // 라인아
                         <TableBody style={{ backgroundColor: '#fffffff' }}>
                             {lineItemData.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={Object.keys(fields).length}>데이터 없음</TableCell>
+                                    <TableCell colSpan={Object.keys(fields).length} sx={{ margin: '1vh', color: '#7a7a7a' }}>데이터 없음</TableCell>
                                 </TableRow>
                             ) : (
                                 lineItemData.map((item, index) => (

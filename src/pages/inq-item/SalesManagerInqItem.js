@@ -8,7 +8,7 @@ import {
     Offersheet,
 } from '../../components/organisms/inquiry-form';
 import {
-    getInquiryDetailByManagers, putProgress,
+    getInquiryDetailByManagers,
 } from '../../apis/api/inquiry';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
@@ -45,12 +45,23 @@ import {
     postNotificationByManagers,
 } from '../../apis/api/notification';
 import { useAuth } from '../../hooks/useAuth';
+import { assignQualityManagerByUserId } from '../../apis/api/manager';
+import { CircularProgress, Grid } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { OfferSheetReceipts } from '../../utils/inquiry';
 
 function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const { id } = useParams();
     const { userId, userName, role } = useAuth();
+    const realId = id.slice(-2);
     const navigate = useNavigate();
 
+    const {
+        formState: { errors },
+        setValue,
+    } = useForm();
+
+    const [loading, setLoading] = useState(true);
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [reviewData, setReviewData] = useState(null);
@@ -63,6 +74,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const [currentProgress, setCurrentProgress] = useState(null);
     const [currentInqType, setCurrentInqType] = useState(null);
     const [requestTitle, setRequestTitle] = useState(null);
+    const [selectedQualityManagerId, setSelectedQualityManagerId] = useState(null);
+    const [receipts, setReceipts] = useState([]);
 
     const [formData, setFormData] = useState({
         // inquiry
@@ -74,6 +87,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         customerId: null,
         customerName: '',
         customerRequestDate: '',
+        salesManagerId: null,
+        salesManagerName: '',
+        qualityManagerName: '',
         files: [],
         industry: '',
         inquiryId: null,
@@ -121,7 +137,8 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const getInquiryDataDetail = async () => {
         try {
-            const response = await getInquiryDetailByManagers(id);
+            const realId = id.slice(-2);
+            const response = await getInquiryDetailByManagers(realId);
             setInquiriesDataDetail(response.data);
             setCurrentProgress(response.data.progress);
             setCurrentInqType(response.data.inquiryType);
@@ -137,7 +154,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const getUserInfo = async () => {
         try {
-            const response = await getUserInfoByCustomers(id); // 수정 필요
+            const response = await getUserInfoByCustomers(realId);
             setUserInfo(response.data.data);
             return response.data.data;
         } catch (error) {
@@ -147,7 +164,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const getReview = async () => {
         try {
-            const response = await getReviews(id);
+            const response = await getReviews(realId);
             setReviewData(response.data);
             setIsReviewItem(true);
             if (response.data.finalReviewText === null) {
@@ -163,7 +180,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const getQuality = async () => {
         try {
-            const response = await getQualities(id);
+            const response = await getQualities(realId);
             setQualityData(response.data);
             setIsQualityItem(true);
             return response.data;
@@ -174,7 +191,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
 
     const getOfferSheet = async () => {
         try {
-            const response = await getOfferSheets(id);
+            const response = await getOfferSheets(realId);
             setOfferSheetData(response.data);
             setIsOfferSheetItem(true);
             setFormData(prevData => ({
@@ -187,11 +204,19 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     }
 
     useEffect(() => {
-        getInquiryDataDetail();
-        getUserInfo();
-        getReview();
-        getQuality();
-        getOfferSheet();
+        const fetchData = async () => {
+            setLoading(true);
+            await Promise.all([
+                getInquiryDataDetail(),
+                getUserInfo(),
+                getReview(),
+                getQuality(),
+                getOfferSheet(),
+            ]);
+            setLoading(false);
+        };
+
+        fetchData();
     }, [id]);
 
     useEffect(() => {
@@ -206,6 +231,9 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 customerId: inquiriesDataDetail.customerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
                 customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
+                salesManagerId: inquiriesDataDetail?.salesManagerSummaryDto?.userId || null,
+                salesManagerName: inquiriesDataDetail?.salesManagerSummaryDto?.name || '',
+                qualityManagerName: inquiriesDataDetail?.qualityManagerSummaryDto?.name || '',
                 files: inquiriesDataDetail.files || [],
                 industry: inquiriesDataDetail.industry || '',
                 inquiryId: inquiriesDataDetail.inquiryId || null,
@@ -252,7 +280,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         }
         if (id) {
             try {
-                const reviewResponse = await postReview(id, {
+                const reviewResponse = await postReview(realId, {
                     salesInfo: {
                         contract: formData.contract,
                         thicknessNotify: formData.thicknessNotify,
@@ -298,10 +326,10 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         }
         if (id) {
             try {
-                const reviewResponse = await putReview(id, {
+                const reviewResponse = await putReview(realId, {
                     finalReviewText: formData.finalReviewText,
                 })
-                const offerSheetResponse = await postOfferSheet(id, {
+                const offerSheetResponse = await postOfferSheet(realId, {
                     ...formData,
                     receipts: formData.receipts,
                 });
@@ -312,14 +340,14 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
                 if (inquiriesDataDetail.qualityManagerSummaryDto !== null) {
                     await postNotificationByManagers(inquiriesDataDetail.qualityManagerSummaryDto.userId, {
                         notificationContents:
-                            `Inquiry ${id}번 최종 검토가 완료되었습니다.`,
+                            `Inquiry ${realId}번 최종 검토가 완료되었습니다.`,
                     })
                 }
                 console.log('Final Review updated successfully:', reviewResponse);
                 console.log('offerSheet posted successfully:', offerSheetResponse);
                 setTimeout(() => {
                     navigate(`/inq-list/${role}`);
-                }, '2000');
+                }, '1500');
             } catch (error) {
                 console.log('Error updating review OR posting offerSheet:', error);
             }
@@ -331,94 +359,181 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
             ...prevData,
             [field]: value
         }));
+        setValue(field, value);
     };
 
     useEffect(() => {
-        if (currentProgress === 'SUBMIT') {
-            setRequestTitle('Inquiry 상세조회6');
-        } else if (currentProgress === 'RECEIPT') {
+        if (currentProgress === 'SUBMIT' && userId === inquiriesDataDetail.salesManagerSummaryDto.userId) {
             setRequestTitle('Inquiry 상세조회 및 영업검토1');
+        } else if (currentProgress === 'RECEIPT') {
+            setRequestTitle('Inquiry 상세조회 및 영업검토2');
         } else if (currentProgress === 'FIRST_REVIEW_COMPLETED' && currentInqType === 'QUOTE_INQUIRY') {
             setRequestTitle('Inquiry 상세조회 및 영업검토3');
         } else if (currentProgress === 'FIRST_REVIEW_COMPLETED' && currentInqType === 'COMMON_INQUIRY') {
-                setRequestTitle('Inquiry 상세조회 및 영업검토2');
+                setRequestTitle('Inquiry 상세조회 및 영업검토3');
         } else if (currentProgress === 'QUALITY_REVIEW_COMPLETED' && currentInqType === 'COMMON_INQUIRY') {
-            setRequestTitle('Inquiry 상세조회 및 영업검토3');
+            setRequestTitle('Inquiry 상세조회 및 영업검토5');
         } else {
-            setRequestTitle('Inquiry 상세조회6');
+            setRequestTitle('Inquiry 조회8');
         }
     }, [currentProgress, currentInqType]);
 
+    const handleManagerSelect = (selectedData) => {
+        setSelectedQualityManagerId(selectedData);
+    };
+
+    const allocateByQualityManagerId = async () => {
+        try {
+            await assignQualityManagerByUserId(realId, selectedQualityManagerId);
+        } catch (error) {
+            console.error('Inquiry 품질 담당자 배정 실패: ', error);
+        }
+    };
+
+    const handlePreviewReviewData = () => {
+        handleFormDataChange('contract', 'CUSTOMER_RELATIONSHIP');
+        handleFormDataChange('thicknessNotify', '본 제품의 두께는 일반적인 규격보다 약간 더 두꺼운 편입니다.');
+        handleFormDataChange('reviewText', '특정 용도에 맞게 맞춤 제작된 것이며, 프로젝트 요구 사항에 부합하지 않을 경우 추가 논의가 필요합니다.');
+    }
+
+    const handlePreviewOfferSheetData = () => {
+        handleFormDataChange('finalReviewText',
+            '최종 검토 결과, 제품과 설비의 규격이 요구사항에 부합하며, 모든 사양이 충족됨을 확인하였습니다.\n향후 개선 사항으로는 제품의 품질 향상과 설비 효율성 강화를 위한 지속적인 모니터링이 필요합니다.');
+        handleFormDataChange('message', '    <h3>안녕하세요, 에너지마케팅실 박지현 담당자 입니다.</h3>\n\n'
+            + '    <p>견적서에 대한 검토를 부탁드리며, 몇 가지 추가 요청 사항을 전달드립니다.</p>\n'
+            + '\n'
+            + '    <ul>\n'
+            + '        <li>\n'
+            + '            <strong>납품 기한 조정 가능성</strong>: 요청하신 일정에 맞춰 최대한 신속하게 납품할 수 있도록 준비하고 있으나, \n'
+            + '            정확한 납기 일정을 다시 한 번 확인해주시면 감사하겠습니다. 혹시 조정이 필요한 부분이 있다면 미리 말씀 부탁드립니다.\n'
+            + '        </li>\n'
+            + '        <li>\n'
+            + '            <strong>제품 세부 사항 확인</strong>: 견적서에 기재된 제품의 상세 사양(두께, 재질 등)과 관련하여 추가적인 정보나 궁금한 점이 있으시면 \n'
+            + '            언제든지 문의해주시기 바랍니다.\n'
+            + '        </li>\n'
+            + '        <li>\n'
+            + '            <strong>운송 관련 사항</strong>: 본 견적서에 운송비가 포함되어 있으며, 특정 요구 사항이 있을 경우 별도로 협의 가능합니다.\n'
+            + '        </li>\n'
+            + '    </ul>\n\n'
+            + '\n'
+            + '    <p>추가 요청 사항이 있으시다면 전달 주시길 바랍니다.</p>\n'
+            + '    <p>감사합니다.</p>\n'
+            + '\n'
+            + '    <div>────────────────────────────────────</div>'
+            + '    <div>\n'
+            + '        <strong>에너지마케팅실 박지현</strong>  \n'
+            + '        <br>연락처: 010-1234-5678 | 이메일: member1@company.com\n'
+            + '    </div>'
+            + '');
+        handleFormDataChange('priceTerms', 'FOB (Free on Board)');
+        handleFormDataChange('paymentTerms', 'Net 30 Days');
+        handleFormDataChange('shipment', '2024-10-18');
+        handleFormDataChange('validity', '2024-10-20');
+        handleFormDataChange('destination', 'Busan Port, South Korea');
+        handleFormDataChange('remark', 'Please ensure timely shipment and proper packaging.');
+        setReceipts(OfferSheetReceipts);
+    }
+
     return (
         <div className={InqTableContainer}>
-            <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'} smallCategory={id}
-                            role={'sales'} />
-
-            <RequestBar
-                requestBarTitle={requestTitle}
-                onReviewSubmit={handleReviewSubmit}
-                onQualitySubmit={handleQualitySubmit}
-                onFinalSubmit={handleFinalSubmit} />
-
-            <ManagerBasicInfoForm formData={inquiriesDataDetail} />
-            <InquiryHistoryFormItem
-                productType={inquiriesDataDetail?.productType}
-                lineItemData={formData.lineItemResponseDTOs}
+            <ManagerInqPath
+                largeCategory={'Inquiry'}
+                mediumCategory={'Inquiry 조회'}
+                smallCategory={id}
+                role={'sales'}
             />
-            <AdditionalRequestForm formData={inquiriesDataDetail} />
 
-            {isReviewItem ? (
-                <>
-                    <SalesInfoFormItem formData={reviewData} />
-                    <ReviewTextFormItem formData={reviewData} />
-                </>
+            {loading ? (
+                <Grid container justifyContent="center" alignItems="center">
+                    <CircularProgress />
+                </Grid>
             ) : (
                 <>
-                    <SalesInfoForm formData={formData}
-                                   handleFormDataChange={handleFormDataChange} />
-                    <ReviewTextForm formData={formData}
-                                    handleFormDataChange={handleFormDataChange} />
+                    <RequestBar
+                        requestBarTitle={requestTitle}
+                        onReviewSubmit={handleReviewSubmit}
+                        onQualitySubmit={handleQualitySubmit}
+                        onFinalSubmit={handleFinalSubmit}
+                        onAllocate={allocateByQualityManagerId}
+                    />
+                    <ManagerBasicInfoForm
+                        formData={inquiriesDataDetail}
+                        salesManagerName={inquiriesDataDetail?.salesManagerSummaryDto?.name || '-'}
+                        qualityManagerName={inquiriesDataDetail?.qualityManagerSummaryDto?.name || '-'}
+                        progress={currentProgress}
+                        onManagerSelect={handleManagerSelect}
+                    />
+
+                    <InquiryHistoryFormItem
+                        productType={inquiriesDataDetail?.productType}
+                        lineItemData={formData.lineItemResponseDTOs}
+                    />
+
+                    <AdditionalRequestForm formData={inquiriesDataDetail} />
+
+                    {isReviewItem ? (
+                        <>
+                            <SalesInfoFormItem formData={reviewData} />
+                            <ReviewTextFormItem formData={reviewData} />
+                        </>
+                    ) : (
+                        <>
+                            <SalesInfoForm formData={formData}
+                                           handleFormDataChange={handleFormDataChange}
+                                           isPreviewData={true}
+                                           handleIsPreview={handlePreviewReviewData}
+                            />
+                            <ReviewTextForm formData={formData}
+                                            handleFormDataChange={handleFormDataChange}
+                            />
+                        </>
+                    )}
+
+                    {isFinalReview ? (
+                        <FinalReviewTextFormItem formData={reviewData} />
+                    ) : (
+                        <FinalReviewTextForm formData={formData}
+                                             handleFormDataChange={handleFormDataChange}
+                                             isPreviewData={true}
+                                             handleIsPreview={handlePreviewOfferSheetData}
+                        />
+                    )}
+
+                    {isQualityItem ? (
+                        <>
+                            <QualityReviewTextFormItem formData={qualityData} />
+                            <QualityFileFormItem fileForm={'품질검토 첨부파일'}
+                                                 formData={qualityData} />
+                        </>
+                    ) : (
+                        ''
+                    )}
+
+                    {isOfferSheetItem ? (
+                        <Offersheet
+                            formData={offerSheetData}
+                            inquiryData={inquiriesDataDetail}
+                            lineItemData={offerSheetData.receipts}
+                            isOfferSheetItem={isOfferSheetItem}
+                        />
+                    ) : (
+                        <Offersheet formData={formData}
+                                    inquiryData={inquiriesDataDetail}
+                                    lineItemData={formData.receipts}
+                                    handleFormDataChange={handleFormDataChange}
+                                    onLineItemsChange={(newLineItems) => setFormData(
+                                        prev => ({
+                                            ...prev,
+                                            receipts: newLineItems,
+                                        }))}
+                                    isPreviewData={true}
+                                    receipts={receipts}
+                        />
+                    )}
+
+                    <FileFormItem fileForm={'첨부파일'} formData={inquiriesDataDetail} />
                 </>
             )}
-
-            {isFinalReview ? (
-                <FinalReviewTextFormItem formData={reviewData} />
-            ) : (
-                <FinalReviewTextForm formData={formData}
-                                     handleFormDataChange={handleFormDataChange} />
-            )}
-
-            {isQualityItem ? (
-                <>
-                    <QualityReviewTextFormItem formData={qualityData} />
-                    <QualityFileFormItem fileForm={'품질검토 첨부파일'}
-                                         formData={qualityData} />
-                </>
-            ) : (
-                ''
-            )}
-
-            {isOfferSheetItem ? (
-                <Offersheet
-                        formData={offerSheetData}
-                        inquiryData={inquiriesDataDetail}
-                        lineItemData={offerSheetData.receipts}
-                        isOfferSheetItem={isOfferSheetItem}
-                />
-            ) : (
-                <Offersheet formData={formData}
-                                  inquiryData={inquiriesDataDetail}
-                                  lineItemData={formData.receipts}
-                                  handleFormDataChange={handleFormDataChange}
-                                  onLineItemsChange={(newLineItems) => setFormData(
-                                prev => ({
-                                    ...prev,
-                                    receipts: newLineItems,
-                                }))}
-                />
-            )}
-
-            <FileFormItem fileForm={'첨부파일'} formData={inquiriesDataDetail} />
         </div>
     )
 }

@@ -3,15 +3,13 @@ import {
     Container,
     Sheet,
     Opend,
-    SalesInfoItem,
-    LineItemInput,
-    SalesInfoRow,
 } from '../../../../assets/css/Form.css';
 import ToggleBar from '../../../molecules/ToggleBar';
+import { Select, MenuItem, TextField, Grid } from '@mui/material';
 
 const SalesInfoForm = ({ formData }) => { // 영업 검토 조회
-    if(!formData) {
-        return;
+    if (!formData) {
+        return null;
     }
 
     // 최종 검토 내용
@@ -28,29 +26,44 @@ const SalesInfoForm = ({ formData }) => { // 영업 검토 조회
                     setCheck={setCheck}
                 />
                 {isChecked ? (
-                    <div className={Opend}>
-                        <div className={SalesInfoItem}>
-                            {items.map((item, index) => (
-                                <div key={index}>{item}</div>
-                            ))}
-                        </div>
-                        <div className={SalesInfoRow}>
-                            <select value={formData.salesInfo.contract} className={LineItemInput}> {/* contract */}
-                                <option value="CUSTOMER_RELATIONSHIP">고객협력</option>
-                                <option value="MARKET_DEMAND">시장수요</option>
-                            </select>
+                    <div className={Opend} style={{ padding: '3vh' }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={3} style={{ fontWeight: 'bold' }}>
+                                수주배경
+                            </Grid>
+                            <Grid item xs={9} style={{ fontWeight: 'bold' }}>
+                                두께특이사항
+                            </Grid>
 
-                            {/* thicknessNotify */}
-                            <input
-                                type="text"
-                                className={LineItemInput}
-                                value={formData.salesInfo.thicknessNotify}
-                            />
-                        </div>
+                            <Grid item xs={3}>
+                                <Select
+                                    value={formData.salesInfo.contract}
+                                    placeholder={formData.salesInfo.contract}
+                                    fullWidth
+                                    inputProps={{
+                                        style: { color: '#000000', fontWeight: '700' },
+                                        readOnly: true,
+                                    }}
+                                >
+                                    <MenuItem value="CUSTOMER_RELATIONSHIP">고객협력</MenuItem>
+                                    <MenuItem value="MARKET_DEMAND">시장수요</MenuItem>
+                                </Select>
+                            </Grid>
+                            <Grid item xs={9}>
+                                <TextField
+                                    type="text"
+                                    value={formData.salesInfo.thicknessNotify}
+                                    variant="outlined"
+                                    fullWidth
+                                    inputProps={{
+                                        style: { color: '#000000', fontWeight: '500' },
+                                        readOnly: true,
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
                     </div>
-                ) : (
-                    ''
-                )}
+                ) : null}
             </div>
         </div>
     );

@@ -1,8 +1,7 @@
 import React from 'react';
-import ListLabel from "../../../molecules/ListLabel";
-import {ReviewWrapper, _TextArea} from "../../../../assets/css/Form.css";
+import { TextField } from '@mui/material';
 
-const QualityText = ({ formData, title, width, height, handleFormDataChange }) => { // 품질검토정보 작성
+const QualityText = ({ formData, handleFormDataChange, handleIsPreview, isPreviewData }) => { // 품질검토정보 작성
     if(!formData) {
         return;
     }
@@ -12,31 +11,20 @@ const QualityText = ({ formData, title, width, height, handleFormDataChange }) =
     } = formData;
 
   return (
-      <div>
-        <ReviewWrapper>
-          <ListLabel margin="0 0 0 20px" color="#ffffff"
-                     width={width} padding="8px 0 0 5px"
-                     backgroundColor="#03507D" content={title}/>
-          <div>
-              <textarea
-                  value={qualityComments}
-                  wrap="hard"
-                  placeholder="내용을 입력해 주세요"
-                  className={_TextArea}
-                  style={{
-                      borderRadius: '0 12px 12px 12px',
-                      height: height,
-                  }}
-                  onChange={(e) =>
-                      handleFormDataChange(
-                          'qualityComments',
-                          e.target.value,
-                      )
-                  }
-                  />
-          </div>
-        </ReviewWrapper>
-      </div>
+      <TextField
+          multiline
+          rows={4}
+          variant="outlined"
+          value={qualityComments}
+          placeholder="내용을 입력해 주세요"
+          onChange={(e) =>
+              handleFormDataChange(
+                  'qualityComments',
+                  e.target.value,
+              )
+          }
+          fullWidth
+      />
   );
 };
 

@@ -5,7 +5,13 @@ import React, {
     useEffect,
     useRef,
 } from 'react';
-import { TableRow, TableCell, Checkbox, Popover } from '@mui/material';
+import {
+    TableRow,
+    TableCell,
+    Checkbox,
+    Popover,
+    Typography,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
     getInquiryDetailByManagers,
@@ -19,6 +25,7 @@ import {
     postNotificationByCustomers,
     postNotificationByManagers,
 } from '../../../apis/api/notification';
+import { styled } from '@mui/material/styles';
 
 function Row({ row, role }, ref) {
     const [isChecked, setIsChecked] = useState(false);
@@ -88,7 +95,7 @@ function Row({ row, role }, ref) {
     const currentStep = calculateStep();
 
     const handleClick = () => {
-        navigate(`/inq-list/${role}/${row.inquiryId}`);
+        navigate(`/inq-list/${role}/${row.processedInquiryId}`);
     };
 
     const handleCheckboxChange = (e) => {
@@ -99,24 +106,22 @@ function Row({ row, role }, ref) {
     const handleSubmit = async () => {
         try {
             if (isChecked && !isDisabled) {
-                const response = await putManagerAllocate(row.inquiryId);
+                const response = await putManagerAllocate(row.processedInquiryId);
                 setIsDisabled(true);
-                console.log("Manager Allocated Success: ", response);
 
-                const inquiryInfo = await getInquiryDetailByManagers(row.inquiryId);
+                const inquiryInfo = await getInquiryDetailByManagers(row.processedInquiryId);
                 if (role === 'sales') {
                     await postNotificationByCustomers(
                         inquiryInfo.data.customerId, {
-                            notificationContents: `${inquiryInfo.data.name}님의 Inquiry ${row.inquiryId}번 담당자가 배정되었습니다.`,
+                            notificationContents: `${inquiryInfo.data.name}님의 Inquiry ${row.processedInquiryId}번 담당자가 배정되었습니다.`,
                         })
                 } else if (role === 'quality') {
                     await postNotificationByManagers(inquiryInfo.data.salesManagerSummaryDto.userId, {
                         notificationContents:
-                            `Inquiry ${row.inquiryId}번 문의의 품질 담당자가 배정되었습니다.`,
+                            `Inquiry ${row.processedInquiryId}번 문의의 품질 담당자가 배정되었습니다.`,
                     })
                 } else {
                 }
-
             }
         } catch (error) {
             console.log('Error putting Manager Allocation:', error);
@@ -147,24 +152,7 @@ function Row({ row, role }, ref) {
                 style={{ cursor: 'pointer', border: '0.05em solid #c1c1c1' }}
                 onClick={handleClick}
             >
-                <TableCell
-                    component="th"
-                    scope="row"
-                    className="custom-table-cell"
-                    align="center"
-                    sx={{ paddingLeft: '40px' }}
-                >
-                    <Checkbox
-                        checked={isChecked}
-                        disabled={isDisabled}
-                        onClick={(e) => e.stopPropagation()}
-                        onChange={handleCheckboxChange}
-                        sx={{
-                            color: isDisabled ? '#ffffff' : '#03507d',
-                        }}
-                    />
-                </TableCell>
-                <TableCell className="custom-table-cell" align="center" sx={{ width: '80px' }}>{row.inquiryId}</TableCell>
+                <TableCell className="custom-table-cell" align="left" sx={{ width: '80px', paddingLeft: '40px' }}>{row.processedInquiryId}</TableCell>
                 <TableCell className="custom-table-cell" align="center">
                     <InquiryTypeBadge inquiryType={row.inquiryType} />
                 </TableCell>
@@ -175,8 +163,26 @@ function Row({ row, role }, ref) {
                 <TableCell className="custom-table-cell" align="left">{row.corporate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.corporationCode}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.salesManagerName}</TableCell>
-                <TableCell className="custom-table-cell" align="left">{row.qualityManagerName}</TableCell>
+                <TableCell className="custom-table-cell" align="left">
+                    <InquiryDetails>
+                        <Typography variant="body2" fontWeight="bold" sx={{ fontSize: '14px' }}>
+                            {row.salesManagerName}
+                        </Typography>
+                        <Typography variant="body3" color="text.secondary" fontWeight="thin" sx={{ fontSize: '12px' }}>
+                            {row.salesManagerDepartment}
+                        </Typography>
+                    </InquiryDetails>
+                </TableCell>
+                <TableCell className="custom-table-cell" align="left">
+                    <InquiryDetails>
+                        <Typography variant="body2" fontWeight="bold" sx={{ fontSize: '14px' }}>
+                            {row.qualityManagerName}
+                        </Typography>
+                        <Typography variant="body3" color="text.secondary" fontWeight="thin" sx={{ fontSize: '12px' }}>
+                            {row.qualityManagerDepartment}
+                        </Typography>
+                    </InquiryDetails>
+                </TableCell>                <TableCell className="custom-table-cell" align="center">{row.createdDate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
                 <TableCell
                     className="custom-table-cell"
@@ -212,5 +218,11 @@ function Row({ row, role }, ref) {
 }
 
 const ForwardedRow = forwardRef(Row);
+
+const InquiryDetails = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 export default ForwardedRow;

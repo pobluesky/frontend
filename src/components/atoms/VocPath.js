@@ -22,7 +22,9 @@ function VocPath({ largeCategory, mediumCategory, smallCategory }) {
             <Link to="/voc-list/question" className={_Link}>
                 <span>{mediumCategory}</span>
             </Link>
-            <img src={arrow} alt="arrow" />
+            {smallCategory && (
+                <img src={arrow} alt="arrow" />
+            )}
             <Link to="/voc-list/question" className={_Link}>
                 <span>{smallCategory}</span>
             </Link>

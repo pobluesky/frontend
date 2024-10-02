@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import UserInput from '../molecules/JoinInput';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { User_Account_Editing } from '../../assets/css/Auth.css';
 import { getCookie } from '../../apis/utils/cookies';
 import { putUserInfo } from '../../apis/api/auth';
 import { useRecoilState } from 'recoil';
@@ -10,11 +9,10 @@ import { userEmail } from '../../index';
 import {
     validateEmail,
     validatePhoneEdit,
-    validateUserCode,
-    validateCustomerName,
     validatePassword,
     validateMatch,
 } from '../../utils/validation';
+import { User_Account_Editing } from '../../assets/css/Auth.css';
 
 export default function EditingUserInfo({
     userDetail,
@@ -25,32 +23,6 @@ export default function EditingUserInfo({
     tryEdit,
     setTryEdit,
 }) {
-    const navigate = useNavigate();
-    const userId = getCookie('userId');
-    const role = getCookie('userRole');
-    const { logout } = useAuth();
-
-    const [email, setEmail] = useState(userDetail.email);
-    const [phone, setPhone] = useState(userDetail.phone);
-    const [customerCode, setCustomerCode] = useState(
-        userDetail.customerCode || '',
-    );
-    const [customerName, setCustomerName] = useState(
-        userDetail.customerName || '',
-    );
-    const [password, setPassword] = useState('');
-    const [passwordCheck, setPasswordCheck] = useState('');
-
-    const [, setGlobalEmail] = useRecoilState(userEmail); // 로그인 창으로 전달할 이메일 값
-
-    const enterKeyDown = async (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            setValidationTest(true);
-            setTryEdit(!tryEdit);
-        }
-    };
-
     useEffect(() => {
         window.addEventListener('keydown', enterKeyDown);
         return () => {
@@ -65,8 +37,6 @@ export default function EditingUserInfo({
                 if (
                     !validateEmail(email) &&
                     !validatePhoneEdit(phone) &&
-                    !validateUserCode(customerCode) &&
-                    !validateCustomerName(customerName) &&
                     !validatePassword(password) &&
                     !validateMatch(password, passwordCheck)
                 ) {
@@ -85,16 +55,42 @@ export default function EditingUserInfo({
                 }
             }
         }
-    }, [
-        checkValidationTest,
-        tryEdit,
-    ]);
+    }, [checkValidationTest, tryEdit]);
 
     useEffect(() => {
         if (completeEdit) {
             fetchPutUserInfo();
         }
     }, [completeEdit, tryEdit]);
+
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, [])
+
+    const navigate = useNavigate();
+
+    const userId = getCookie('userId');
+    const role = getCookie('userRole');
+    const { logout } = useAuth();
+    
+    const [email, setEmail] = useState(userDetail.email);
+    const [phone, setPhone] = useState(userDetail.phone);
+    const [password, setPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
+
+    const [, setGlobalEmail] = useRecoilState(userEmail); // 로그인 창으로 전달할 이메일 값
+
+    const enterKeyDown = async (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setValidationTest(true);
+            setTryEdit(!tryEdit);
+        }
+    };
+
 
     const fetchPutUserInfo = async () => {
         try {
@@ -105,8 +101,8 @@ export default function EditingUserInfo({
                     email,
                     password,
                     phone,
-                    customerCode,
-                    customerName,
+                    customerCode: userDetail.customerCode,
+                    customerName: userDetail.customerName,
                 };
             } else {
                 userData = {
@@ -131,13 +127,6 @@ export default function EditingUserInfo({
         }
     };
 
-    useEffect(() => {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-        });
-    }, []);
-
     return (
         <div className={User_Account_Editing}>
             {role === 'customer' ? (
@@ -147,8 +136,9 @@ export default function EditingUserInfo({
                             categoryName={'이름'}
                             width={'336px'}
                             height={'48px'}
+                            backgroundColor={'#d5dbe2'}
                             padding={'0 0 0 20px'}
-                            border={'solid 1px #c1c1c1'}
+                            border={'solid 1px #d5dbe2'}
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.name}
@@ -229,16 +219,13 @@ export default function EditingUserInfo({
                             categoryName={'고객 코드'}
                             width={'336px'}
                             height={'48px'}
+                            backgroundColor={'#d5dbe2'}
                             padding={'0 0 0 20px'}
-                            border={'solid 1px #c1c1c1'}
+                            border={'solid 1px #d5dbe2'}
                             borderRadius={'12px'}
                             fontSize={'16px'}
-                            value={customerCode}
-                            onChange={(e) => setCustomerCode(e.target.value)}
-                            warningMsg={
-                                checkValidationTest &&
-                                validateUserCode(customerCode)
-                            }
+                            value={userDetail.customerCode}
+                            readOnly={true}
                         />
                     </div>
                     <div>
@@ -246,16 +233,13 @@ export default function EditingUserInfo({
                             categoryName={'고객사명'}
                             width={'336px'}
                             height={'48px'}
+                            backgroundColor={'#d5dbe2'}
                             padding={'0 0 0 20px'}
-                            border={'solid 1px #c1c1c1'}
+                            border={'solid 1px #d5dbe2'}
                             borderRadius={'12px'}
                             fontSize={'16px'}
-                            value={customerName}
-                            onChange={(e) => setCustomerName(e.target.value)}
-                            warningMsg={
-                                checkValidationTest &&
-                                validateCustomerName(customerName)
-                            }
+                            value={userDetail.customerName}
+                            readOnly={true}
                         />
                     </div>
                 </>
@@ -266,8 +250,9 @@ export default function EditingUserInfo({
                             categoryName={'이름'}
                             width={'336px'}
                             height={'48px'}
+                            backgroundColor={'#d5dbe2'}
                             padding={'0 0 0 20px'}
-                            border={'solid 1px #c1c1c1'}
+                            border={'solid 1px #d5dbe2'}
                             borderRadius={'12px'}
                             fontSize={'16px'}
                             value={userDetail.name}

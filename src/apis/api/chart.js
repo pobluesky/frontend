@@ -83,3 +83,27 @@ export const getCountsByProgress = async () => {
         throw error;
     }
 };
+
+// 월별 부서별 Inquiry 건수
+export const getMonthlyDepartmentCounts = async (date) => {
+    try {
+        const response = await axiosInstance.get(
+            `/managers/inquiries/dashboard/counts-by-department`,
+            {
+                params: { date },
+            }
+        );
+
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            throw new Error(response.statusText);
+        }
+    } catch (error) {
+        console.error(
+            '월별 부서별 Inquiry 건수 조회 API ERROR: ',
+            error.message || error,
+        );
+        throw error;
+    }
+};

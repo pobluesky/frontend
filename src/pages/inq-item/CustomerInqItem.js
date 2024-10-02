@@ -1,35 +1,44 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import InqPath from '../../components/atoms/InqPath';
 import RequestBar from './../../components/molecules/RequestBar';
-import '../../assets/css/Form.css';
 import {
     AdditionalRequestForm,
     BasicInfoForm,
     FileFormItem,
     Offersheet,
-    InquiryHistoryFormItem, InquiryNewForm, InquiryHistoryForm,
+    InquiryHistoryFormItem,
+    InquiryNewForm,
+    InquiryHistoryForm,
 } from '../../components/organisms/inquiry-form';
+import FileUpdateForm from '../../components/organisms/inquiry-form/FileUpdateForm';
+import ReviewTextFormItem from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
+import FinalReviewTextFormItem from '../../components/organisms/inquiry-form/review-item/FinalReviewTextFormItem';
 import { useAuth } from '../../hooks/useAuth';
 import { getInquiryDetail, putInquiry } from '../../apis/api/inquiry';
-import { useNavigate, useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
 import { getOfferSheets, getReviews } from '../../apis/api/review';
-import ReviewTextFormItem
-    from '../../components/organisms/inquiry-form/review-item/ReviewTextFormItem';
-import FinalReviewTextFormItem
-    from '../../components/organisms/inquiry-form/review-item/FinalReviewTextFormItem';
-import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { postNotificationByCustomers } from '../../apis/api/notification';
 import { InquiryUpdateAlert } from '../../utils/actions';
-import { useForm } from 'react-hook-form';
-import FileUpdateForm
-    from '../../components/organisms/inquiry-form/FileUpdateForm';
+import { InqTableContainer } from '../../assets/css/Inquiry.css';
+import '../../assets/css/Form.css';
+import { CircularProgress, Grid } from '@mui/material';
 
-function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
+function CustomerInqItem() {
+    // 고객사 Inquiry 조회 페이지
     const { userId, role } = useAuth();
     const { id } = useParams();
+    const realId = id.slice(-2);
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+    } = useForm();
+
+    const [loading, setLoading] = useState(true);
     const [inquiriesDataDetail, setInquiriesDataDetail] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [reviewData, setReviewData] = useState(null);
@@ -49,6 +58,7 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         customerId: null,
         customerName: '',
         customerRequestDate: '',
+        salesManagerName: '',
         files: [],
         industry: '',
         inquiryId: null,
@@ -73,17 +83,18 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         validity: '',
         destination: '',
         remark: '',
-        receipts: []
+        receipts: [],
     });
 
     const getInquiryDataDetail = async () => {
-        if (!userId) {
-            return;
-        }
+        const activeUserId = userId || sessionStorage.getItem('userId');
+
+        if (!activeUserId) return;
+
         try {
-            const response = await getInquiryDetail(userId, id);
+            const response = await getInquiryDetail(activeUserId, realId);
             setInquiriesDataDetail(response.data);
-            setFormData(prevData => ({
+            setFormData((prevData) => ({
                 ...prevData,
                 ...response.data,
                 lineItemRequestDTOs: response.data.lineItemResponseDTOs || [],
@@ -105,55 +116,58 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         } catch (error) {
             console.log('Error fetching User Info:', error);
         }
-    }
+    };
 
     const getReview = async () => {
         if (!userId) {
             return;
         }
         try {
-            const response = await getReviews(id);
+            const response = await getReviews(realId);
             setReviewData(response.data);
             setIsReviewItem(true);
             return response.data;
         } catch (error) {
             console.log('Error fetching Reviews:', error);
         }
-    }
+    };
 
     const getOfferSheet = async () => {
         try {
-            const response = await getOfferSheets(id);
+            const response = await getOfferSheets(realId);
             setOfferSheetData(response.data);
             setIsOfferSheetItem(true);
-            setFormData(prevData => ({
+            setFormData((prevData) => ({
                 ...prevData,
-                receipts: response.data.receipts || []
+                receipts: response.data.receipts || [],
             }));
             return response.data;
         } catch (error) {
             console.log('Error fetching OfferSheet:', error);
         }
-    }
+    };
 
     const getProgress = async () => {
         try {
-            const response = await getInquiryDetail(userId, id);
+            const response = await getInquiryDetail(userId, realId);
             if (response.data.progress === 'SUBMIT' && role === 'customer') {
                 setIsUpdate(true);
+                localStorage.setItem('isUpdate', true);
             } else {
                 setIsUpdate(false);
+                localStorage.removeItem('isUpdate');
             }
         } catch (error) {
             console.log('Error fetching Progress:', error);
         }
-    }
+    };
 
     const handleFormDataChange = (field, value) => {
         setFormData((prevData) => ({
             ...prevData,
-            [field]: value
+            [field]: value,
         }));
+        setValue(field, value);
     };
 
     const handleUpdate = async (event) => {
@@ -163,15 +177,21 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         const updatedFormData = {
             ...formData,
             files: formData.files || [],
-            lineItemResponseDTOs: formData.lineItemResponseDTOs || []
+            lineItemResponseDTOs: formData.lineItemResponseDTOs || [],
         };
         try {
-            const inquiryUpdateResponse = await putInquiry(id, updatedFormData);
-            const notificationResponse = await postNotificationByCustomers(userId, {
-                notificationContents: `${formData.name}님의 Inquiry가 수정되었으며, 담당자 배정 시 수정이 불가합니다.`,
-            })
+            const inquiryUpdateResponse = await putInquiry(realId, updatedFormData);
+            const notificationResponse = await postNotificationByCustomers(
+                userId,
+                {
+                    notificationContents: `${formData.name}님의 Inquiry가 수정되었으며, 담당자 배정 시 수정이 불가합니다.`,
+                },
+            );
             console.log('Inquiry posted successfully:', inquiryUpdateResponse);
-            console.log('Notification posted successfully:', notificationResponse);
+            console.log(
+                'Notification posted successfully:',
+                notificationResponse,
+            );
 
             InquiryUpdateAlert();
             setTimeout(() => {
@@ -180,28 +200,40 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         } catch (error) {
             console.log('Error updating Inquiry:', error);
         }
-    }
+    };
 
     useEffect(() => {
-        getInquiryDataDetail();
-        getUserInfo();
-        getReview();
-        getOfferSheet();
-        getProgress();
+        const fetchData = async () => {
+            setLoading(true);
+            await Promise.all([
+                getInquiryDataDetail(),
+                getUserInfo(),
+                getReview(),
+                getOfferSheet(),
+                getProgress(),
+            ]);
+            setLoading(false);
+        };
+
+        fetchData();
     }, [id]);
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
-            setFormData(prevFormData => ({
+            setFormData((prevFormData) => ({
                 ...prevFormData,
-                additionalRequests: inquiriesDataDetail.additionalRequests || '',
+                additionalRequests:
+                    inquiriesDataDetail.additionalRequests || '',
                 corporate: inquiriesDataDetail.corporate || '',
                 corporationCode: inquiriesDataDetail.corporationCode || '',
                 country: inquiriesDataDetail.country || '',
                 customerCode: userInfo.data.customerCode || '',
                 customerId: inquiriesDataDetail.customerId || null,
                 customerName: inquiriesDataDetail.customerName || '',
-                customerRequestDate: inquiriesDataDetail.customerRequestDate || '',
+                customerRequestDate:
+                    inquiriesDataDetail.customerRequestDate || '',
+                salesManagerName:
+                    inquiriesDataDetail?.salesManagerSummaryDto.name || '',
                 files: inquiriesDataDetail.files || [],
                 industry: inquiriesDataDetail.industry || '',
                 inquiryId: inquiriesDataDetail.inquiryId || null,
@@ -214,14 +246,15 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
                 salesPerson: inquiriesDataDetail.salesPerson || '',
                 reviewText: reviewData?.reviewText || '',
                 finalReviewText: reviewData?.finalReviewText || '',
-                lineItemResponseDTOs: inquiriesDataDetail.lineItemResponseDTOs || [],
+                lineItemResponseDTOs:
+                    inquiriesDataDetail.lineItemResponseDTOs || [],
                 message: offerSheetData?.message || '',
                 priceTerms: offerSheetData?.priceTerms || '',
                 paymentTerms: offerSheetData?.paymentTerms || '',
                 shipment: offerSheetData?.shipment || '',
                 validity: offerSheetData?.validity || '',
                 destination: offerSheetData?.destination || '',
-                receipts: offerSheetData?.receipts || []
+                receipts: offerSheetData?.receipts || [],
             }));
         }
     }, [inquiriesDataDetail, userInfo]);
@@ -229,7 +262,10 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
     // 데이터 저장 시
     useEffect(() => {
         if (inquiriesDataDetail) {
-            localStorage.setItem('inquiryData', JSON.stringify(inquiriesDataDetail));
+            localStorage.setItem(
+                'inquiryData',
+                JSON.stringify(inquiriesDataDetail),
+            );
         }
         if (userInfo) {
             localStorage.setItem('userInfo', JSON.stringify(userInfo));
@@ -238,7 +274,10 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
             localStorage.setItem('reviewData', JSON.stringify(reviewData));
         }
         if (offerSheetData) {
-            localStorage.setItem('offerSheetData', JSON.stringify(offerSheetData));
+            localStorage.setItem(
+                'offerSheetData',
+                JSON.stringify(offerSheetData),
+            );
         }
     }, [inquiriesDataDetail, userInfo, reviewData, offerSheetData]);
 
@@ -248,6 +287,9 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         const storedUserInfo = localStorage.getItem('userInfo');
         const storedReviewData = localStorage.getItem('reviewData');
         const storedOfferSheetData = localStorage.getItem('offerSheetData');
+        const storedIsReviewItem = localStorage.getItem('isReviewItem');
+        const storedIsOfferSheetItem = localStorage.getItem('isOfferSheetItem');
+        const storedIsUpdate = localStorage.getItem('isUpdate');
 
         if (storedInquiryData) {
             setInquiriesDataDetail(JSON.parse(storedInquiryData));
@@ -261,74 +303,113 @@ function CustomerInqItem() { // 고객사 Inquiry 조회 페이지
         if (storedOfferSheetData) {
             setOfferSheetData(JSON.parse(storedOfferSheetData));
         }
+        if (storedIsReviewItem) {
+            setIsReviewItem(JSON.parse(storedIsReviewItem));
+        }
+        if (storedIsOfferSheetItem) {
+            setIsOfferSheetItem(JSON.parse(storedIsOfferSheetItem));
+        }
+        if (storedIsUpdate) {
+            setIsUpdate(JSON.parse(storedIsUpdate));
+        }
     }, []);
 
     return (
         <div className={InqTableContainer}>
-            <InqPath largeCategory={'Inquiry'} mediumCategory={'Inquiry 조회'}
-                     smallCategory={id} />
-            {isUpdate ? (
-                <RequestBar requestBarTitle={'Inquiry 조회5'} role={'customer'}
-                            onUpdate={handleSubmit(handleUpdate)} />
-            ) : (
-                <RequestBar requestBarTitle={'Inquiry 조회6'} role={'customer'}
-                            onUpdate={handleSubmit(handleUpdate)} />
-            )}
+            <InqPath
+                largeCategory={'Inquiry'}
+                mediumCategory={'Inquiry 조회'}
+                smallCategory={id}
+            />
 
-            {isUpdate ? (
-                <>{/* 신규작성 및 수정 때 */}
-                    <InquiryNewForm
-                        title={'기본정보'}
-                        register={register}
-                        errors={errors}
-                        formData={formData}
-                        handleFormDataChange={handleFormDataChange}
-                    />
-                    <InquiryHistoryForm
-                        productType={formData.productType}
-                        lineItemData={formData.lineItemResponseDTOs}
-                        onLineItemsChange={(lineItems) => handleFormDataChange(
-                            'lineItemRequestDTOs', lineItems)}
-                        isUpdate={isUpdate}
-                    />
-                    <AdditionalRequestForm formData={formData}
-                                           handleFormDataChange={handleFormDataChange} />
-                    <FileUpdateForm fileForm={"파일수정"} formData={formData} fileData={inquiriesDataDetail}
-                              handleFormDataChange={handleFormDataChange} />
-                </>
+            {loading ? (
+                <Grid container justifyContent="center" alignItems="center">
+                    <CircularProgress />
+                </Grid>
             ) : (
-                <>{/* 단순 조회할 때 */}
-                    <BasicInfoForm formData={formData} />
-                    <InquiryHistoryFormItem
-                        productType={inquiriesDataDetail?.productType}
-                        lineItemData={formData.lineItemResponseDTOs}
-                    />
-                    <AdditionalRequestForm formData={formData} readOnly={true} />
-                    <FileFormItem fileForm={"첨부파일"} formData={inquiriesDataDetail} />
-                </>
-            )}
-
-            {isReviewItem ? (
                 <>
-                    <ReviewTextFormItem formData={reviewData} />
-                    <FinalReviewTextFormItem formData={reviewData} />
-                </>
-            ) : (
-                ''
-            )}
+                    <RequestBar
+                        requestBarTitle={'Inquiry 조회0'}
+                        role={'customer'}
+                        isUpdate={isUpdate}
+                        onUpdate={handleSubmit(handleUpdate)}
+                    />
+                    {isUpdate ? (
+                        <>
+                            {/* 신규작성 및 수정 때 */}
+                            <InquiryNewForm
+                                title={'기본정보'}
+                                register={register}
+                                errors={errors}
+                                formData={formData}
+                                isUpdate={true}
+                                isForm={false}
+                                handleFormDataChange={handleFormDataChange}
+                            />
+                            <InquiryHistoryForm
+                                productType={formData.productType}
+                                lineItemData={formData.lineItemResponseDTOs}
+                                onLineItemsChange={(lineItems) =>
+                                    handleFormDataChange(
+                                        'lineItemRequestDTOs',
+                                        lineItems,
+                                    )
+                                }
+                                isUpdate={isUpdate}
+                            />
+                            <AdditionalRequestForm
+                                formData={formData}
+                                handleFormDataChange={handleFormDataChange}
+                            />
+                            <FileUpdateForm
+                                fileForm={'파일수정'}
+                                formData={formData}
+                                fileData={inquiriesDataDetail}
+                                handleFormDataChange={handleFormDataChange}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            {/* 단순 조회할 때 */}
+                            <BasicInfoForm formData={formData} />
+                            <InquiryHistoryFormItem
+                                productType={inquiriesDataDetail?.productType}
+                                lineItemData={formData.lineItemResponseDTOs}
+                            />
+                            <AdditionalRequestForm
+                                formData={formData}
+                                readOnly={true}
+                            />
+                            <FileFormItem
+                                fileForm={'첨부파일'}
+                                formData={inquiriesDataDetail}
+                            />
+                        </>
+                    )}
 
-            {isOfferSheetItem ? (
-                <Offersheet
-                    formData={offerSheetData}
-                    inquiryData={inquiriesDataDetail}
-                    lineItemData={offerSheetData.receipts}
-                    isOfferSheetItem={isOfferSheetItem}
-                />
-            ) : (
-                ''
+                    {isReviewItem ? (
+                        <>
+                            <ReviewTextFormItem formData={reviewData} />
+                            <FinalReviewTextFormItem formData={reviewData} />
+                        </>
+                    ) : (
+                        ''
+                    )}
+
+                    {isOfferSheetItem ? (
+                        <Offersheet
+                            formData={offerSheetData}
+                            inquiryData={inquiriesDataDetail}
+                            lineItemData={offerSheetData.receipts}
+                            isOfferSheetItem={isOfferSheetItem}
+                        />
+                    ) : (
+                        ''
+                    )}
+                </>
             )}
         </div>
-    )
+    );
 }
 
 export default CustomerInqItem;

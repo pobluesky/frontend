@@ -3,7 +3,9 @@ import { setCookie } from './cookies';
 
 const signInApi = async (endpoint, credentials) => {
     try {
-        const response = await axiosInstance.post(endpoint, credentials);
+        const response = await axiosInstance.post(endpoint, credentials,{
+            timeout: 100000, // 100초 동안 요청 대기
+        });
 
         if (response.status === 200) {
             const { accessToken, refreshToken, userRole, userId } =
@@ -24,6 +26,7 @@ const signInApi = async (endpoint, credentials) => {
                 path: '/',
                 maxAge: 7 * 24 * 60 * 60,
             });
+
             setCookie('userId', userId, {
                 path: '/',
                 maxAge: 7 * 24 * 60 * 60,
@@ -72,7 +75,7 @@ const getUserInfoApi = async (endpoint) => {
             return { success: false, message: 'Get user info failed' };
         }
     } catch (error) {
-        // console.log('Get user info error:', error);
+        console.log('사용자 정보 조회 API ERROR: ', error);
         return { success: false, message: error.toString() };
     }
 };

@@ -51,77 +51,8 @@ export const actions = {
     },
 };
 
-// 회원가입 이름 미입력
-const InvalidCustomerNameAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert
-                variant="outlined"
-                severity="warning"
-                sx={{ width: '336px' }}
-            >
-                이름을 입력하세요.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-// 회원가입 고유 코드 미입력
-const InvalidCustomerCodeAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert
-                variant="outlined"
-                severity="warning"
-                sx={{ width: '336px' }}
-            >
-                유효하지 않은 코드입니다.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-// 회원가입 역할 미선택
-const ManagerRoleIsNullAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert
-                variant="outlined"
-                severity="warning"
-                sx={{ width: '336px' }}
-            >
-                권한을 선택하세요.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-// 회원가입 성공
-const JoinCompleteAlert = ({ showAlert, onClose }) => {
+// 성공 알람
+const SuccessAlert = ({ showAlert, onClose, message }) => {
     return (
         <Snackbar
             autoHideDuration={2000}
@@ -133,14 +64,37 @@ const JoinCompleteAlert = ({ showAlert, onClose }) => {
             onClose={onClose}
         >
             <Alert severity="success" sx={{ width: '336px' }}>
-                회원가입이 완료되었습니다.
+                {message}
             </Alert>
         </Snackbar>
     );
 };
 
-// 회원가입 실패
-const JoinFailedAlert = ({ showAlert, onClose, message }) => {
+// 경고 알람
+const WarningAlert = ({ showAlert, onClose, message, color }) => {
+    return (
+        <Snackbar
+            autoHideDuration={2000}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={showAlert}
+            onClose={onClose}
+        >
+            <Alert
+                variant={color || "outlined"}
+                severity="warning"
+                sx={{ width: '336px' }}
+            >
+                {message}
+            </Alert>
+        </Snackbar>
+    );
+};
+
+// 실패 알람
+const FailedAlert = ({ showAlert, onClose, message }) => {
     return (
         <Snackbar
             autoHideDuration={2000}
@@ -158,8 +112,8 @@ const JoinFailedAlert = ({ showAlert, onClose, message }) => {
     );
 };
 
-// 로그인 실패
-const LoginFailedAlert = ({ showAlert, onClose, message }) => {
+// inquiry 등록 시 에러 Alert
+const InquiryPostErrorAlert = ({ showAlert, onClose, error }) => {
     return (
         <Snackbar
             autoHideDuration={2000}
@@ -171,178 +125,7 @@ const LoginFailedAlert = ({ showAlert, onClose, message }) => {
             onClose={onClose}
         >
             <Alert severity="error" sx={{ width: '336px' }}>
-                {message}
-            </Alert>
-        </Snackbar>
-    );
-};
-
-// 질문 제목 길이 제한
-const WrongQuestionTitleAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert
-                variant="outlined"
-                severity="warning"
-                sx={{ width: '336px' }}
-            >
-                제목은 1자 이상 30자 이하로 입력하세요.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-// 질문 내용 길이 제한
-const WrongQuestionContentAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert
-                variant="outlined"
-                severity="warning"
-                sx={{ width: '336px' }}
-            >
-                질문을 10자 이상 입력하세요.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-// Inquiry ID 미선택
-const InquiryIdisNullAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert
-                variant="outlined"
-                severity="warning"
-                sx={{ width: '336px' }}
-            >
-                Inquiry 번호를 선택하세요.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-// 질문 등록 성공
-const QuestionCompleteAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert severity="success" sx={{ width: '336px' }}>
-                질문이 등록되었습니다.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-// 답변 제목 길이 제한
-const WrongAnswerTitleAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert
-                variant="outlined"
-                severity="warning"
-                sx={{ width: '336px' }}
-            >
-                제목은 1자 이상 20자 이하로 입력하세요.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-// 답변 내용 길이 제한
-const WrongAnswerContentAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert
-                variant="outlined"
-                severity="warning"
-                sx={{ width: '336px' }}
-            >
-                답변을 10자 이상 입력하세요.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-// 답변 등록 성공
-const AnswerCompleteAlert = ({ showAlert, onClose }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert severity="success" sx={{ width: '336px' }}>
-                답변이 등록되었습니다.
-            </Alert>
-        </Snackbar>
-    );
-};
-
-const ColDoneAlert = ({ showAlert, onClose, message }) => {
-    return (
-        <Snackbar
-            autoHideDuration={2000}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={showAlert}
-            onClose={onClose}
-        >
-            <Alert severity="success" sx={{ width: '336px' }}>
-                {message}
+                {error}
             </Alert>
         </Snackbar>
     );
@@ -368,6 +151,17 @@ const InquiryUpdateAlert = () => {
     });
 };
 
+// 판매 담당자 확인 및 문의 접수
+const SalesManagerCheckAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '판매 담당자 확인 및 문의가 접수되었습니다.',
+        showConfirmButton: false,
+        timer: 2000,
+        width: 600,
+    });
+}
+
 // 품질검토요청
 const QualityReviewCompleteAlert = () => {
     Swal.fire({
@@ -383,6 +177,16 @@ const FirstReviewCompleteAlert = () => {
     Swal.fire({
         icon: 'success',
         title: '1차 검토가 완료되었습니다.',
+        showConfirmButton: false,
+        timer: 2000,
+    });
+};
+
+// 품질검토정보 작성 완료
+const QualityResponseAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '품질검토가 접수되었습니다.',
         showConfirmButton: false,
         timer: 2000,
     });
@@ -405,28 +209,21 @@ const FinalReviewCompleteAlert = () => {
         title: '최종 검토와 오퍼시트 내용이 전송되었습니다.',
         showConfirmButton: false,
         timer: 2000,
+        width: 600,
     });
 };
 
 export {
-    InvalidCustomerNameAlert,
-    InvalidCustomerCodeAlert,
-    ManagerRoleIsNullAlert,
-    JoinCompleteAlert,
-    JoinFailedAlert,
-    LoginFailedAlert,
-    WrongAnswerTitleAlert,
-    WrongAnswerContentAlert,
-    AnswerCompleteAlert,
-    WrongQuestionTitleAlert,
-    WrongQuestionContentAlert,
-    InquiryIdisNullAlert,
-    QuestionCompleteAlert,
-    ColDoneAlert,
+    SuccessAlert,
+    WarningAlert,
+    FailedAlert,
+    InquiryPostErrorAlert,
     InquiryCompleteAlert,
     InquiryUpdateAlert,
-    QualityReviewCompleteAlert,
+    SalesManagerCheckAlert,
     FirstReviewCompleteAlert,
+    QualityResponseAlert,
+    QualityReviewCompleteAlert,
     QualityCompleteAlert,
     FinalReviewCompleteAlert,
 };

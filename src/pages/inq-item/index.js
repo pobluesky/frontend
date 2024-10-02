@@ -2,6 +2,5 @@
 import CustomerInqItem from './CustomerInqItem';
 import SalesManagerInqItem from './SalesManagerInqItem';
 import QualityManagerInqItem from './QualityManagerInqItem';
-import LineItemTableItem from './LineItemTableItem';
 
-export { CustomerInqItem, SalesManagerInqItem, QualityManagerInqItem, LineItemTableItem };
+export { CustomerInqItem, SalesManagerInqItem, QualityManagerInqItem };

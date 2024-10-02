@@ -27,14 +27,10 @@ const createSelector = (key, atom) => {
 };
 
 // [Recoil] 고유 키 값으로 역할 및 사용자 정보 변수 선언
-export const authByRole = createAtom('authByRole');
-export const userName = createAtom('userName');
 export const userEmail = createAtom('userEmail');
 export const userPassword = createAtom('userPassword');
 
 // [Recoil] Selector로 변수 Get 호출
-export const getAuthByRole = createSelector('getAuthByRole', authByRole);
-export const getUserName = createSelector('getUserName', userName);
 export const getUserEmail = createSelector('getUserEmail', userEmail);
 export const getUserPassword = createSelector('getUserPassword', userPassword);
 

@@ -4,8 +4,7 @@
   width: 160px;
   height: 20px;
   padding: 3px;
-  margin-left: 7vh;
-  margin-bottom: 10vh;
+  margin: 0 0 10vh 7vh;
 }
 
 ._text1 {
@@ -47,8 +46,7 @@
 ._Product {
   display: flex;
   flex-direction: column;
-  margin-left: 5vh;
-  margin-top: 0.2vh;
+  margin: 0.2vh 0 0 5vh;
   font-size: 25px;
 }
 
@@ -56,7 +54,7 @@
   display: flex;
   flex-direction: row;
   gap: 50px;
-  margin-top: -2vh;
+  margin: -2vh 0 0 0;
 }
 
 ._InquirySearch {
@@ -66,7 +64,7 @@
   border-radius: 10px;
   border: 1px solid #C1C1C1;
   padding: 5px;
-  margin-top: 40px;
+  margin: 40px 0 0 0;
 }
 
 ._InquirySearchBox {
@@ -76,16 +74,16 @@
 
 ._SearchBox {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 2fr; /* 세 개의 열, 3번째 열은 두 배 넓이 */
-  grid-template-rows: repeat(2, 50px); /* 3행의 높이를 50px로 설정 */
-  margin-right: 20px;
+  grid-template-columns: 1fr 1fr 1fr 2fr;
+  grid-template-rows: repeat(2, 50px);
+  margin: 0 20px 0 0;
 }
 
 ._Text {
   color: #49454F;
   font-size: 26px;
   font-weight: 800;
-  margin-left: 25px;
+  margin: 25px 0 25px 25px;
 }
 
 ._Title {
@@ -95,8 +93,7 @@
   display: flex;
   align-items: center;
   justify-content: left;
-  margin-top: -4px;
-  margin-left: 25px;
+  margin: -22px 0 0 25px;
 }
 
 ._Input {
@@ -106,7 +103,7 @@
   font-size: 16px;
   border: 1px solid #c1c1c1;
   color: #c1c1c1;
-  margin-left: 25px;
+  margin: 0 0 0 25px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -153,7 +150,7 @@
 .Paging {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin: 20px 0 0 0;
 }
 
 .PagingButton {
@@ -164,8 +161,7 @@
   color: #49454F;
   padding: 10px;
   font-size: 16px;
-  margin-right: 10px;
-  margin-bottom: 30px;
+  margin: 0 10px 30px 0;
   font-weight: 700;
 }
 
@@ -174,6 +170,7 @@
   color: #ffffff;
   transition: background-color 0.1s ease-in-out;
   font-weight: bold;
+  margin: 0 10px 30px 0;
 }
 
 .PagingArrowButton {
@@ -184,8 +181,7 @@
   color: #49454F;
   padding: 10px;
   font-size: 16px;
-  margin-right: 10px;
-  margin-bottom: 30px;
+  margin: 0 10px 30px 0;
   font-weight: 700;
 }
 

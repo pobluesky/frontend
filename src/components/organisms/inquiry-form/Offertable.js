@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from '../../atoms/Input';
 import { Offer_Table } from '../../../assets/css/Form.css';
 
-function OfferTable({ rows, onRowSelect, onInputChange, selectedRows = [] }) {
+function OfferTable({ rows, onRowSelect, onInputChange, selectedRows = [], isPreviewData, receipts = [] }) {
     const columnSample = [
         '',
         'Product',
@@ -25,6 +25,35 @@ function OfferTable({ rows, onRowSelect, onInputChange, selectedRows = [] }) {
         '후판',
         '선재',
     ];
+
+    useEffect(() => {
+        if (isPreviewData) {
+            receipts.forEach((receipt, index) => {
+                const row = rows[index];
+
+                if (row) {
+                    if (receipt && Object.keys(receipt).length > 0) {
+                        onInputChange(row.id, 'product', receipt.product || '');
+                        onInputChange(row.id, 'specification', receipt.specification || '');
+                        onInputChange(row.id, 'surfaceFinish', receipt.surfaceFinish || '');
+                        onInputChange(row.id, 'usage', receipt.usage || '');
+                        onInputChange(row.id, 'thickness', receipt.thickness || '');
+                        onInputChange(row.id, 'diameter', receipt.diameter || '');
+                        onInputChange(row.id, 'width', receipt.width || '');
+                        onInputChange(row.id, 'quantity', receipt.quantity || '');
+                        onInputChange(row.id, 'price', receipt.price || '');
+                        onInputChange(row.id, 'edge', receipt.edge || '');
+                        onInputChange(row.id, 'unitMaxWeight', receipt.unitMaxWeight || '');
+                        onInputChange(row.id, 'unitMinWeight', receipt.unitMinWeight || '');
+                    } else {
+                        console.warn(`Empty receipt at Index: ${index}`);
+                    }
+                } else {
+                    console.warn(`No row found for Index: ${index}`);
+                }
+            });
+        }
+    }, [rows]);
 
     return (
         <div className={Offer_Table}>

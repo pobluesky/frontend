@@ -5,13 +5,13 @@ import { processInquiries } from '../utils/inquiryUtils';
 export const getCustomerInquiriesByParameter = async (userId, queryParams) => {
     try {
         const filteredQueryParams = Object.fromEntries(
-            Object.entries(queryParams).filter(([_, value]) => value !== "")
+            Object.entries(queryParams).filter(([_, value]) => value !== ''),
         );
         const query = new URLSearchParams(filteredQueryParams).toString();
         const response = await axiosInstance.get(
             `/inquiries/customers/inquiries/${userId}?${query}`
         );
-        console.log("getCustomerInquiriesByParameter: ", response.data.data);
+        console.log('getCustomerInquiriesByParameter: ', response.data.data);
         return processInquiries(response.data.data);
     } catch (error) {
         throw error;
@@ -22,13 +22,15 @@ export const getCustomerInquiriesByParameter = async (userId, queryParams) => {
 export const getSalesManagerInquiriesByParameter = async (queryParams) => {
     try {
         const filteredQueryParams = Object.fromEntries(
-            Object.entries(queryParams).filter(([_, value]) => value !== "")
+            Object.entries(queryParams).filter(([_, value]) => value !== ''),
         );
         const query = new URLSearchParams(filteredQueryParams).toString();
         const response = await axiosInstance.get(
-            `/inquiries/managers/sales/inquiries?${query}`
+            `/inquiries/managers/sales/inquiries?${query}`, {
+                timeout: 10000,
+            }
         );
-        console.log("getManagerInquiriesByParameter: ", response.data.data);
+        console.log('getManagerInquiriesByParameter: ', response.data.data);
         return processInquiries(response.data.data);
     } catch (error) {
         throw error;
@@ -39,13 +41,13 @@ export const getSalesManagerInquiriesByParameter = async (queryParams) => {
 export const getQualityManagerInquiriesByParameter = async (queryParams) => {
     try {
         const filteredQueryParams = Object.fromEntries(
-            Object.entries(queryParams).filter(([_, value]) => value !== "")
+            Object.entries(queryParams).filter(([_, value]) => value !== ''),
         );
         const query = new URLSearchParams(filteredQueryParams).toString();
         const response = await axiosInstance.get(
             `/inquiries/managers/quality/inquiries?${query}`
         );
-        console.log("getManagerInquiriesByParameter: ", response.data.data);
+        console.log('getManagerInquiriesByParameter: ', response.data.data);
         return processInquiries(response.data.data);
     } catch (error) {
         throw error;

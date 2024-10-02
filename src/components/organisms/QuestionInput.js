@@ -2,40 +2,40 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../atoms/Input';
 import TextEditor from '../atoms/TextEditor';
-import { QuestionAnswerButton } from '../atoms/VocButton';
+import { VocButton } from '../atoms/VocButton';
 import { useAuth } from '../../hooks/useAuth';
-import {
-    WrongQuestionTitleAlert,
-    WrongQuestionContentAlert,
-    InquiryIdisNullAlert,
-    QuestionCompleteAlert,
-} from '../../utils/actions';
-import {
-    validateQuestionTitle,
-    validateQuestionContents,
-} from '../../utils/validation';
+import { SuccessAlert, WarningAlert } from '../../utils/actions';
+import { validateQuestionTitle, validateLength } from '../../utils/validation';
 import {
     postQuestionByUserIdAboutInquiry,
     postQuestionByUserId,
+    putQuestionByUserIdAboutInquiry,
+    putQuestionByUserId,
 } from '../../apis/api/question';
 import { Question_Input } from '../../assets/css/Voc.css';
 
-function QuestionInput({ selectedType, inquiryId }) {
-    const { userId } = useAuth();
+function QuestionInput({ selectedType, inquiryId, questionDetail }) {
     const navigate = useNavigate();
 
-    const [editorValue, setEditorValue] = useState('');
-    const [title, setTitle] = useState('');
+    const { userId } = useAuth();
+
+    const [editorValue, setEditorValue] = useState(
+        questionDetail?.contents || '',
+    );
+
+    const [title, setTitle] = useState(questionDetail?.title || '');
     const [file, setFile] = useState('');
+    const [fileName, setFileName] = useState(questionDetail?.fileName || '');
+    const filePath = questionDetail?.filePath || '';
+    const [isFileDeleted, setFileDeleted] = useState(false);
 
     const fileInputRef = useRef(null);
 
     const status = 'READY';
 
-    const [showTitleAlert, canShowTitleAlert] = useState(false);
-    const [showContentAlert, canShowContentAlert] = useState(false);
-    const [showInquiryIdAlert, canShowInquiryIdAlert] = useState(false);
     const [showSuccessAlert, canShowSuccessAlert] = useState(false);
+    const [showWarningAlert, canShowWarningAlert] = useState(false);
+    const [message, setMessage] = useState('');
 
     // 질문 등록
     const fetchPostQuestionByUserId = async () => {
@@ -46,41 +46,91 @@ function QuestionInput({ selectedType, inquiryId }) {
                 type: selectedType,
                 status,
             };
-
             if (selectedType === 'INQ') {
                 if (!inquiryId) {
-                    canShowInquiryIdAlert(true);
+                    setMessage('Inquiry 번호를 선택하세요.');
+                    canShowWarningAlert(true);
                     return;
                 }
                 // 문의 관련 질문인 경우
-                const result = await postQuestionByUserIdAboutInquiry(
+                await postQuestionByUserIdAboutInquiry(
                     file,
                     questionData,
                     userId,
                     inquiryId,
                 );
-                if (result) {
-                    canShowSuccessAlert(true);
-                    setTimeout(() => {
-                        navigate('/voc-list/question');
-                    }, '2000');
-                }
+                setMessage('질문이 등록되었습니다.');
+                canShowSuccessAlert(true);
+                setTimeout(() => {
+                    navigate('/voc-list/question');
+                }, '2000');
             } else {
                 // 문의와 무관한 질문인 경우
-                const result = await postQuestionByUserId(
-                    file,
-                    questionData,
-                    userId,
-                );
-                if (result) {
-                    canShowSuccessAlert(true);
-                    setTimeout(() => {
-                        navigate('/voc-list/question');
-                    }, '2000');
-                }
+                await postQuestionByUserId(file, questionData, userId);
+                setMessage('질문이 등록되었습니다.');
+                canShowSuccessAlert(true);
+                setTimeout(() => {
+                    navigate('/voc-list/question');
+                }, '2000');
             }
         } catch (error) {
             console.error('질문 등록 실패: ', error);
+        }
+    };
+
+    // 질문 수정
+    const fetchPutQuestionByUserId = async () => {
+        try {
+            const questionData = {
+                title,
+                contents: editorValue,
+                type: selectedType,
+                status,
+                isFileDeleted,
+            };
+            if (selectedType === 'INQ') {
+                if (!inquiryId) {
+                    setMessage('Inquiry 번호를 선택하세요.');
+                    canShowWarningAlert(true);
+                    return;
+                }
+                // 문의 관련 질문인 경우
+                await putQuestionByUserIdAboutInquiry(
+                    file,
+                    questionData,
+                    userId,
+                    inquiryId,
+                    questionDetail?.questionId,
+                );
+                setMessage('질문이 수정되었습니다.');
+                canShowSuccessAlert(true);
+                setTimeout(() => {
+                    navigate(`/voc-form/answer/${questionDetail?.questionId}`, {
+                        state: {
+                            questionId: questionDetail?.questionId,
+                        },
+                    });
+                }, '1000');
+            } else {
+                // 문의와 무관한 질문인 경우
+                await putQuestionByUserId(
+                    file,
+                    questionData,
+                    userId,
+                    questionDetail?.questionId,
+                );
+                setMessage('질문이 수정되었습니다.');
+                canShowSuccessAlert(true);
+                setTimeout(() => {
+                    navigate(`/voc-form/answer/${questionDetail?.questionId}`, {
+                        state: {
+                            questionId: questionDetail?.questionId,
+                        },
+                    });
+                }, '1000');
+            }
+        } catch (error) {
+            console.error('질문 수정 실패: ', error);
         }
     };
 
@@ -101,22 +151,24 @@ function QuestionInput({ selectedType, inquiryId }) {
 
     const completedQuestion = () => {
         if (validateQuestionTitle(title)) {
-            canShowTitleAlert(true);
-            return;
-        } else if (validateQuestionContents(editorValue)) {
-            canShowContentAlert(true);
-            return;
+            setMessage('제목은 1자 이상 입력하세요.');
+            return canShowWarningAlert(true);
+        } else if (validateLength(editorValue)) {
+            setMessage('질문을 10자 이상 입력하세요.');
+            return canShowWarningAlert(true);
         } else {
-            fetchPostQuestionByUserId();
+            if (questionDetail) {
+                fetchPutQuestionByUserId();
+            } else {
+                fetchPostQuestionByUserId();
+            }
         }
     };
 
     return (
         <>
             <div className={Question_Input}>
-                {/* 제목 + 첨부파일 그룹 */}
                 <div>
-                    {/* 질문 제목 */}
                     <Input
                         value={title}
                         onChange={titleChange}
@@ -127,10 +179,8 @@ function QuestionInput({ selectedType, inquiryId }) {
                         border={'1px solid #8b8b8b'}
                         placeholder={'제목을 입력하세요. (30자)'}
                     />
-                    {/* 질문 제목 길이 */}
                     <div>{title.length}</div>
                     <div>/30</div>
-                    {/* 파일 업로드 버튼 */}
                     <div>
                         <Input
                             type="file"
@@ -138,29 +188,41 @@ function QuestionInput({ selectedType, inquiryId }) {
                             ref={fileInputRef}
                             onChange={attachFile}
                         />
-                        {file ? (
-                            <QuestionAnswerButton
+                        {file || fileName ? (
+                            <VocButton
                                 btnName={'파일 삭제'}
                                 backgroundColor={'#ffffff'}
-                                textColor={'#1748ac'}
-                                onClick={() => setFile(null)}
+                                textColor={'#03507d'}
+                                onClick={() => {
+                                    setFile(null);
+                                    setFileName(null);
+                                    setFileDeleted(true);
+                                }}
                             />
                         ) : (
-                            <QuestionAnswerButton
+                            <VocButton
                                 btnName={'파일 업로드'}
                                 backgroundColor={'#ffffff'}
-                                textColor={'#1748ac'}
-                                onClick={() => fileInputRef.current.click()}
+                                textColor={'#03507d'}
+                                onClick={() => {
+                                    fileInputRef.current.click();
+                                    setFileDeleted(false);
+                                }}
                             />
                         )}
                     </div>
                     <div>
-                        {file
-                            ? `첨부파일: ${file.name}`
-                            : '파일을 첨부할 수 있습니다.'}
+                        {fileName ? (
+                            <>
+                                <a href={filePath}>{fileName}</a>
+                            </>
+                        ) : file ? (
+                            file.name
+                        ) : (
+                            '파일을 첨부할 수 있습니다.'
+                        )}
                     </div>
                 </div>
-                {/* 질문 입력 */}
                 <TextEditor
                     placeholder={'질문을 입력하세요.'}
                     width={'1320px'}
@@ -172,9 +234,9 @@ function QuestionInput({ selectedType, inquiryId }) {
                     onChange={setEditorValue}
                 />
                 <div>
-                    <QuestionAnswerButton
+                    <VocButton
                         btnName={'질문 등록'}
-                        backgroundColor={'#1748ac'}
+                        backgroundColor={'#03507d'}
                         textColor={'#ffffff'}
                         onClick={() => {
                             completedQuestion();
@@ -182,32 +244,20 @@ function QuestionInput({ selectedType, inquiryId }) {
                     />
                 </div>
             </div>
-            <WrongQuestionTitleAlert
-                showAlert={showTitleAlert}
-                onClose={() => {
-                    canShowTitleAlert(false);
-                }}
-                inert
-            />
-            <WrongQuestionContentAlert
-                showAlert={showContentAlert}
-                onClose={() => {
-                    canShowContentAlert(false);
-                }}
-                inert
-            />
-            <InquiryIdisNullAlert
-                showAlert={showInquiryIdAlert}
-                onClose={() => {
-                    canShowInquiryIdAlert(false);
-                }}
-                inert
-            />
-            <QuestionCompleteAlert
+            <SuccessAlert
                 showAlert={showSuccessAlert}
                 onClose={() => {
                     canShowSuccessAlert(false);
                 }}
+                message={message}
+                inert
+            />
+            <WarningAlert
+                showAlert={showWarningAlert}
+                onClose={() => {
+                    canShowWarningAlert(false);
+                }}
+                message={message}
                 inert
             />
         </>

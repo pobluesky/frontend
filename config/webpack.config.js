@@ -53,11 +53,10 @@ module.exports = function () {
             compress: true,
             hot: false,
             historyApiFallback: true,
-            allowedHosts: ['pobluesky.com', 'www.pobluesky.com'],
             proxy: [
                 {
                     context: ['/api'],
-                    target: 'https://ApiGatewayALB-1427322812.ap-northeast-2.elb.amazonaws.com',
+                    target: 'https://ApiGateWayALB-544361737.ap-northeast-2.elb.amazonaws.com',
                     changeOrigin: true,
                 },
             ],

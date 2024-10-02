@@ -1,0 +1,158 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modalContent {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 480px;
+    height: 405px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.modalContentComplete {
+    background-color: white;
+    padding: 60px;
+    border-radius: 10px;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    z-index: 10000;
+}
+
+.uploadingIndicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.loaderContainer {
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+
+.loader {
+    border: 10px solid #f8f8f7;
+    border-left-color: rgba(0, 198, 255, 1);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin-local 1s linear infinite;
+    margin: 0 0 25px 0;
+    transition: opacity 0.5s ease;
+}
+
+.loader.hidden {
+    opacity: 0;
+}
+
+@keyframes spin-local {
+    0% {
+        transform: rotate(0deg);
+        border-left-color: rgba(0, 198, 255, 1);
+    }
+    50% {
+        transform: rotate(180deg);
+        border-left-color: rgba(0, 150, 255, 0.3);
+    }
+    100% {
+        transform: rotate(360deg);
+        border-left-color: rgb(185, 232, 255);
+    }
+}
+
+.progressBarContainer {
+    width: 100%;
+    height: 15px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin: 5px 0 5px 0;
+}
+
+.progressBar {
+    height: 100%;
+    background-color: #00c6ff;
+    border-radius: 8px;
+    transition: width 0.5s ease;
+}
+
+.progressText {
+    margin: 20px 0 0 0;
+    font-size: 17px;
+    color: #868e96;
+    font-weight: 600;
+}
+
+.fileName {
+    margin: 18px 0 10px 0;
+    font-size: 14px;
+    color: #0093ff;
+    font-weight: 600;
+}
+
+.fileUploadContainer {
+    text-align: center;
+}
+
+.fileUploadLabel {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #0072ff;
+    color: white;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.fileUploadLabel:hover {
+    background-color: #00c6ff;
+}
+
+.fileUploadText {
+    margin: 10px 0 10px 0;
+    font-size: 20px;
+    color: #555;
+    font-weight: 700;
+}
+
+.Player_Wrapper {
+    position: relative;
+}
+
+.React_Player {
+    margin: 10px 0 0 0;
+    pointer-events: none;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.gradientText {
+    background: linear-gradient(270deg, #ff0080, #ff8c00, #00bfff, #8000ff, #ff0080);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientAnimation 5s ease infinite;
+    margin: 7px 0 13px 0;
+    font-size: 22px;
+    font-weight: 900;
+}

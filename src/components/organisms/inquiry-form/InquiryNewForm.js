@@ -1,18 +1,27 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ToggleBar from '../../molecules/ToggleBar';
 import {
     Container,
     Sheet,
     Opend,
-    Wrapper,
-    _Input,
-    inputWrapper,
 } from '../../../assets/css/Form.css';
+import { Grid, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, title }) => {
+const InquiryNewForm = ({
+    formData,
+    handleFormDataChange,
+    register,
+    errors,
+    title,
+    setManagerId,
+    isForm,
+    isUpdate,
+    onManagerSelect,
+}) => {
     const {
         customerCode,
         customerName,
+        salesManagerName,
         name,
         email,
         phone,
@@ -27,267 +36,228 @@ const InquiryNewForm = ({ formData, handleFormDataChange, register, errors, titl
     } = formData;
     const [isChecked, setCheck] = useState(true);
 
+    const inputStyle = {
+        inputProps: {
+            style: { color: '#000000', fontWeight: '700' },
+        },
+        variant: "outlined",
+        fullWidth: true,
+    };
+
     return (
         <div className={Container}>
             <div className={Sheet}>
-                <ToggleBar
-                    title={title}
-                    isChecked={isChecked}
-                    setCheck={setCheck}
-                />
+                {isUpdate && (
+                    <ToggleBar
+                        title={title}
+                        isChecked={isChecked}
+                        setCheck={setCheck}
+                        isPreviewButton={true}
+                        progress={'FORM'}
+                        setManagerId={setManagerId}
+                        salesManagerName={salesManagerName}
+                        onManagerSelect={onManagerSelect}
+                    />
+                )}
+                {isForm && (
+                    <ToggleBar
+                        title={title}
+                        isChecked={isChecked}
+                        setCheck={setCheck}
+                        isPreviewButton={true}
+                        isForm={isForm}
+                        progress={'FORM'}
+                        setManagerId={setManagerId}
+                        onManagerSelect={onManagerSelect}
+                    />
+                )}
                 {isChecked ? (
                     <div className={Opend}>
-                        <div className={Wrapper}>
+                        <Grid container spacing={2}>
                             {/* 1행 */}
-                            <div className={inputWrapper}>
-                                <label>고객사명</label> {/* customerName */}
-                                <input
-                                    type="text"
-                                    className={_Input}
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    label="고객사명"
                                     value={customerName}
-                                    readOnly={true}
+                                    {...inputStyle}
                                 />
-                            </div>
-                            <div className={inputWrapper}
-                                 style={{
-                                     border: errors.country ? '1px solid #F02323' : '1px solid #c1c1c1',
-                                 }}>
-                                <label>국가</label>
-                                <select
-                                    {...register('country', { required: '국가를 선택해 주세요.' })}
-                                    className={_Input}
-                                    value={country}
-                                    onChange={(e) =>
-                                        handleFormDataChange(
-                                            'country',
-                                            e.target.value,
-                                        )
-                                    }
-                                >
-                                    <option value="" disabled>
-                                        선택
-                                    </option>
-                                    <option value="USA">미국</option>
-                                    <option value="CANADA">캐나다</option>
-                                    <option value="KOREA">한국</option>
-                                    <option value="JAPAN">일본</option>
-                                    <option value="CHINA">중국</option>
-                                    <option value="GERMANY">독일</option>
-                                    <option value="FRANCE">프랑스</option>
-                                </select>
-                            </div>
-                            <div className={inputWrapper}
-                                 style={{
-                                     border: errors.corporate ? '1px solid #F02323' : '1px solid #c1c1c1',
-                                 }}>
-                                <label>판매상사</label>
-                                <input
-                                    {...register('corporate', { required: '판매상사를 입력해 주세요.' })}
-                                    type="text"
-                                    className={_Input}
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <FormControl variant="outlined" fullWidth error={!!errors.country}>
+                                    <InputLabel>국가</InputLabel>
+                                    <Select
+                                        {...register('country', { required: true })}
+                                        value={country}
+                                        onChange={(e) => handleFormDataChange('country', e.target.value)}
+                                        sx={{
+                                            color: '#000000',
+                                            fontWeight: '700',
+                                        }}>
+                                        <MenuItem value="" disabled>선택</MenuItem>
+                                        <MenuItem value="USA">미국</MenuItem>
+                                        <MenuItem value="CANADA">캐나다</MenuItem>
+                                        <MenuItem value="KOREA">한국</MenuItem>
+                                        <MenuItem value="JAPAN">일본</MenuItem>
+                                        <MenuItem value="CHINA">중국</MenuItem>
+                                        <MenuItem value="GERMANY">독일</MenuItem>
+                                        <MenuItem value="FRANCE">프랑스</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    {...register('corporate', { required: true })}
+                                    label="판매상사"
+                                    onChange={(e) => handleFormDataChange('corporate', e.target.value)}
+                                    {...inputStyle}
                                     value={corporate}
-                                    onChange={(e) =>
-                                        handleFormDataChange(
-                                            'corporate',
-                                            e.target.value,
-                                        )
-                                    }
+                                    error={!!errors.corporate}
                                 />
-                            </div>
+                            </Grid>
 
                             {/* 2행 */}
-                            <div className={inputWrapper}
-                                 style={{
-                                     border: errors.salesPerson ? '1px solid #F02323' : '1px solid #c1c1c1',
-                                 }}>
-                                <label>판매계약자</label>
-                                <input
-                                    {...register('salesPerson', { required: '판매계약자를 입력해 주세요.' })}
-                                    type="text"
-                                    className={_Input}
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    {...register('salesPerson', { required: true })}
+                                    label="판매계약자"
+                                    onChange={(e) => handleFormDataChange('salesPerson', e.target.value)}
+                                    {...inputStyle}
                                     value={salesPerson}
-                                    onChange={(e) =>
-                                        handleFormDataChange(
-                                            'salesPerson',
-                                            e.target.value,
-                                        )
-                                    }
+                                    error={!!errors.salesPerson}
                                 />
-                            </div>
-                            <div className={inputWrapper}
-                                 style={{
-                                     border: errors.inquiryType ? '1px solid #F02323' : '1px solid #c1c1c1',
-                                 }}>
-                                <label>Inquiry 유형</label>
-                                <select
-                                    {...register('inquiryType', { required: '문의유형을 선택해 주세요.' })}
-                                    className={_Input}
-                                    value={inquiryType}
-                                    onChange={(e) =>
-                                        handleFormDataChange(
-                                            'inquiryType',
-                                            e.target.value,
-                                        )
-                                    }
-                                >
-                                    <option value="" disabled>
-                                        문의유형
-                                    </option>
-                                    <option value="COMMON_INQUIRY">
-                                        품질 + 견적
-                                    </option>
-                                    <option value="QUOTE_INQUIRY">견적</option>
-                                </select>
-                            </div>
-                            <div className={inputWrapper}
-                                 style={{
-                                     border: errors.industry ? '1px solid #F02323' : '1px solid #c1c1c1',
-                                 }}>
-                                <label>산업분류</label>
-                                <select
-                                    {...register('industry', { required: '산업분류를 선택해 주세요.' })}
-                                    className={_Input}
-                                    value={industry}
-                                    onChange={(e) =>
-                                        handleFormDataChange(
-                                            'industry',
-                                            e.target.value,
-                                        )
-                                    }
-                                >
-                                    <option value="" disabled>
-                                        선택
-                                    </option>
-                                    <option value="AUTOMOBILE">
-                                        Automobile
-                                    </option>
-                                    <option value="CONSTRUCTION">
-                                        Construction
-                                    </option>
-                                    <option value="DISTRIBUTION">
-                                        Distribution
-                                    </option>
-                                    <option value="ELECTRIC">Electric</option>
-                                    <option value="FURNITURE">Furniture</option>
-                                    <option value="PLATING">Plating</option>
-                                    <option value="HIGH_CARBON">
-                                        High-Carbon
-                                    </option>
-                                    <option value="KITCHEN">Kitchen</option>
-                                    <option value="LOW_CARBON">
-                                        Low-Carbon
-                                    </option>
-                                    <option value="MARCHINERY">
-                                        Machinery
-                                    </option>
-                                    <option value="PIPE">Pipe</option>
-                                    <option value="REROLLING">Rerolling</option>
-                                    <option value="SHIPBUILDING">
-                                        Shipbuilding
-                                    </option>
-                                    <option value="TRANSPORTATION">
-                                        Transportation
-                                    </option>
-                                    <option value="VESSEL">Vessel</option>
-                                    <option value="BEAM">Beam</option>
-                                    <option value="OTHER">Others</option>
-                                </select>
-                            </div>
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <FormControl variant="outlined" fullWidth error={!!errors.inquiryType}>
+                                    <InputLabel>Inquiry 유형</InputLabel>
+                                    <Select
+                                        {...register('inquiryType', { required: true })}
+                                        value={inquiryType}
+                                        onChange={(e) => handleFormDataChange('inquiryType', e.target.value)}
+                                        sx={{
+                                            color: '#000000',
+                                            fontWeight: '700',
+                                        }}>
+                                        <MenuItem value="" disabled>문의유형</MenuItem>
+                                        <MenuItem value="COMMON_INQUIRY">품질 + 견적</MenuItem>
+                                        <MenuItem value="QUOTE_INQUIRY">견적</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <FormControl variant="outlined" fullWidth error={!!errors.industry}>
+                                    <InputLabel>산업분류</InputLabel>
+                                    <Select
+                                        {...register('industry', { required: true })}
+                                        value={industry}
+                                        onChange={(e) => handleFormDataChange('industry', e.target.value)}
+                                        sx={{
+                                            color: '#000000',
+                                            fontWeight: '700',
+                                        }}>
+                                        <MenuItem value="" disabled>선택</MenuItem>
+                                        <MenuItem value="AUTOMOBILE">Automobile</MenuItem>
+                                        <MenuItem value="CONSTRUCTION">Construction</MenuItem>
+                                        <MenuItem value="DISTRIBUTION">Distribution</MenuItem>
+                                        <MenuItem value="ELECTRIC">Electric</MenuItem>
+                                        <MenuItem value="FURNITURE">Furniture</MenuItem>
+                                        <MenuItem value="PLATING">Plating</MenuItem>
+                                        <MenuItem value="HIGH_CARBON">High-Carbon</MenuItem>
+                                        <MenuItem value="KITCHEN">Kitchen</MenuItem>
+                                        <MenuItem value="LOW_CARBON">Low-Carbon</MenuItem>
+                                        <MenuItem value="MARCHINERY">Machinery</MenuItem>
+                                        <MenuItem value="PIPE">Pipe</MenuItem>
+                                        <MenuItem value="REROLLING">Rerolling</MenuItem>
+                                        <MenuItem value="SHIPBUILDING">Shipbuilding</MenuItem>
+                                        <MenuItem value="TRANSPORTATION">Transportation</MenuItem>
+                                        <MenuItem value="VESSEL">Vessel</MenuItem>
+                                        <MenuItem value="BEAM">Beam</MenuItem>
+                                        <MenuItem value="OTHER">Others</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
 
                             {/* 3행 */}
-                            <div className={inputWrapper}>
-                                <label>의뢰인명</label>
-                                <input
-                                    type="text"
-                                    className={_Input}
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    label="의뢰인명"
                                     value={name}
+                                    {...inputStyle}
                                 />
-                            </div>
-                            <div className={inputWrapper}>
-                                <label>의뢰인 E-mail</label>
-                                <input
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    label="의뢰인 E-mail"
                                     type="email"
-                                    className={_Input}
                                     value={email}
+                                    {...inputStyle}
                                 />
-                            </div>
-                            <div className={inputWrapper}>
-                                <label>의뢰인 연락처</label>
-                                <input
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    label="의뢰인 연락처"
                                     type="tel"
-                                    className={_Input}
                                     value={phone}
+                                    {...inputStyle}
                                 />
-                            </div>
+                            </Grid>
 
                             {/* 4행 */}
-                            <div className={inputWrapper}
-                                 style={{
-                                     border: errors.corporationCode ? '1px solid #F02323' : '1px solid #c1c1c1',
-                                 }}>
-                                <label>법인코드</label>
-                                <input
-                                    {...register('corporationCode', { required: '법인코드를 입력해 주세요.' })}
-                                    type="text"
-                                    className={_Input}
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    {...register('corporationCode', { required: true })}
+                                    label="법인코드"
+                                    onChange={(e) => handleFormDataChange('corporationCode', e.target.value)}
+                                    {...inputStyle}
                                     value={corporationCode}
-                                    onChange={(e) =>
-                                        handleFormDataChange(
-                                            'corporationCode',
-                                            e.target.value,
-                                        )
-                                    }
+                                    error={!!errors.corporationCode}
                                 />
-                            </div>
-                            <div className={inputWrapper}
-                                 style={{
-                                     border: errors.productType ? '1px solid #F02323' : '1px solid #c1c1c1',
-                                 }}>
-                                <label>제품유형</label>
-                                <select
-                                    {...register('productType', { required: '제품유형을 선택해 주세요.' })}
-                                    className={_Input}
-                                    value={productType}
-                                    onChange={(e) =>
-                                        handleFormDataChange(
-                                            'productType',
-                                            e.target.value,
-                                        )
-                                    }
-                                >
-                                    <option value="" disabled>
-                                        선택
-                                    </option>
-                                    <option value="CAR">자동차</option>
-                                    <option value="HOT_ROLLED">열연</option>
-                                    <option value="COLD_ROLLED">냉연</option>
-                                    <option value="THICK_PLATE">후판</option>
-                                    <option value="WIRE_ROD">선재</option>
-                                </select>
-                            </div>
-                            <div className={inputWrapper}
-                                 style={{
-                                     border: errors.customerRequestDate ? '1px solid #F02323' : '1px solid #c1c1c1',
-                                 }}>
-                                <label>고객요청일자</label>
-                                <input
-                                    {...register('customerRequestDate', { required: '고객요청일자를 선택해 주세요.' })}
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <FormControl variant="outlined" fullWidth error={!!errors.productType}>
+                                    <InputLabel>제품유형</InputLabel>
+                                    <Select
+                                        {...register('productType', { required: true })}
+                                        value={productType}
+                                        onChange={(e) => handleFormDataChange('productType', e.target.value)}
+                                        sx={{
+                                            color: '#000000',
+                                            fontWeight: '700',
+                                        }}>
+                                        <MenuItem value="" disabled>선택</MenuItem>
+                                        <MenuItem value="CAR">자동차</MenuItem>
+                                        <MenuItem value="HOT_ROLLED">열연</MenuItem>
+                                        <MenuItem value="COLD_ROLLED">냉연</MenuItem>
+                                        <MenuItem value="THICK_PLATE">후판</MenuItem>
+                                        <MenuItem value="WIRE_ROD">선재</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    {...register('customerRequestDate', { required: true })}
+                                    label="고객요청일자"
                                     type="date"
-                                    className={_Input}
+                                    onChange={(e) => handleFormDataChange('customerRequestDate', e.target.value)}
+                                    {...inputStyle}
                                     value={customerRequestDate}
-                                    onChange={(e) =>
-                                        handleFormDataChange(
-                                            'customerRequestDate',
-                                            e.target.value,
-                                        )
-                                    }
+                                    error={!!errors.customerRequestDate}
+                                    InputLabelProps={{
+                                        shrink: false,
+                                    }}
+                                    inputProps={{
+                                        style: {
+                                            color: customerRequestDate ? 'black' : 'transparent',
+                                            textAlign: 'center'
+                                        }
+                                    }}
                                 />
-                            </div>
-                        </div>
+                            </Grid>
+                        </Grid>
                     </div>
                 ) : null}
             </div>
         </div>
     );
 };
+
 export default InquiryNewForm;

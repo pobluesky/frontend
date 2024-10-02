@@ -6,6 +6,7 @@ import SearchResult from '../../components/molecules/SearchResult';
 import InquirySearchBox from '../../components/organisms/inquiry-form/InquirySearchBox';
 import CollapsibleTable from '../../components/organisms/inquiry-form/CustomerTable';
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
+import { CircularProgress, Grid } from '@mui/material';
 
 const CustomerInqTableList = () => {
     const { userId, role } = useAuth();
@@ -15,6 +16,7 @@ const CustomerInqTableList = () => {
     const [searchParams, setSearchParams] = useState({});
     const contentRef = useRef(null);
     const paginationRef = useRef(null);
+    const [loading, setLoading] = useState(true);
 
     const getInquiryDataByParameter = async (queryParams = {}) => {
         if (!userId) return;
@@ -36,9 +38,15 @@ const CustomerInqTableList = () => {
     };
 
     useEffect(() => {
-        if (userId) {
-            getInquiryDataByParameter(searchParams);
+        const fetchData = async () => {
+            setLoading(true);
+            if (userId) {
+                await getInquiryDataByParameter(searchParams);
+            }
+            setLoading(false);
         }
+
+        fetchData();
     }, [userId, searchParams]);
 
     const paginatedRows = rows.slice(
@@ -73,17 +81,26 @@ const CustomerInqTableList = () => {
                 mediumCategory={'Inquiry 조회'}
             />
             <InquirySearchBox onSearch={handleSearch} title={'Inquiry 조회'} />
-            <SearchResult searchResult={`${rows.length}`} />
-            <CollapsibleTable
-                rows={paginatedRows}
-                currentPage={currentPage}
-                rowsPerPage={rowsPerPage}
-                totalRows={rows.length}
-                handlePageChange={handlePageChange}
-                handleRowsPerPageChange={handleRowsPerPageChange}
-                paginationRef={paginationRef}
-                role={role}
-            />
+
+            {loading ? (
+                <Grid container justifyContent="center" alignItems="center">
+                    <CircularProgress />
+                </Grid>
+            ) : (
+                <>
+                    <SearchResult searchResult={`${rows.length}`} />
+                    <CollapsibleTable
+                        rows={paginatedRows}
+                        currentPage={currentPage}
+                        rowsPerPage={rowsPerPage}
+                        totalRows={rows.length}
+                        handlePageChange={handlePageChange}
+                        handleRowsPerPageChange={handleRowsPerPageChange}
+                        paginationRef={paginationRef}
+                        role={role}
+                    />
+                </>
+            )}
         </div>
     );
 };

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Sheet, Opend, buttonWrapper, FileColumn } from "../../../assets/css/Form.css";
+import { Container, Sheet, Opend, buttonWrapper } from "../../../assets/css/Form.css";
 import ToggleBar from "../../molecules/ToggleBar";
-import Button from '../../atoms/Button';
+import { Button } from '@mui/material';
 import FileItem from '../../molecules/FileItem';
 import FileGetItem from '../../molecules/FileGetItem';
 
 const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) => {
     const [isChecked, setCheck] = useState(true);
-    const [files, setFiles] = useState(formData.files);
+    const [files, setFiles] = useState(formData?.files || []);
     const [currentFileData, setCurrentFileData] = useState(fileData);
     const [inputKey, setInputKey] = useState(Date.now());
 
-    const btnName = files ? '파일수정' : '파일업로드';
+    const btnName = files ? ['파일수정', '파일삭제'] : ['파일업로드', '파일삭제'];
 
     useEffect(() => {
         if (files) {
@@ -33,7 +33,8 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
 
     const handleFileDelete = () => {
         setCurrentFileData([]);
-        handleFormDataChange('files', []);
+        handleFormDataChange('files',null);
+        handleFormDataChange('isFileDeleted', true);
         setInputKey(Date.now());
     };
 
@@ -61,38 +62,48 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
                                         type="file"
                                         onChange={handleFileUpload}
                                         style={{ display: 'none' }}
-                                        id="fileUpdateInput"
+                                        id="fileUploadInput"
                                     />
                                     <Button
-                                        onClick={() =>
-                                            document.getElementById('fileUpdateInput').click()
-                                        }
-                                        btnName={btnName}
-                                        margin={'-0.5vw 0.7vw 0 0.3vw'}
-                                        backgroundColor={'#03507d'}
-                                        textColor={'#ffffff'}
-                                        border={'none'}
-                                        borderRadius={'18px'}
-                                        fontSize={'17px'}
-                                        fontWeight={'500'}
-                                        padding={'10px'}
-                                    />
+                                        variant="outlined"
+                                        onClick={() => document.getElementById('fileUploadInput').click()}
+                                        sx={{
+                                            margin: '-0.5vw 0 0 1vw',
+                                            backgroundColor: '#FFFFFF',
+                                            border: '1px solid #03507d',
+                                            color: '#03507d',
+                                            borderRadius: '7px',
+                                            fontSize: '17px',
+                                            fontWeight: '500',
+                                            boxShadow: 'none',
+                                            '&:hover': {
+                                                backgroundColor: '#03507d',
+                                                color: '#FFFFFF',
+                                            },
+                                        }}
+                                    >
+                                        {btnName[0]}
+                                    </Button>
                                     <Button
+                                        variant="outlined"
                                         onClick={handleFileDelete}
-                                        btnName={'파일삭제'}
-                                        margin={'-0.5vw 0.7vw 0 0.3vw'}
-                                        backgroundColor={'#03507d'}
-                                        textColor={'#ffffff'}
-                                        border={'none'}
-                                        borderRadius={'18px'}
-                                        fontSize={'17px'}
-                                        fontWeight={'500'}
-                                        padding={'10px'}
-                                    />
-                                </div>
-                                <div className={FileColumn}>
-                                    <div>진행단계</div>
-                                    <div>첨부파일명</div>
+                                        sx={{
+                                            margin: '-0.5vw -1vw 0 0.6vw',
+                                            backgroundColor: '#FFFFFF',
+                                            border: '1px solid #03507d',
+                                            color: '#03507d',
+                                            borderRadius: '7px',
+                                            fontSize: '17px',
+                                            fontWeight: '500',
+                                            boxShadow: 'none',
+                                            '&:hover': {
+                                                backgroundColor: '#03507d',
+                                                color: '#FFFFFF',
+                                            },
+                                        }}
+                                    >
+                                        {btnName[1]}
+                                    </Button>
                                 </div>
                                 <FileGetItem
                                     pastFile={currentFileData?.pastFiles}
@@ -123,10 +134,6 @@ const FileUpdateForm = ({ fileForm, formData, handleFormDataChange, fileData }) 
                                         fontWeight={'500'}
                                         padding={'10px'}
                                     />
-                                </div>
-                                <div className={FileColumn}>
-                                    <div>진행단계</div>
-                                    <div>첨부파일명</div>
                                 </div>
                                 <FileItem files={formData.files} />
                             </>

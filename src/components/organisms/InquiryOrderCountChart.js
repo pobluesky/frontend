@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
-import { Chart_Container } from '../../assets/css/Chart.css';
+import { Chart_Container, Pie_Chart } from '../../assets/css/Chart.css';
 
 // Inquiry 주문 체결 완료 및 미완료 비중
 class InquiryOrderCountChart extends Component {
@@ -88,26 +88,28 @@ class InquiryOrderCountChart extends Component {
     }
 
     render() {
+        const { name } = this.props;
+
         return (
             <div className={Chart_Container}>
-                <div>Inquiry 주문 체결 완료 및 미완료 비중</div>
+                <div>{name}님의 Inquiry 주문 체결 완료 및 미완료 비중</div>
                 <div>
                     <div>
                         <Chart
+                            className={Pie_Chart}
                             options={this.state.options1}
                             series={this.state.series1}
                             type="donut"
-                            width="220"
-                            height="220"
+                            width="100%"
                         />
                     </div>
                     <div>
                         <Chart
+                            className={Pie_Chart}
                             options={this.state.options2}
                             series={this.state.series2}
                             type="donut"
-                            width="220"
-                            height="220"
+                            width="100%"
                         />
                     </div>
                 </div>

@@ -4,15 +4,14 @@ import {
     Container,
     Sheet,
     Opend,
-    _TextArea,
 } from '../../../assets/css/Form.css';
+import { TextField } from '@mui/material';
 
 const AdditionalRequestForm = ({ formData, handleFormDataChange, readOnly }) => {
-    if(!formData) {
-        return;
+    if (!formData) {
+        return null;
     }
 
-    // 추가요청사항
     const [isChecked, setCheck] = useState(true);
     const { additionalRequests } = formData;
 
@@ -25,24 +24,26 @@ const AdditionalRequestForm = ({ formData, handleFormDataChange, readOnly }) => 
                     setCheck={setCheck}
                 />
                 {isChecked ? (
-                    <div className={Opend}>
-                        <textarea
-                            className={_TextArea}
+                    <div className={Opend} style={{ padding: '3vh'}}>
+                        <TextField
+                            multiline
+                            rows={4}
+                            variant="outlined"
                             placeholder="내용을 입력해 주세요"
-                            wrap="hard"
                             value={additionalRequests}
-                            readOnly={readOnly}
+                            InputProps={{
+                                readOnly: readOnly,
+                            }}
                             onChange={(e) =>
                                 handleFormDataChange(
                                     'additionalRequests',
                                     e.target.value,
                                 )
                             }
+                            fullWidth
                         />
                     </div>
-                ) : (
-                    ''
-                )}
+                ) : null}
             </div>
         </div>
     );

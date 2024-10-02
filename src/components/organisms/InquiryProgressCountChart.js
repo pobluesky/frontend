@@ -7,7 +7,7 @@ class InquiryProgressCountChart extends Component {
     constructor(props) {
         super(props);
 
-        const { data } = props;
+        const { data, name } = props;
 
         const managerMaxRange = data.manager.reduce((max, current) => {
             return current[1] > max[1] ? current : max;
@@ -209,7 +209,7 @@ class InquiryProgressCountChart extends Component {
                     },
                 },
                 title: {
-                    text: '전체 Inquiry 검토 현황별 건수',
+                    text: `${name}님의 전체 Inquiry 검토 현황별 건수`,
                     align: 'center',
                     margin: 5,
                     floating: false,
@@ -247,8 +247,8 @@ class InquiryProgressCountChart extends Component {
                     options={this.state.options}
                     series={this.state.series}
                     type="line"
-                    width="450"
-                    height="240"
+                    width="100%"
+                    height="85%"
                 />
             </div>
         );

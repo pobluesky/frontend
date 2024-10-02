@@ -23,7 +23,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Star from '@mui/icons-material/Star';
 import StarBorder from '@mui/icons-material/StarBorder';
-import { } from '../../assets/css/Inquiry.css';
 import { getInquiriesByProductType, putFavoriteInquiry, getFavoriteInquiriesByProductType } from '../../apis/api/inquiry';
 import { productTypes } from '../../utils/inquiry';
 import { useAuth } from '../../hooks/useAuth';
@@ -44,7 +43,7 @@ const Modal = ({ isOpen, onClose, productType, onSelect }) => {
                 return;
             }
 
-            setError('');
+            setError('')
             try {
                 const response = await getInquiriesByProductType(userId, productType);
                 setInquiries(response || []);

@@ -1,22 +1,13 @@
 import React, { useEffect } from 'react';
 import UserInput from '../molecules/JoinInput';
-import { User_Account_Exsisting } from '../../assets/css/Auth.css';
 import { getCookie } from '../../apis/utils/cookies';
+import { User_Account_Exsisting } from '../../assets/css/Auth.css';
 
 export default function ExistingUserInfo({
     userDetail,
     checkUser,
     setCheckUser,
 }) {
-    const role = getCookie('userRole');
-
-    const enterKeyDown = async (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            setCheckUser(!checkUser);
-        }
-    };
-
     useEffect(() => {
         window.addEventListener('keydown', enterKeyDown);
         return () => {
@@ -30,6 +21,15 @@ export default function ExistingUserInfo({
             behavior: 'smooth',
         });
     }, []);
+
+    const role = getCookie('userRole');
+
+    const enterKeyDown = async (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setCheckUser(!checkUser);
+        }
+    };
 
     return (
         <div className={User_Account_Exsisting}>

@@ -51,7 +51,6 @@ export const getAnswerByQuestionIdForManager = async (questionId) => {
             `/answers/managers/${questionId}`,
         );
 
-        console.log(response)
         const json = response.data;
 
         if (json.result !== 'success') {
@@ -124,6 +123,43 @@ export const postAnswerByQuestionId = async (file, answerData, questionId) => {
         return json;
     } catch (error) {
         console.error('답변 등록 API ERROR: ', error.message || error);
+        throw error;
+    }
+};
+
+// 답변 수정
+export const putAnswerByQuestionId = async (file, answerData, questionId) => {
+    try {
+        const formData = new FormData();
+        formData.append(
+            'answer',
+            new Blob([JSON.stringify(answerData)], {
+                type: 'application/json',
+            }),
+        );
+
+        if (file) {
+            formData.append('files', file);
+        }
+
+        const response = await axiosInstance({
+            method: 'put',
+            url: `answers/managers/${questionId}`,
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        const json = response.data;
+
+        if (json.result !== 'success') {
+            throw new Error(json.message);
+        }
+
+        return json;
+    } catch (error) {
+        console.error('답변 수정 API ERROR: ', error.message || error);
         throw error;
     }
 };

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ToggleBar from '../../molecules/ToggleBar';
-import Button from '../../atoms/Button';
+import { Button } from '@mui/material';
 import TextEditor from '../../atoms/TextEditor';
 import Category from '../../atoms/Category';
 import Input from '../../atoms/Input';
@@ -10,7 +10,16 @@ import OfferTableItem from '../../organisms/inquiry-form/OffertableItem';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
-function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, handleFormDataChange, isOfferSheetItem }) {
+function Offersheet({
+    formData,
+    inquiryData,
+    onLineItemsChange,
+    lineItemData,
+    handleFormDataChange,
+    isOfferSheetItem,
+    isPreviewData,
+    receipts,
+}) {
     if(!formData || !inquiryData) {
         return;
     }
@@ -25,6 +34,16 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
     ]);
 
     const [selectedRows, setSelectedRows] = useState([]);
+
+    useEffect(() => {
+        if (receipts && receipts.length > 0) {
+            const newRows = receipts.map((receipt, index) => ({
+                id: Date.now() + index,
+                items: Array(8).fill(''),
+            }));
+            setRows(newRows);
+        }
+    }, [receipts]);
 
     const addRow = () => {
         const newRow = { id: Date.now(), items: Array(8).fill('') };
@@ -344,7 +363,7 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
             <div>
                 {/* 토글 바 */}
                 <ToggleBar
-                    title={'Offersheet'}
+                    title={'OfferSheet'}
                     isChecked={isChecked}
                     setCheck={setCheck}
                 />
@@ -355,57 +374,80 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
                         <div>
                             {isOfferSheetItem === true ? (
                                 <Button
+                                    variant="outlined"
                                     onClick={handleExportToExcel}
-                                    btnName={'엑셀로 추출'}
-                                    float={'right'}
-                                    width={'120px'}
-                                    backgroundColor={'#03507d'}
-                                    textColor={'#ffffff'}
-                                    border={'none'}
-                                    borderRadius={'18px'}
-                                    fontSize={'17px'}
-                                    fontWeight={'500'}
-                                    padding={'10px'}
-                                    margin={'3px 0 3px 130px'}
-                                />
+                                    sx={{
+                                        margin: '0 0 0 9vw',
+                                        width: '120px',
+                                        backgroundColor: '#FFFFFF',
+                                        border: '1px solid #03507d',
+                                        color: '#03507d',
+                                        borderRadius: '7px',
+                                        fontSize: '15px',
+                                        fontWeight: '500',
+                                        boxShadow: 'none',
+                                        '&:hover': {
+                                            backgroundColor: '#03507d',
+                                            color: '#FFFFFF',
+                                        },
+                                    }}
+                                >엑셀로 추출</Button>
                             ) : (
                                 <>
                                     <Button
+                                        variant="outlined"
                                         onClick={addRow}
-                                        btnName={'행 추가'}
-                                        width={'96px'}
-                                        backgroundColor={'#03507d'}
-                                        textColor={'#ffffff'}
-                                        border={'none'}
-                                        borderRadius={'18px'}
-                                        fontSize={'17px'}
-                                        fontWeight={'500'}
-                                        padding={'10px'}
-                                    />
+                                        sx={{
+                                            margin: '0.5vw 0.2vw 0 0.2vw',
+                                            backgroundColor: '#FFFFFF',
+                                            border: '1px solid #03507d',
+                                            color: '#03507d',
+                                            borderRadius: '7px',
+                                            fontSize: '15px',
+                                            fontWeight: '500',
+                                            boxShadow: 'none',
+                                            '&:hover': {
+                                                backgroundColor: '#03507d',
+                                                color: '#FFFFFF',
+                                            },
+                                        }}
+                                    >행 추가</Button>
                                     <Button
+                                        variant="outlined"
                                         onClick={deleteRows}
-                                        btnName={'행 삭제'}
-                                        width={'96px'}
-                                        backgroundColor={'#03507d'}
-                                        textColor={'#ffffff'}
-                                        border={'none'}
-                                        borderRadius={'18px'}
-                                        fontSize={'17px'}
-                                        fontWeight={'500'}
-                                        padding={'10px'}
-                                    />
+                                        sx={{
+                                            margin: '0.5vw 0.2vw 0 0.2vw',
+                                            backgroundColor: '#FFFFFF',
+                                            border: '1px solid #03507d',
+                                            color: '#03507d',
+                                            borderRadius: '7px',
+                                            fontSize: '15px',
+                                            fontWeight: '500',
+                                            boxShadow: 'none',
+                                            '&:hover': {
+                                                backgroundColor: '#03507d',
+                                                color: '#FFFFFF',
+                                            },
+                                        }}
+                                    >행 삭제</Button>
                                     <Button
+                                        variant="outlined"
                                         onClick={copyRows}
-                                        btnName={'행 복사'}
-                                        width={'96px'}
-                                        backgroundColor={'#03507d'}
-                                        textColor={'#ffffff'}
-                                        border={'none'}
-                                        borderRadius={'18px'}
-                                        fontSize={'17px'}
-                                        fontWeight={'500'}
-                                        padding={'10px'}
-                                    />
+                                        sx={{
+                                            margin: '0.5vw 0.2vw 0 0.2vw',
+                                            backgroundColor: '#FFFFFF',
+                                            border: '1px solid #03507d',
+                                            color: '#03507d',
+                                            borderRadius: '7px',
+                                            fontSize: '15px',
+                                            fontWeight: '500',
+                                            boxShadow: 'none',
+                                            '&:hover': {
+                                                backgroundColor: '#03507d',
+                                                color: '#FFFFFF',
+                                            },
+                                        }}
+                                    >행 복사</Button>
                                 </>
                             )}
                         </div>
@@ -437,9 +479,6 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
                             <Category categoryName={'2. Offer-Sheet'} />
                             {isOfferSheetItem === true ? (
                                 <OfferTableItem
-                                    // rows={rows}
-                                    // onRowSelect={handleRowSelect}
-                                    // selectedRows={selectedRows}
                                     lineItems={lineItemData}
                                 />
                             ) : (
@@ -448,6 +487,8 @@ function Offersheet({ formData, inquiryData, onLineItemsChange, lineItemData, ha
                                     onRowSelect={handleRowSelect}
                                     onInputChange={handleInputChange}
                                     selectedRows={selectedRows}
+                                    receipts={receipts}
+                                    isPreviewData={isPreviewData}
                                 />
                             )}
                         </div>

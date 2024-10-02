@@ -78,6 +78,7 @@
 
 /* 부서명 선택 */
 .SignUp select {
+    text-align: center;
     appearance: none;
     width: 360px;
     height: 48px;

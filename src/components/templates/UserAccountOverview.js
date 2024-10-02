@@ -45,7 +45,7 @@ export default function UserAccountOverview() {
     useEffect(() => {
         fetchGetUserInfo();
     }, []);
-
+    
     return (
         <div className={User_Account_Overview}>
             {!isAuthenticated ? (

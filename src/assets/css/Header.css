@@ -23,6 +23,10 @@
     font-size: 14px;
 }
 
+.Header_Container > div:nth-child(1) > div:nth-child(1) > :nth-child(n) {
+    margin: 0 36px 0 0;
+}
+
 .Header_Container > div hr {
     width: 100%;
     border: 1px solid #d5dbe2;
@@ -53,6 +57,28 @@
     height: 100%;
     cursor: pointer;
     margin: 0 36px 0 0;
+}
+
+/* 메뉴 */
+.Header_Container
+    > div
+    > div:nth-child(3)
+    > div:nth-child(1)
+    > div:nth-child(n + 2) {
+    width: fit-content;
+    padding: 0 8px;
+    margin: 0 36px 0 0;
+}
+
+/* 메뉴 호버 */
+.Header_Container
+    > div
+    > div:nth-child(3)
+    > div:nth-child(1)
+    > div:nth-child(n + 2):hover {
+    background-color: #f8f8f8;
+    line-height: 32px;
+    border-radius: 10px;
 }
 
 /* 프로필 사진 + 회원명 */
@@ -96,7 +122,7 @@
 
 .User_Modal_Container > div {
     position: relative;
-    width: 132px;
+    width: 168px;
     padding: 20px;
     height: fit-content;
     border: 1px solid #d5dbe2;
@@ -107,9 +133,9 @@
 }
 
 .User_Modal_Container > div Button:hover {
-    border: 2px solid #25262b !important;
     color: #25262b !important;
-    font-weight: 600;
+    background-color: #f8f8f8 !important;
+    font-weight: 500;
 }
 
 /******************************************************************/
@@ -122,16 +148,20 @@
     left: 50%;
     transform: translate(-50%);
     z-index: 1;
+    pointer-events: none;
 }
 
 .Notify_Modal_Container > div {
+    position: relative;
     width: 300px;
+    height: fit-content;
     float: right;
     padding: 20px;
     border: 1px solid #d5dbe2;
     border-radius: 10px;
     background: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    pointer-events: auto;
 }
 
 /* 새 알림, 읽은 알림 */

@@ -13,7 +13,7 @@ import {
     IconButton,
     Button,
 } from '@mui/material';
-import { Add, DeleteOutline, FileCopy } from '@mui/icons-material';
+import { Add, DeleteOutline, FileCopy, Remove } from '@mui/icons-material';
 import { productTypes } from '../../../utils/inquiry';
 import LineItemToggleBar from '../../molecules/LineItemToggleBar';
 
@@ -23,6 +23,7 @@ const InquiryHistoryForm = ({
     onLineItemsChange,
     onRefLineItems,
     isUpdate,
+    setError,
 }) => {
     const [localData, setLocalData] = useState(lineItemData);
     const [isChecked, setChecked] = useState(true);
@@ -86,9 +87,20 @@ const InquiryHistoryForm = ({
         onLineItemsChange(updatedData);
     };
 
+    const deleteAllRows = () => {
+        setLocalData([]);
+        onLineItemsChange([]);
+    };
+
     const copyRow = (index) => {
         const rowToCopy = localData[index];
         const updatedData = [...localData, { ...rowToCopy }];
+        setLocalData(updatedData);
+        onLineItemsChange(updatedData);
+    };
+
+    const handleLineItemsChangeByOCR = (newLineItems) => {
+        const updatedData = [...localData, ...newLineItems];
         setLocalData(updatedData);
         onLineItemsChange(updatedData);
     };
@@ -99,7 +111,7 @@ const InquiryHistoryForm = ({
                 overflowX: 'scroll',
                 width: '95vw',
                 margin: '0 auto',
-                borderRadius: '20px',
+                borderRadius: '7px',
                 marginBottom: '100px',
                 backgroundColor: '#ffffff',
             }}
@@ -110,14 +122,16 @@ const InquiryHistoryForm = ({
                 setCheck={setChecked}
                 productType={productType}
                 onLineItemsChange={onLineItemsChange}
+                handleLineItemsChangeByOCR={handleLineItemsChangeByOCR}
                 onSelect={handleSelect}
                 isUpdate={isUpdate}
+                setError={setError}
             />
             {isChecked ? (
                 <>
                     <TableContainer>
                         <Table style={{ backgroundColor: '#ffffff' }}>
-                            <TableHead style={{ backgroundColor: '#d8e1e9' }}>
+                            <TableHead style={{ backgroundColor: '#f3f4ff' }}>
                                 <TableRow>
                                     <TableCell
                                         style={{ minWidth: 100 }}
@@ -130,7 +144,7 @@ const InquiryHistoryForm = ({
                                                     minWidth: 200,
                                                     fontSize: '20px',
                                                     fontWeight: '800',
-                                                    color: '#49454F',
+                                                    color: '#000000',
                                                     textAlign: 'center',
                                                 }}
                                             >
@@ -286,17 +300,27 @@ const InquiryHistoryForm = ({
                         </Table>
                     </TableContainer>
                     <Button
-                        variant="contained"
-                        color="primary"
                         startIcon={<Add />}
                         style={{
-                            margin: '20px',
+                            margin: '15px',
                             backgroundColor: '#03507d',
+                            color: '#ffffff',
                             fontWeight: '800',
                         }}
                         onClick={addRow}
                     >
                         행추가
+                    </Button>
+                    <Button
+                        startIcon={<Remove />}
+                        style={{
+                            backgroundColor: '#03507d',
+                            color: '#ffffff',
+                            fontWeight: '800',
+                        }}
+                        onClick={deleteAllRows}
+                    >
+                        전체삭제
                     </Button>
                 </>
             ) : (

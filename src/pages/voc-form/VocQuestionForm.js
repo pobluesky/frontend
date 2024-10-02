@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getCookie } from '../../apis/utils/cookies';
+import { useLocation } from 'react-router-dom';
 import VocPath from '../../components/atoms/VocPath';
 import QuestionForm from '../../components/templates/QuestionForm';
+import { getCookie } from '../../apis/utils/cookies';
 
 export default function VocQuestionForm() {
-    const navigate = useNavigate();
     const role = getCookie('userRole');
+
+    const location = useLocation();
+    const { questionDetail } = location.state || '';
 
     // 고객사만 질문 등록 가능
     useEffect(() => {
@@ -18,7 +20,7 @@ export default function VocQuestionForm() {
     return (
         <>
             <VocPath largeCategory={'문의'} mediumCategory={'문의 등록'} />
-            <QuestionForm />
+            <QuestionForm questionDetail={questionDetail} />
         </>
     );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
-import { QualityItemRow, QualityItemInput } from '../../../../assets/css/Form.css';
+import { QualityItemRow } from '../../../../assets/css/Form.css';
+import { TextField } from '@mui/material';
 
 const QualityForm = ({ formData, handleFormDataChange }) => { // 품질검토정보 작성
     const {
@@ -18,97 +19,66 @@ const QualityForm = ({ formData, handleFormDataChange }) => { // 품질검토정
     const excludeKeys = ['fileName', 'filePath'];
     const items = Object.entries(formData).filter(([key]) => !excludeKeys.includes(key));
 
+    const inputStyle = {
+        inputProps: {
+            style: { color: '#000000', fontWeight: '500', height: '10px' },
+        },
+        variant: "outlined",
+        fullWidth: true,
+        margin: 'normal',
+    };
+
     return (
         <div className={QualityItemRow}>
-            <input
-                type="text"
-                className={QualityItemInput}
+            <TextField
+                {...inputStyle}
                 value={finalResult}
-                onChange={(e) => handleFormDataChange(
-                    'finalResult',
-                    e.target.value,
-                )}
+                onChange={(e) => handleFormDataChange('finalResult', e.target.value)}
             />
-            <input
-                type="text"
-                className={QualityItemInput}
+            <TextField
+                {...inputStyle}
                 value={finalResultDetails}
-                onChange={(e) => handleFormDataChange(
-                    'finalResultDetails',
-                    e.target.value,
-                )}
+                onChange={(e) => handleFormDataChange('finalResultDetails', e.target.value)}
             />
-            <input
-                type="text"
-                className={QualityItemInput}
+            <TextField
+                {...inputStyle}
                 value={standard}
-                onChange={(e) => handleFormDataChange(
-                    'standard',
-                    e.target.value,
-                )}
+                onChange={(e) => handleFormDataChange('standard', e.target.value)}
             />
-            <input
-                type="text"
-                className={QualityItemInput}
+            <TextField
+                {...inputStyle}
                 value={orderCategory}
-                onChange={(e) => handleFormDataChange(
-                    'orderCategory',
-                    e.target.value,
-                )}
+                onChange={(e) => handleFormDataChange('orderCategory', e.target.value)}
             />
-            <input
-                type="text"
-                className={QualityItemInput}
+            <TextField
+                {...inputStyle}
                 value={coatingMetalQuantity}
-                onChange={(e) => handleFormDataChange(
-                    'coatingMetalQuantity',
-                    e.target.value,
-                )}
+                onChange={(e) => handleFormDataChange('coatingMetalQuantity', e.target.value)}
             />
-            <input
-                type="text"
-                className={QualityItemInput}
+            <TextField
+                {...inputStyle}
                 value={coatingOilQuantity}
-                onChange={(e) => handleFormDataChange(
-                    'coatingOilQuantity',
-                    e.target.value,
-                )}
+                onChange={(e) => handleFormDataChange('coatingOilQuantity', e.target.value)}
             />
-            <input
-                type="text"
-                className={QualityItemInput}
+            <TextField
+                {...inputStyle}
                 value={thicknessTolerance}
-                onChange={(e) => handleFormDataChange(
-                    'thicknessTolerance',
-                    e.target.value,
-                )}
+                onChange={(e) => handleFormDataChange('thicknessTolerance', e.target.value)}
             />
-            <input
-                type="text"
-                className={QualityItemInput}
+            <TextField
+                {...inputStyle}
                 value={orderEdge}
-                onChange={(e) => handleFormDataChange(
-                    'orderEdge',
-                    e.target.value,
-                )}
+                onChange={(e) => handleFormDataChange('orderEdge', e.target.value)}
             />
-            <input
-                type="text"
-                className={QualityItemInput}
+            <TextField
+                {...inputStyle}
                 value={customerQReq}
-                onChange={(e) => handleFormDataChange(
-                    'customerQReq',
-                    e.target.value,
-                )}
+                onChange={(e) => handleFormDataChange('customerQReq', e.target.value)}
             />
-            <input
-                type="text"
-                className={QualityItemInput}
+            <TextField
+                {...inputStyle}
                 value={availableLab}
-                onChange={(e) => handleFormDataChange(
-                    'availableLab',
-                    e.target.value,
-                )}
+                onChange={(e) => handleFormDataChange('availableLab', e.target.value)}
             />
         </div>
     );

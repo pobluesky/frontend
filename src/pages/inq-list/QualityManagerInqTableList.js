@@ -6,15 +6,17 @@ import CollapsibleTable from '../../components/organisms/inquiry-form/Collapsibl
 import { InqTableContainer } from '../../assets/css/Inquiry.css';
 import { getQualityManagerInquiriesByParameter } from '../../apis/api/inquirySearch';
 import { useAuth } from '../../hooks/useAuth';
+import { CircularProgress, Grid } from '@mui/material';
 
 const QualityManagerInqTableList = () => {
+    const { role } = useAuth();
     const [rows, setRows] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
     const [searchParams, setSearchParams] = useState({});
     const contentRef = useRef(null);
     const paginationRef = useRef(null);
-    const { role } = useAuth();
+    const [loading, setLoading] = useState(true);
 
     const getInquiryDataByParameter = async (queryParams = {}) => {
         try {
@@ -31,12 +33,14 @@ const QualityManagerInqTableList = () => {
     };
 
     useEffect(() => {
-        getInquiryDataByParameter(searchParams);
-    }, [searchParams]);
+        const fetchData = async () => {
+            setLoading(true);
+            await getInquiryDataByParameter(searchParams);
+            setLoading(false);
+        }
 
-    const updateData = async () => {
-        await getInquiryDataByParameter(searchParams);
-    };
+        fetchData();
+    }, [searchParams]);
 
     const paginatedRows = rows.slice(
         currentPage * rowsPerPage,
@@ -63,18 +67,26 @@ const QualityManagerInqTableList = () => {
         <div className={InqTableContainer}>
             <ManagerInqPath largeCategory={'Inquiry'} mediumCategory={'품질설계연계조회'} role={role} />
             <InquirySearchBox onSearch={handleSearch} title={'품질설계연계조회'} />
-            <SearchResult searchResult={`${rows.length}`} />
-            <CollapsibleTable
-                rows={paginatedRows}
-                currentPage={currentPage}
-                rowsPerPage={rowsPerPage}
-                totalRows={rows.length}
-                handlePageChange={handlePageChange}
-                handleRowsPerPageChange={handleRowsPerPageChange}
-                paginationRef={paginationRef}
-                role={role}
-                updateData={updateData}
-            />
+
+            {loading ? (
+                <Grid container justifyContent="center" alignItems="center">
+                    <CircularProgress />
+                </Grid>
+            ) : (
+                <>
+                    <SearchResult searchResult={`${rows.length}`} />
+                    <CollapsibleTable
+                        rows={paginatedRows}
+                        currentPage={currentPage}
+                        rowsPerPage={rowsPerPage}
+                        totalRows={rows.length}
+                        handlePageChange={handlePageChange}
+                        handleRowsPerPageChange={handleRowsPerPageChange}
+                        paginationRef={paginationRef}
+                        role={role}
+                    />
+                </>
+            )}
         </div>
     );
 };

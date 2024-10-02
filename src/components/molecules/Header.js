@@ -6,39 +6,39 @@ import pobluesky from '../../assets/css/icons/pobluesky.png';
 import profile from '../../assets/css/icons/profile.svg';
 import UserInfoModal from './UserInfoModal';
 import NotificationModal from '../molecules/NotificationModal';
-import { getUserName, userName } from '../../index';
-import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAuth } from '../../hooks/useAuth';
-import {
-    getUserInfoByCustomers,
-    getUserInfoByManagers,
-} from '../../apis/api/auth';
 import Badge from '@mui/material/Badge';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { Header_Container } from '../../assets/css/Header.css';
+import { getCookie } from '../../apis/utils/cookies';
 import {
     getNotificationByCustomers,
     getNotificationByManagers,
 } from '../../apis/api/notification';
+import { Header_Container } from '../../assets/css/Header.css';
 
 export const MenuLink = styled(Link)`
     text-decoration: none;
     color: #25262b;
-    margin: 0 36px 0 0;
 `;
 
 function MyHeader() {
     const navigate = useNavigate();
-    const { didLogin, userId, role } = useAuth();
 
+    const name = getCookie('userName');
+    const userId = getCookie('userId');
+    const role = getCookie('userRole');
+
+    const { didLogin } = useAuth();
+
+    const location = useLocation();
+    const isMainPage = location.pathname === '/';
+    const isLoginPage = location.pathname === '/login';
+    const isJoinPage = location.pathname === '/join';
+    const isFormPage = location.pathname === '/voc-form/question';
+    const [curPage, setCurPage] = useState(location.pathname.substring(1, 4));
     const url = `/inq-list/${role}`;
 
-    const [name, setName] = useState(null);
-    const [, setGlobalName] = useRecoilState(userName);
-    const currentUserName = useRecoilValue(getUserName);
-
     const [totalElements, setTotalElements] = useState(0);
-
     const [openNotifyModal, setOpenNotifyModal] = useState(false);
     const [openInfoModal, setOpenInfoModal] = useState(false);
     const notificationButtonRef = useRef(null);
@@ -59,29 +59,6 @@ function MyHeader() {
         setOpenInfoModal(!openInfoModal);
     };
 
-    const location = useLocation();
-    const isMainPage = location.pathname === '/';
-    const isLoginPage = location.pathname === '/login';
-    const isJoinPage = location.pathname === '/join';
-    const [curPage, setCurPage] = useState(location.pathname.substring(1, 4));
-
-    const findUserName = async () => {
-        try {
-            if (role === 'customer') {
-                const customer = await getUserInfoByCustomers(userId);
-                setName(customer.data.data.name);
-                setGlobalName(customer.data.data.name);
-            } else {
-                const manager = await getUserInfoByManagers(userId);
-                setName(manager.data.data.name);
-                setGlobalName(manager.data.data.name);
-            }
-            return name;
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     const fetchNotificationsCount = async () => {
         try {
             if (role === 'customer') {
@@ -95,33 +72,6 @@ function MyHeader() {
             console.log(error);
         }
     };
-
-    useEffect(() => {
-        const init = async () => {
-            if (didLogin && userId) {
-                await findUserName();
-                await fetchNotificationsCount();
-            }
-        };
-        init();
-    }, [didLogin, userId, role]);
-
-    // 모달 켜진 상태로 페이지 이동 또는 외부 컴포넌트 클릭 시 창 닫기
-    useEffect(() => {
-        const clickOutside = (event) => {
-            if (modalRef.current && !modalRef.current.contains(event.target)) {
-                setOpenInfoModal(false);
-                setOpenNotifyModal(false);
-            }
-        };
-        window.addEventListener('mouseup', clickOutside);
-        return () => window.removeEventListener('mouseup', clickOutside);
-    }, []);
-
-    useEffect(() => {
-        setOpenInfoModal(false);
-        setOpenNotifyModal(false);
-    }, [location]);
 
     const InquiryMenu = () => (
         <>
@@ -156,15 +106,68 @@ function MyHeader() {
                 </div>
             ) : (
                 <div>
-                    <MenuLink to="/voc-form/question">문의 등록</MenuLink>
+                    <MenuLink
+                        to="/voc-form/question"
+                        onClick={() => {
+                            if (isFormPage) {
+                                window.confirm(
+                                    '작성 중인 질문이 삭제됩니다. 정말 새로고침 하시겠습니까?',
+                                )
+                                    ? window.location.reload()
+                                    : '';
+                            }
+                        }}
+                    >
+                        문의 등록
+                    </MenuLink>
                 </div>
             )}
         </>
     );
 
     useEffect(() => {
+        setOpenInfoModal(false);
+        setOpenNotifyModal(false);
+    }, [location]);
+
+    useEffect(() => {
         setCurPage(location.pathname.substring(1, 4));
     }, [location]);
+
+    // 모달 켜진 상태로 페이지 이동 또는 외부 컴포넌트 클릭 시 창 닫기
+    useEffect(() => {
+        const clickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                setOpenInfoModal(false);
+                setOpenNotifyModal(false);
+            }
+        };
+        window.addEventListener('mouseup', clickOutside);
+        return () => window.removeEventListener('mouseup', clickOutside);
+    }, []);
+
+    useEffect(() => {
+        if (userId && role && name) {
+            fetchNotificationsCount();
+            return;
+        }
+        navigate('/');
+    }, [userId, role, name]);
+
+    // 뒤로 가기 방지
+    useEffect(() => {
+        window.history.pushState(null, '', window.location.href);
+
+        const blockPopState = () => {
+            window.history.pushState(null, '', window.location.href);
+        };
+
+        window.addEventListener('popstate', blockPopState);
+
+        return () => {
+            window.removeEventListener('popstate', blockPopState);
+        };
+    }, []);
 
     return (
         <>
@@ -251,7 +254,7 @@ function MyHeader() {
                                             <img src={profile} />
                                         </button>
                                     </div>
-                                    <div>{currentUserName}</div>
+                                    <div>{name}</div>
                                     <div>
                                         <button
                                             ref={notificationButtonRef}

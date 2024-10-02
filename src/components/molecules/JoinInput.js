@@ -9,6 +9,7 @@ export const JoinInput = ({
     onKeyDown,
     type,
     placeholder,
+    backgroundColor,
     categoryName,
     needCategory = true,
     warningMsg,
@@ -26,6 +27,7 @@ export const JoinInput = ({
         height={'48px'}
         margin={margin}
         padding={'0 0 0 20px'}
+        backgroundColor={backgroundColor}
         border={'solid 1px #c1c1c1'}
         borderRadius={'12px'}
         fontSize={'16px'}

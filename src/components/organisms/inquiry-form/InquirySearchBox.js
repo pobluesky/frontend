@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import {
-    _InquirySearch,
-    _InquirySearchBox,
-    _Text,
-    _SearchBox,
-    _Title,
-    _Input,
-    _Date
-} from '../../../assets/css/Inquiry.css';
-import SelectBox from '../../atoms/SelectBox';
-import Button from '../../atoms/Button';
-import ToggleButton from '../../atoms/ToggleButton';
+    Grid,
+    TextField,
+    Button,
+    ToggleButtonGroup,
+    ToggleButton,
+    Typography,
+    Chip,
+    Autocomplete
+} from '@mui/material';
 import { productTypeOptions, IndustryOptions, inquiryTypeOptions, sortOptions, progressOptions } from '../../../utils/inquiry';
 
 const InquirySearchBox = ({ onSearch, title }) => {
@@ -36,13 +34,6 @@ const InquirySearchBox = ({ onSearch, title }) => {
         }));
     };
 
-    const handleSelectChange = (name, value) => {
-        setSearchParams((prevParams) => ({
-            ...prevParams,
-            [name]: value,
-        }));
-    };
-
     const handleToggleChange = (type, value) => {
         setSearchParams((prevParams) => ({
             ...prevParams,
@@ -58,152 +49,205 @@ const InquirySearchBox = ({ onSearch, title }) => {
     };
 
     const handleSearch = () => {
-        console.log("searchParams: ", searchParams);
         onSearch(searchParams);
     };
 
     return (
-        <div className={_InquirySearch}>
-            <div className={_InquirySearchBox}>
-                <p className={_Text}>{title}</p>
-                <div className={_SearchBox}>
+        <Grid container spacing={1} padding={3} margin={-1} border={1}
+              borderColor="#C1C1C1" borderRadius={2} justifyContent="center"
+              sx={{ marginTop: 5, marginBottom: 5 }}>
+            <Grid item xs={12} padding={3}>
+                <Typography variant="h5" fontWeight="bold">{title}</Typography>
+            </Grid>
 
-                    {/* 1행 */}
-                    <div style={{ display: 'flex' }}>
-                        <p className={_Title}>제품구분&nbsp;&nbsp;&nbsp;</p>
-                        <SelectBox
-                            options={productTypeOptions}
-                            defaultValue={searchParams.productType}
-                            onChange={(value) => handleSelectChange(
-                                'productType',
-                                value)}
-                        />
-                    </div>
-                    <div style={{ display: 'flex' }}>
-                        <p className={_Title}>문의유형&nbsp;&nbsp;&nbsp;</p>
-                        <SelectBox
-                            options={inquiryTypeOptions}
-                            defaultValue={searchParams.inquiryType}
-                            onChange={(value) => handleSelectChange(
-                                'inquiryType',
-                                value)}
-                        />
-                    </div>
-                    <div style={{ display: 'flex' }}>
-                        <p className={_Title}>고객사명&nbsp;</p>
-                        <input
-                            className={_Input}
-                            name="customerName"
-                            value={searchParams.customerName}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div style={{ display: 'flex' }}>
-                        <p className={_Title}>판매계약자</p>
-                        <input
-                            className={_Input}
-                            name="salesPerson"
-                            value={searchParams.salesPerson}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+            {/* 1행 */}
+            <Grid container item spacing={2} justifyContent="center" padding={2.5}>
+                <Grid item xs={3}>
+                    <Autocomplete
+                        multiple
+                        options={productTypeOptions}
+                        getOptionLabel={(option) => option.label}
+                        onChange={(event, newValue) => {
+                            const selectedValues = newValue.map((option) => option.value);
+                            setSearchParams((prevParams) => ({
+                                ...prevParams,
+                                productType: selectedValues,
+                            }));
+                        }}
+                        renderInput={(params) => (
+                            <TextField {...params} label="제품구분" fullWidth />
+                        )}
+                    />
+                </Grid>
 
-                    {/* 2행 */}
-                    <div style={{ display: 'flex' }}>
-                        <p className={_Title}>판매담당자</p>
-                        <input
-                            className={_Input}
-                            name="salesManagerName"
-                            value={searchParams.salesManagerName}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div style={{ display: 'flex' }}>
-                        <p className={_Title}>품질담당자</p>
-                        <input
-                            className={_Input}
-                            name="qualityManagerName"
-                            value={searchParams.qualityManagerName}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div style={{ display: 'flex' }}>
-                        <p className={_Title}>산업분류&nbsp;</p>
-                        <SelectBox
-                            options={IndustryOptions}
-                            defaultValue={searchParams.industry}
-                            onChange={(value) => handleSelectChange(
-                                'industry',
-                                value)}
-                        />
-                    </div>
-                    <div style={{ display: 'flex' }}>
-                        <p className={_Title}>접수기간&nbsp;</p>
-                        <input
-                            className={_Date}
-                            type="date"
-                            name="startDate"
-                            value={searchParams.startDate}
-                            onChange={handleInputChange}
-                            style={{ margin: '0 0 0 35px' }}
-                        />
-                        <div style={{ padding: '4px 10px 0 10px' }}>~</div>
-                        <input
-                            className={_Date}
-                            type="date"
-                            name="endDate"
-                            value={searchParams.endDate}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                </div>
+                <Grid item xs={3}>
+                    <Autocomplete
+                        multiple
+                        options={inquiryTypeOptions}
+                        getOptionLabel={(option) => option.label}
+                        onChange={(event, newValue) => {
+                            const selectedValues = newValue.map((option) => option.value);
+                            setSearchParams((prevParams) => ({
+                                ...prevParams,
+                                inquiryType: selectedValues,
+                            }));
+                        }}
+                        renderInput={(params) => (
+                            <TextField {...params} label="문의유형" fullWidth />
+                        )}
+                    />
+                </Grid>
 
-                {/* 3행 */}
-                <div style={{ display: 'flex', paddingBottom: '10px' }}>
-                        <div style={{ margin: '5px 20px 10px 0' }}>
-                            {sortOptions.map((option) => (
-                                <ToggleButton
-                                    width={'70px'}
-                                    key={option.value}
-                                    btnName={option.label}
-                                    isActive={searchParams.sortBy
-                                        === option.value}
-                                    onClick={() => handleSortChange(
-                                        option.value)}
-                                />
-                            ))}
-                        </div>
-                        <div style={{ margin: '5px 5px 10px 0' }}>
-                            {progressOptions.map((option) => (
-                                <ToggleButton
-                                    width={'115px'}
-                                    key={option.value}
-                                    btnName={option.label}
-                                    isActive={searchParams.progress
-                                        === option.value}
-                                    onClick={() => handleToggleChange(
-                                        'progress',
-                                        option.value)}
-                                />
-                            ))}
-                        </div>
-                    </div>
-            </div>
-            <Button
-                btnName={'조회'}
-                textColor={'#ffffff'}
-                borderRadius={'17px'}
-                width={'100px'}
-                height={'35px'}
-                fontWeight={'800'}
-                fontSize={'15px'}
-                backgroundColor={'#03507D'}
-                border={'none'}
-                alignSelf={'center'}
-                margin={'10px 30px 0 0'}
-                onClick={handleSearch}
-            />
-        </div>
+                <Grid item xs={3}>
+                    <TextField
+                        fullWidth
+                        label="고객사명"
+                        name="customerName"
+                        value={searchParams.customerName}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+
+                <Grid item xs={3}>
+                    <TextField
+                        fullWidth
+                        label="판매계약자"
+                        name="salesPerson"
+                        value={searchParams.salesPerson}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+            </Grid>
+
+            {/* 2행 */}
+            <Grid container item spacing={2} justifyContent="center" padding={2.5}>
+                <Grid item xs={3}>
+                    <TextField
+                        fullWidth
+                        label="판매담당자"
+                        name="salesManagerName"
+                        value={searchParams.salesManagerName}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+
+                <Grid item xs={3}>
+                    <TextField
+                        fullWidth
+                        label="품질담당자"
+                        name="qualityManagerName"
+                        value={searchParams.qualityManagerName}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+
+                <Grid item xs={3}>
+                    <Autocomplete
+                        multiple
+                        options={IndustryOptions}
+                        getOptionLabel={(option) => option.label}
+                        onChange={(event, newValue) => {
+                            const selectedValues = newValue.map((option) => option.value);
+                            setSearchParams((prevParams) => ({
+                                ...prevParams,
+                                industry: selectedValues,
+                            }));
+                        }}
+                        renderInput={(params) => (
+                            <TextField {...params} label="산업분류" fullWidth />
+                        )}
+                    />
+                </Grid>
+
+                <Grid item xs={3}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="시작일"
+                                type="date"
+                                name="startDate"
+                                value={searchParams.startDate}
+                                onChange={handleInputChange}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="종료일"
+                                type="date"
+                                name="endDate"
+                                value={searchParams.endDate}
+                                onChange={handleInputChange}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <Grid container item spacing={2} justifyContent="center" alignItems="center">
+                <Grid item xs={12}>
+                    <Grid container alignItems="center" justifyContent="space-between">
+                        <Grid item xs={10} style={{ display: 'flex', alignItems: 'center' }}>
+                            <ToggleButtonGroup
+                                exclusive
+                                value={searchParams.sortBy}
+                                onChange={(e, value) => handleSortChange(value)}
+                                sx={{ marginBottom: 1 }}
+                            >
+                                {sortOptions.map((option) => (
+                                    <ToggleButton key={option.value} value={option.value} sx={{ borderRadius: 3, height: 40 }}>
+                                        {option.label}
+                                    </ToggleButton>
+                                ))}
+                            </ToggleButtonGroup>
+
+                            <div style={{
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                marginLeft: '20px',
+                            }}>
+                                {progressOptions.map((option) => (
+                                    <Chip
+                                        key={option.value}
+                                        label={option.label}
+                                        onClick={() => handleToggleChange('progress', option.value)}
+                                        variant={searchParams.progress === option.value ? 'filled' : 'outlined'}
+                                        color={searchParams.progress === option.value ? 'primary' : 'default'}
+                                        style={{
+                                            marginRight: '8px',
+                                            marginBottom: '8px',
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        </Grid>
+
+                        <Grid item xs={2} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleSearch}
+                                style={{
+                                    fontWeight: 'bold',
+                                    borderRadius: '17px',
+                                    width: '100px',
+                                    height: '35px',
+                                }}
+                            >
+                                조회
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
     );
 };
 

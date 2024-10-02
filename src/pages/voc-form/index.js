@@ -1,5 +1,6 @@
 import VocQuestionForm from './VocQuestionForm';
 import VocAnswerForm from './VocAnswerForm';
-import VocColForm from './VocColForm';
+import VocColReqForm from './VocColReqForm';
+import VocColResForm from './VocColResForm';
 
-export { VocQuestionForm, VocAnswerForm, VocColForm };
+export { VocQuestionForm, VocAnswerForm, VocColReqForm, VocColResForm };

@@ -26,7 +26,9 @@ export default function ColPath({
             <Link to="/voc-list/collaboration" className={_Link}>
                 <span>{mediumCategory}</span>
             </Link>
-            <img src={arrow} alt="arrow" />
+            {smallCategory && (
+                <img src={arrow} alt="arrow" />
+            )}
             <Link to="/voc-list/collaboration" className={_Link}>
                 <span>{smallCategory}</span>
             </Link>

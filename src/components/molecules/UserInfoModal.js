@@ -4,14 +4,13 @@ import Button from '../atoms/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { User_Modal_Container } from '../../assets/css/Header.css';
 
-// 로그아웃 버튼, 회원 정보 탐색 기능
 function UserInfoModal() {
     const navigate = useNavigate();
     const { logout } = useAuth();
 
     const handleLogout = () => {
         logout();
-        navigate('/login');
+        navigate('/');
     };
 
     return (
@@ -21,12 +20,12 @@ function UserInfoModal() {
                     onClick={() => {
                         navigate('/account');
                     }}
-                    btnName={'설정'}
+                    btnName={'회원정보'}
                     width={'fit-content'}
                     height={'40px'}
                     backgroundColor={'#ffffff'}
                     textColor={'#64636a'}
-                    border={'solid #64636a 2px'}
+                    border={'none'}
                     borderRadius={'12px'}
                     fontSize={'16px'}
                 />
@@ -41,7 +40,7 @@ function UserInfoModal() {
                     height={'40px'}
                     backgroundColor={'#ffffff'}
                     textColor={'#d5dbe2'}
-                    border={'solid #d5dbe2 2px'}
+                    border={'none'}
                     borderRadius={'12px'}
                     fontSize={'16px'}
                     float={'right'}

@@ -7,6 +7,7 @@ function QuestionTypeSelector({
     setSelectedType,
     setOpenModal,
     inquiryId,
+    formattedId,
 }) {
     const optionSelect = (e) => {
         setSelectedType(e.target.value);
@@ -15,9 +16,7 @@ function QuestionTypeSelector({
     return (
         <div className={Question_Type_Selector}>
             <div>
-                {/* 1 */}
                 <div>문의 유형을 선택하세요</div>
-                {/* 2 */}
                 <div>
                     <div>
                         <label>
@@ -64,15 +63,17 @@ function QuestionTypeSelector({
                                     btnName={'Inquiry 조회'}
                                     width={'96px'}
                                     height={'28px'}
-                                    backgroundColor={'#ffffff'}
-                                    textColor={'#1748ac'}
-                                    border={'1px solid #1748ac'}
+                                    backgroundColor={'#03507d'}
+                                    textColor={'#ffffff'}
+                                    fontFamily={'Pretendard-Regular'}
+                                    borderRadius={'4px'}
+                                    border={'1px solid #03507d'}
                                     onClick={() => {
                                         setOpenModal(true);
                                     }}
                                 />
                             </div>
-                            <div>{inquiryId && `No. ${inquiryId}`}</div>
+                            <div>{inquiryId && `No. ${formattedId}`}</div>
                         </>
                     )}
                 </div>

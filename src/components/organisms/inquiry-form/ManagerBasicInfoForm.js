@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import ToggleBar from '../../molecules/ToggleBar';
-import {
-    Container,
-    Sheet,
-    Opend,
-    Wrapper,
-    _Input,
-    inputWrapper,
-} from '../../../assets/css/Form.css';
+import { Grid, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { Container, Sheet, Opend } from '../../../assets/css/Form.css';
 
-const ManagerBasicInfoForm = ({ formData }) => {
-    if(!formData) {
-        return;
+const ManagerBasicInfoForm = ({
+    formData,
+    progress,
+    salesManagerName,
+    qualityManagerName,
+    onManagerSelect,
+}) => {
+    if (!formData) {
+        return null;
     }
 
     const {
@@ -30,8 +30,16 @@ const ManagerBasicInfoForm = ({ formData }) => {
         phone
     } = formData;
 
-
     const [isChecked, setCheck] = useState(true);
+
+    const inputStyle = {
+        inputProps: {
+            style: { color: '#000000', fontWeight: '700' },
+            readOnly: true,
+        },
+        variant: "outlined",
+        fullWidth: true,
+    };
 
     return (
         <div className={Container} style={{ marginTop: '2vh' }}>
@@ -40,176 +48,155 @@ const ManagerBasicInfoForm = ({ formData }) => {
                     title={'기본정보'}
                     isChecked={isChecked}
                     setCheck={setCheck}
+                    progress={progress}
+                    salesManagerName={salesManagerName}
+                    qualityManagerName={qualityManagerName}
+                    onManagerSelect={onManagerSelect}
                 />
-                {isChecked ? (
+                {isChecked && (
                     <div className={Opend}>
-                        <div className={Wrapper}>
+                        <Grid container spacing={2}>
                             {/* 1행 */}
-                            <div className={inputWrapper}>
-                                <label>고객사명</label> {/* customerName */}
-                                <input
-                                    type="text"
-                                    className={_Input}
+                            <Grid item xs={3}>
+                                <TextField
+                                    label="고객사명"
                                     value={customerName}
-                                    readOnly={true}
+                                    {...inputStyle}
                                 />
-                            </div>
-                            <div className={inputWrapper}>
-                                <label>국가</label>
-                                <select className={_Input} value={country} aria-readonly={true}>
-                                    <option value="" disabled>
-                                        선택
-                                    </option>
-                                    <option value="USA">미국</option>
-                                    <option value="CANADA">캐나다</option>
-                                    <option value="KOREA">한국</option>
-                                    <option value="JAPAN">일본</option>
-                                    <option value="CHINA">중국</option>
-                                    <option value="GERMANY">독일</option>
-                                    <option value="FRANCE">프랑스</option>
-                                </select>
-                            </div>
-                            <div className={inputWrapper}>
-                                <label>판매상사</label>
-                                <input
-                                    type="text"
-                                    className={_Input}
-                                    placeholder="POA"
+                            </Grid>
+                            <Grid item xs={3}>
+                                <FormControl fullWidth>
+                                    <InputLabel>국가</InputLabel>
+                                    <Select
+                                        value={country}
+                                        {...inputStyle}
+                                    >
+                                        <MenuItem value="USA">미국</MenuItem>
+                                        <MenuItem value="CANADA">캐나다</MenuItem>
+                                        <MenuItem value="KOREA">한국</MenuItem>
+                                        <MenuItem value="JAPAN">일본</MenuItem>
+                                        <MenuItem value="CHINA">중국</MenuItem>
+                                        <MenuItem value="GERMANY">독일</MenuItem>
+                                        <MenuItem value="FRANCE">프랑스</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    label="판매상사"
                                     value={corporate}
-                                    readOnly={true}
+                                    placeholder="POA"
+                                    {...inputStyle}
                                 />
-                            </div>
+                            </Grid>
 
                             {/* 2행 */}
-                            <div className={inputWrapper}>
-                                <label>판매계약자</label>
-                                <input
-                                    type="text"
-                                    className={_Input}
+                            <Grid item xs={3}>
+                                <TextField
+                                    label="판매계약자"
                                     value={salesPerson}
-                                    readOnly={true}
+                                    {...inputStyle}
                                 />
-                            </div>
-                            <div className={inputWrapper}>
-                                <label>Inquiry 유형</label>
-                                <select className={_Input} value={inquiryType} aria-readonly={true}>
-                                    <option value="" disabled>
-                                        문의유형
-                                    </option>
-                                    <option value="COMMON_INQUIRY">
-                                        품질 + 견적
-                                    </option>
-                                    <option value="QUOTE_INQUIRY">견적</option>
-                                </select>
-                            </div>
-                            <div className={inputWrapper}>
-                                <label>산업분류</label>
-                                <select className={_Input} value={industry} aria-readonly={true}>
-                                    <option value="" disabled>
-                                        선택
-                                    </option>
-                                    <option value="AUTOMOBILE">
-                                        Automobile
-                                    </option>
-                                    <option value="CONSTRUCTION">
-                                        Construction
-                                    </option>
-                                    <option value="DISTRIBUTION">
-                                        Distribution
-                                    </option>
-                                    <option value="ELECTRIC">Electric</option>
-                                    <option value="FURNITURE">Furniture</option>
-                                    <option value="PLATING">Plating</option>
-                                    <option value="HIGH_CARBON">
-                                        High-Carbon
-                                    </option>
-                                    <option value="KITCHEN">Kitchen</option>
-                                    <option value="LOW_CARBON">
-                                        Low-Carbon
-                                    </option>
-                                    <option value="MARCHINERY">
-                                        Machinery
-                                    </option>
-                                    <option value="PIPE">Pipe</option>
-                                    <option value="REROLLING">Rerolling</option>
-                                    <option value="SHIPBUILDING">
-                                        Shipbuilding
-                                    </option>
-                                    <option value="TRANSPORTATION">
-                                        Transportation
-                                    </option>
-                                    <option value="VESSEL">Vessel</option>
-                                    <option value="BEAM">Beam</option>
-                                    <option value="OTHER">Others</option>
-                                </select>
-                            </div>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <FormControl fullWidth>
+                                    <InputLabel>Inquiry 유형</InputLabel>
+                                    <Select
+                                        value={inquiryType}
+                                        {...inputStyle}
+                                    >
+                                        <MenuItem value="COMMON_INQUIRY">품질 + 견적</MenuItem>
+                                        <MenuItem value="QUOTE_INQUIRY">견적</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <FormControl fullWidth>
+                                    <InputLabel>산업분류</InputLabel>
+                                    <Select
+                                        value={industry}
+                                        {...inputStyle}
+                                    >
+                                        <MenuItem value="AUTOMOBILE">Automobile</MenuItem>
+                                        <MenuItem value="CONSTRUCTION">Construction</MenuItem>
+                                        <MenuItem value="DISTRIBUTION">Distribution</MenuItem>
+                                        <MenuItem value="ELECTRIC">Electric</MenuItem>
+                                        <MenuItem value="FURNITURE">Furniture</MenuItem>
+                                        <MenuItem value="PLATING">Plating</MenuItem>
+                                        <MenuItem value="HIGH_CARBON">High-Carbon</MenuItem>
+                                        <MenuItem value="KITCHEN">Kitchen</MenuItem>
+                                        <MenuItem value="LOW_CARBON">Low-Carbon</MenuItem>
+                                        <MenuItem value="MACHINERY">Machinery</MenuItem>
+                                        <MenuItem value="PIPE">Pipe</MenuItem>
+                                        <MenuItem value="REROLLING">Rerolling</MenuItem>
+                                        <MenuItem value="SHIPBUILDING">Shipbuilding</MenuItem>
+                                        <MenuItem value="TRANSPORTATION">Transportation</MenuItem>
+                                        <MenuItem value="VESSEL">Vessel</MenuItem>
+                                        <MenuItem value="BEAM">Beam</MenuItem>
+                                        <MenuItem value="OTHER">Others</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
 
                             {/* 3행 */}
-                            <div className={inputWrapper}>
-                                <label>의뢰인명</label>
-                                <input
-                                    type="text"
-                                    className={_Input}
+                            <Grid item xs={3}>
+                                <TextField
+                                    label="의뢰인명"
                                     value={name}
-                                    readOnly={true}
+                                    {...inputStyle}
                                 />
-                            </div>
-                            <div className={inputWrapper}>
-                                <label>의뢰인 E-mail</label>
-                                <input
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    label="의뢰인 E-mail"
                                     type="email"
-                                    className={_Input}
                                     value={email}
-                                    readOnly={true}
+                                    {...inputStyle}
                                 />
-                            </div>
-                            <div className={inputWrapper}>
-                                <label>의뢰인 연락처</label>
-                                <input
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    label="의뢰인 연락처"
                                     type="tel"
-                                    className={_Input}
                                     value={phone}
-                                    readOnly={true}
+                                    {...inputStyle}
                                 />
-                            </div>
+                            </Grid>
 
                             {/* 4행 */}
-                            <div className={inputWrapper}>
-                                <label>법인코드</label>
-                                <input
-                                    type="text"
-                                    className={_Input}
-                                    placeholder="(주)포스코"
+                            <Grid item xs={3}>
+                                <TextField
+                                    label="법인코드"
                                     value={corporationCode}
-                                    readOnly={true}
+                                    placeholder="(주)포스코"
+                                    {...inputStyle}
                                 />
-                            </div>
-                            <div className={inputWrapper}>
-                                <label>제품</label>
-                                <select className={_Input} value={productType} aria-readonly={true}>
-                                    <option value="" disabled>
-                                        선택
-                                    </option>
-                                    <option value="CAR">자동차</option>
-                                    <option value="HOT_ROLLED">열연</option>
-                                    <option value="COLD_ROLLED">냉연</option>
-                                    <option value="THICK_PLATE">후판</option>
-                                    <option value="WIRE_ROD">선재</option>
-                                </select>
-                            </div>
-                            <div className={inputWrapper}>
-                                <label>고객요청일자</label>
-                                <input
+                            </Grid>
+                            <Grid item xs={3}>
+                                <FormControl fullWidth>
+                                    <InputLabel>제품</InputLabel>
+                                    <Select
+                                        value={productType}
+                                        {...inputStyle}
+                                    >
+                                        <MenuItem value="CAR">자동차</MenuItem>
+                                        <MenuItem value="HOT_ROLLED">열연</MenuItem>
+                                        <MenuItem value="COLD_ROLLED">냉연</MenuItem>
+                                        <MenuItem value="THICK_PLATE">후판</MenuItem>
+                                        <MenuItem value="WIRE_ROD">선재</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    label="고객요청일자"
                                     type="date"
-                                    className={_Input}
                                     value={customerRequestDate}
-                                    readOnly={true}
+                                    {...inputStyle}
                                 />
-                            </div>
-                        </div>
+                            </Grid>
+                        </Grid>
                     </div>
-                ) : (
-                    ''
                 )}
             </div>
         </div>

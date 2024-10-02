@@ -6,8 +6,14 @@ import {
     Opend,
     _TextArea,
 } from '../../../../assets/css/Form.css';
+import { TextField } from '@mui/material';
 
-const FinalReviewTextForm = ({ formData, handleFormDataChange }) => {
+const FinalReviewTextForm = ({
+    formData,
+    handleFormDataChange,
+    handleIsPreview,
+    isPreviewData,
+}) => {
     if(!formData) {
         return;
     }
@@ -25,19 +31,23 @@ const FinalReviewTextForm = ({ formData, handleFormDataChange }) => {
                     title={'최종검토내용'}
                     isChecked={isChecked}
                     setCheck={setCheck}
+                    handleIsPreview={handleIsPreview}
+                    isPreviewData={isPreviewData}
                 />
                 {isChecked ? (
-                    <div className={Opend}>
-                        <textarea
-                            className={_TextArea}
+                    <div className={Opend} style={{ padding: '3vh'}}>
+                        <TextField
+                            multiline
+                            rows={4}
+                            variant="outlined"
                             placeholder="내용을 입력해 주세요"
-                            wrap="hard"
                             value={finalReviewText}
                             onChange={(e) =>
                                 handleFormDataChange(
                                     'finalReviewText',
                                     e.target.value
                                 )}
+                            fullWidth
                         />
                     </div>
                 ) : (

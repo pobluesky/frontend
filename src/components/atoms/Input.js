@@ -16,6 +16,7 @@ const Input = forwardRef(
 
             placeholder,
             value,
+            onClick,
             onChange,
             onKeyDown,
             type,
@@ -30,6 +31,7 @@ const Input = forwardRef(
             fontSize,
             display,
             float,
+            zIndex,
             overflowY,
             readOnly,
         },
@@ -68,6 +70,7 @@ const Input = forwardRef(
                 <input
                     ref={ref}
                     value={value}
+                    onClick={onClick}
                     onChange={onChange}
                     onKeyDown={onKeyDown}
                     type={type}
@@ -85,6 +88,7 @@ const Input = forwardRef(
                         float,
                         display,
                         overflowY,
+                        zIndex,
                     }}
                     autoComplete="off"
                     spellCheck="false"

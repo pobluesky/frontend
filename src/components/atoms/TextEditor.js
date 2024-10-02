@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import ReactQuill from 'react-quill';
 import Toolbar from './Toolbar';
-// import dompurify from 'dompurify';
 import 'react-quill/dist/quill.snow.css';
 
 export default function QuillEditor({
@@ -33,9 +32,6 @@ export default function QuillEditor({
         'code',
         'clean',
     ];
-    // 필요한 경우 주석 해제 후 콘솔 확인
-    // const sanitizer = dompurify.sanitize;
-    // console.log('텍스트 에디터 입력 값', value);
 
     const modules = useMemo(() => {
         return {
@@ -75,8 +71,6 @@ export default function QuillEditor({
                 onChange={onChange}
                 placeholder={placeholder}
             />
-            {/* 필요한 경우 주석 해제 후 브라우저 확인 */}
-            {/* <div dangerouslySetInnerHTML={{ __html: sanitizer(`${value}`) }} /> */}
         </div>
     );
 }

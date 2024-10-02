@@ -4,10 +4,9 @@ import {
     Sheet,
     Opend,
     buttonWrapper,
-    FileColumn,
 } from '../../../../assets/css/Form.css';
 import ToggleBar from '../../../molecules/ToggleBar';
-import Button from '../../../atoms/Button';
+import { Button } from '@mui/material';
 import FileItem from '../../../molecules/FileItem';
 import QualityFileItem from '../../../molecules/QualityFileItem';
 
@@ -20,9 +19,7 @@ const QualityFileForm = ({ fileForm, formData, handleFormDataChange }) => {
 
     const handleFileUpload = (event) => {
         const selectedFiles = Array.from(event.target.files);
-        console.log("selectedFiles: ", selectedFiles)
         const updatedFiles = [...selectedFiles];
-        console.log("updatedFiles: ", updatedFiles)
         setQualityFiles(updatedFiles);
         handleFormDataChange('qualityFiles', updatedFiles[0]);
         event.target.value = null;
@@ -56,40 +53,51 @@ const QualityFileForm = ({ fileForm, formData, handleFormDataChange }) => {
                                         id="fileUploadInput"
                                     />
                                     <Button
+                                        variant="outlined"
                                         onClick={() =>
                                             document
-                                                .getElementById(
-                                                    'fileUploadInput',
-                                                )
-                                                .click()
+                                            .getElementById(
+                                                'fileUploadInput',
+                                            )
+                                            .click()
                                         }
-                                        btnName={btnName[0]}
-                                        margin={'-0.5vw 0.7vw 0 0.3vw'}
-                                        backgroundColor={'#03507d'}
-                                        textColor={'#ffffff'}
-                                        border={'none'}
-                                        borderRadius={'18px'}
-                                        fontSize={'17px'}
-                                        fontWeight={'500'}
-                                        padding={'10px'}
-                                    />
+                                        sx={{
+                                            margin: '-0.5vw 0 0 1vw',
+                                            backgroundColor: '#FFFFFF',
+                                            border: '1px solid #03507d',
+                                            color: '#03507d',
+                                            borderRadius: '7px',
+                                            fontSize: '17px',
+                                            fontWeight: '500',
+                                            boxShadow: 'none',
+                                            '&:hover': {
+                                                backgroundColor: '#03507d',
+                                                color: '#FFFFFF',
+                                            },
+                                        }}
+                                    >
+                                        {btnName[0]}
+                                    </Button>
                                     <Button
+                                        variant="outlined"
                                         onClick={handleFileDelete}
-                                        btnName={btnName[1]}
-                                        margin={'-0.5vw 0.7vw 0 0.3vw'}
-                                        backgroundColor={'#03507d'}
-                                        textColor={'#ffffff'}
-                                        border={'none'}
-                                        borderRadius={'18px'}
-                                        fontSize={'17px'}
-                                        fontWeight={'500'}
-                                        padding={'10px'}
-                                    />
-                                </div>
-                                {/* 컬럼 라벨 */}
-                                <div className={FileColumn}>
-                                    <div>진행단계</div>
-                                    <div>첨부파일명</div>
+                                        sx={{
+                                            margin: '-0.5vw -1vw 0 0.6vw',
+                                            backgroundColor: '#FFFFFF',
+                                            border: '1px solid #03507d',
+                                            color: '#03507d',
+                                            borderRadius: '7px',
+                                            fontSize: '17px',
+                                            fontWeight: '500',
+                                            boxShadow: 'none',
+                                            '&:hover': {
+                                                backgroundColor: '#03507d',
+                                                color: '#FFFFFF',
+                                            },
+                                        }}
+                                    >
+                                        {btnName[1]}
+                                    </Button>
                                 </div>
                                 {/* 파일 목록 */}
                                 <QualityFileItem
@@ -99,10 +107,6 @@ const QualityFileForm = ({ fileForm, formData, handleFormDataChange }) => {
                         ) : (
                             <div>
                                 {/* 첨부파일의 경우 */}
-                                <div className={FileColumn}>
-                                    <div>진행단계</div>
-                                    <div>첨부파일명</div>
-                                </div>
                                 <FileItem
                                     files={qualityFiles}
                                 />

@@ -14,16 +14,13 @@ const ReviewTextForm = ({ formData, handleFormDataChange }) => {
         <div className={Container} style={{ marginTop: '-2vh' }}>
             <div className={Sheet}>
                 <ToggleBar
-                    title={'검토내용'}
+                    title={'1차검토내용'}
                     isChecked={isChecked}
                     setCheck={setCheck}
                 />
                 {isChecked ? (
-                    <div className={Opend}>
+                    <div className={Opend} style={{ padding: '3vh' }}>
                         <ReviewText
-                            title={'1차검토'}
-                            width="80px"
-                            height="80px"
                             formData={formData}
                             handleFormDataChange={handleFormDataChange}
                         />

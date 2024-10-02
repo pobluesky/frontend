@@ -142,7 +142,7 @@ body {
 }
 
 /******************************************************************/
-/* InquiryNewForm, BasicInfoForm ******************************************/
+/* InquiryNewForm, BasicInfoForm **********************************/
 /******************************************************************/
 .Wrapper {
     display: grid;
@@ -164,11 +164,11 @@ body {
     width: 100%;
 }
 
-label {
-    color: #49454f;
-    font-weight: 400;
-    font-size: 20px;
-    margin-left: 20px;
+.Form_Label {
+    color: #000000;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0 0 0 20px;
 }
 
 ._Input {
@@ -176,15 +176,11 @@ label {
     background-color: #ffffff;
     text-align: right;
     font-size: 20px;
-    color: #49454f;
+    color: #000000;
     font-weight: bolder;
-    margin-right: 20px;
+    margin: 0 20px 0 0;
     width: 60%;
     outline: none;
-}
-
-select {
-    text-align: center;
 }
 
 ._TextArea {
@@ -203,20 +199,19 @@ select {
 .buttonWrapper {
     display: flex;
     justify-content: flex-end;
-    margin-right: 20px;
-    margin-bottom: 15px;
+    margin: 0 20px 15px 0;
 }
 
 /******************************************************************/
-/* InquiryHistoryForm, LineItem ******************************************/
+/* InquiryHistoryForm, LineItem ***********************************/
 /******************************************************************/
 .LineItemColumn {
     display: grid;
     text-align: center;
     grid-template-columns: 0.15fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 10px;
-    color: #7B7B7B;
-    background-color: #E3E3E3;
+    color: #7b7b7b;
+    background-color: #e3e3e3;
     font-weight: 800;
     border: 1px solid #c1c1c1;
     border-radius: 9px;
@@ -230,7 +225,7 @@ select {
     text-align: center;
     grid-template-columns: 0.15fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 10px;
-    color: #7B7B7B;
+    color: #7b7b7b;
     background-color: #ffffff;
     font-weight: 800;
     border: 1px solid #c1c1c1;
@@ -259,8 +254,8 @@ select {
     text-align: center;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 10px;
-    color: #7B7B7B;
-    background-color: #E3E3E3;
+    color: #7b7b7b;
+    background-color: #e3e3e3;
     font-weight: 800;
     border: 1px solid #c1c1c1;
     border-radius: 9px;
@@ -317,7 +312,7 @@ select {
 }
 
 /******************************************************************/
-/* SalesInfoForm ******************************************/
+/* SalesInfoForm **************************************************/
 /******************************************************************/
 .SalesInfoItem {
     display: grid;
@@ -364,13 +359,13 @@ select {
     text-align: center;
     grid-template-columns: repeat(10, minmax(0, 1fr));
     gap: 0;
-    color: #7B7B7B;
-    background-color: #E3E3E3;
+    color: #000000;
     font-weight: 800;
+    background-color: #ffffff;
     border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    margin: 1rem;
+    border-radius: 5px;
     font-size: 1rem;
+    margin: 15px 0 0 0;
 }
 
 .QualityItemColumn > div {
@@ -383,14 +378,9 @@ select {
     text-align: center;
     grid-template-columns: repeat(10, minmax(0, 1fr));
     gap: 0;
-    color: #7B7B7B;
+    color: #7b7b7b;
     background-color: #ffffff;
     font-weight: 800;
-    border: 1px solid #c1c1c1;
-    border-radius: 9px;
-    padding: 1rem;
-    margin: 1rem;
-    font-size: 1rem;
 }
 
 .QualityItemRow > div {
@@ -401,18 +391,17 @@ select {
 .QualityItemInput {
     background-color: #ffffff;
     text-align: center;
-    padding: 0.5rem;
     font-size: 1rem;
     color: #444444;
     font-weight: 500;
     width: 100%;
     box-sizing: border-box;
     border: 1px solid #c1c1c1;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 /******************************************************************/
-/* FileForm, FileFormItem, FileGetItem, FileItem ******************************************/
+/* FileForm, FileFormItem, FileGetItem, FileItem ******************/
 /******************************************************************/
 .FileColumn {
     display: grid;
@@ -431,26 +420,33 @@ select {
 
 ._FileItem {
     display: grid;
-    text-align: center;
+    text-align: left;
     grid-template-columns: 1fr;
     color: #7b7b7b;
     background-color: #ffffff;
     font-weight: 400;
     border: 1px solid #c1c1c1;
-    border-radius: 9px;
+    border-radius: 5px;
     padding: 8px;
-    margin: 20px 20px 10px 20px;
     font-size: 16px;
 }
 
 ._FileName {
-    color: #007AFF;
+    color: #007aff;
+    font-weight: 600;
+    font-size: 16px;
+    margin: 0 0 0 30px;
+}
+
+._FileNameColumn {
+    color: #444444;
     font-weight: 800;
     font-size: 16px;
+    margin: 0 30px 0 0;
 }
 
 /******************************************************************/
-/* Header, organisms/inquiry-form 폴더의 컴포넌트 ******************************************/
+/* Header, organisms/inquiry-form 폴더의 컴포넌트 ******************/
 /******************************************************************/
 .Container {
     display: flex;
@@ -461,7 +457,7 @@ select {
 .Sheet {
     width: 100vw;
     border: solid #c1c1c1 1px;
-    border-radius: 20px;
+    border-radius: 7px;
     margin: 0 0 6vh 0;
 }
 
@@ -483,7 +479,7 @@ select {
     height: max-content;
     border-radius: 0 0 20px 20px;
     background-color: #ffffff;
-    padding: 4vh 0 4vh 0;
+    padding: 4vh 5vh 4vh 5vh;
 }
 
 .Container ._Category {
@@ -496,4 +492,39 @@ select {
     width: 85vw;
     display: flex;
     justify-content: left;
+}
+
+/******************************************************************/
+/* 시연용 버튼 *****************************************************/
+/******************************************************************/
+._previewButton {
+    margin: 0 30px 0 0;
+    background-color: #ffffff;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+}
+
+._previewButton:hover {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #c5c5c5;
+}
+
+._reviewButton {
+    margin-left: auto;
+    background-color: #03507D;
+    color: #03507D;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+}
+
+._reviewButton:hover {
+    background-color: #57c2ff;
+    color: #212121;
+    border: 1px solid #ffffff;
 }
