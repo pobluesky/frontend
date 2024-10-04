@@ -45,12 +45,15 @@ export default function ColReqInput({
                   setMessage('협업이 요청되었습니다.');
                   canShowSuccessAlert(true);
                   setTimeout(() => {
-                      navigate('/voc-form/collaboration/res', {
-                          state: {
-                              questionDetail: questionDetail,
-                              colDetail: response.data,
+                      navigate(
+                          `/voc-form/collaboration/res/${questionDetail.colId}/${questionDetail.questionId}`,
+                          {
+                              state: {
+                                  questionDetail: questionDetail,
+                                  colDetail: response.data,
+                              },
                           },
-                      });
+                      );
                   }, '1000');
               } catch (error) {
                   console.error('협업 요청 실패: ', error);
@@ -73,12 +76,15 @@ export default function ColReqInput({
                   setMessage('협업 요청이 수정되었습니다.');
                   canShowSuccessAlert(true);
                   setTimeout(() => {
-                      navigate('/voc-form/collaboration/res', {
-                          state: {
-                              questionDetail: questionDetail,
-                              colDetail: response.data,
+                      navigate(
+                          `/voc-form/collaboration/res/${questionDetail.colId}/${questionDetail.questionId}`,
+                          {
+                              state: {
+                                  questionDetail: questionDetail,
+                                  colDetail: response.data,
+                              },
                           },
-                      });
+                      );
                   }, '1000');
               } catch (error) {
                   console.log('협업 요청 수정 실패: ', error);

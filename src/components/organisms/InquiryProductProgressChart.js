@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import GaugeChart from 'react-gauge-chart';
-import { Chart_Container, Gauge_Chart } from '../../assets/css/Chart.css';
+import { Dashboard_Item } from '../../assets/css/Chart.css';
 
 const productNames = {
     CAR: '자동차',
@@ -10,9 +10,9 @@ const productNames = {
     THICK_PLATE: '후판',
 };
 
-function InquiryProductProgressChart({ data, name }) {
+export function InquiryProductProgressChart({ data, name }) {
     const [percent, setPercent] = useState(0.0);
-    const [selectedProduct, setSelectedProduct] = useState('CAR');
+    const [selectedProductIndex, setSelectedProductIndex] = useState(0);
 
     const managerArr = [
         ['CAR', 0],
@@ -48,19 +48,24 @@ function InquiryProductProgressChart({ data, name }) {
         ];
     });
 
-    const productChange = (product) => {
-        const selected = ratioArr.find((entry) => entry[0] === product);
-        if (selected) {
-            setPercent(selected[1] / 100);
-            setSelectedProduct(product);
-        }
+    const productChange = (direction) => {
+        const newIndex =
+            (selectedProductIndex + direction + managerArr.length) %
+            managerArr.length;
+        setSelectedProductIndex(newIndex);
+        const selected = ratioArr[newIndex];
+        setPercent(selected[1] / 100);
     };
 
+    const selectedProduct = ratioArr[selectedProductIndex][0];
+
     return (
-        <div className={Chart_Container}>
-            <div>{name}님의 제품별 주문 체결 현황 (전체 대비 나의 성과)</div>
+        <div
+            className={Dashboard_Item}
+            style={{ width: 'auto', aspectRatio: '1.8 / 1', height: '20vw' }}
+        >
+            <div>{name}님의 제품별 주문 체결 현황</div>
             <GaugeChart
-                className={Gauge_Chart}
                 id="gauge-chart5"
                 arcsLength={[1.428, 1.428, 1.428, 1.428, 1.428, 1.428, 1.432]}
                 colors={['#5BE12C', '#F5CD19', '#EA4228']}
@@ -74,18 +79,19 @@ function InquiryProductProgressChart({ data, name }) {
             <div>
                 {productNames[selectedProduct]} {Math.round(percent * 100)}%
             </div>
-            <div>
-                {ratioArr.map((product) => (
-                    <button
-                        key={product[0]}
-                        onClick={() => productChange(product[0])}
-                    >
-                        {productNames[product[0]]}
-                    </button>
-                ))}
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '10px',
+                }}
+            >
+                <button onClick={() => productChange(-1)}>◀</button>
+                <span style={{ margin: '0 20px', fontWeight: 'bold' }}>
+                    {productNames[selectedProduct]}
+                </span>
+                <button onClick={() => productChange(1)}>▶</button>
             </div>
         </div>
     );
 }
-
-export default InquiryProductProgressChart;

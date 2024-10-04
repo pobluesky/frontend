@@ -91,7 +91,7 @@ export const getMonthlyDepartmentCounts = async (date) => {
             `/managers/inquiries/dashboard/counts-by-department`,
             {
                 params: { date },
-            }
+            },
         );
 
         if (response.status === 200) {
@@ -102,6 +102,48 @@ export const getMonthlyDepartmentCounts = async (date) => {
     } catch (error) {
         console.error(
             '월별 부서별 Inquiry 건수 조회 API ERROR: ',
+            error.message || error,
+        );
+        throw error;
+    }
+};
+
+// 월별 VoC 답변 건수
+export const getCountsOfAnswers = async () => {
+    try {
+        const response = await axiosInstance.get(
+            '/answers/managers/voc/dashboard',
+        );
+
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            throw new Error(response.statusText);
+        }
+    } catch (error) {
+        console.error(
+            '월별 VoC 답변 건수 조회 API ERROR: ',
+            error.message || error,
+        );
+        throw error;
+    }
+};
+
+// 월별 협업 담당 건수
+export const getCountsOfCol = async () => {
+    try {
+        const response = await axiosInstance.get(
+            '/collaborations/managers/col/dashboard',
+        );
+
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            throw new Error(response.statusText);
+        }
+    } catch (error) {
+        console.error(
+            '월별 협업 담당 건수 조회 API ERROR: ',
             error.message || error,
         );
         throw error;

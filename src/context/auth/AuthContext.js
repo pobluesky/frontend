@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
         removeUserInfo();
     }, []);
 
+    /*
     useEffect(() => {
         if (
             typeof getCookie('accessToken') === 'undefined' ||
@@ -46,6 +47,14 @@ export const AuthProvider = ({ children }) => {
             removeUserInfo();
         }
     }, [didLogin, isInitiated]);
+    */
+
+    if (
+        typeof getCookie('accessToken') === 'undefined' ||
+        (isInitiated && !didLogin)
+    ) {
+        removeUserInfo();
+    }
 
     const logout = () => {
         removeCookie('accessToken', { path: '/' });

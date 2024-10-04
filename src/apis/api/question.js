@@ -5,6 +5,7 @@ export const getAllQuestion = async (currentPage, filterArgs) => {
     try {
         const response = await axiosInstance.get(
             `/questions/managers?page=${currentPage}&${filterArgs}`,
+            { timeout: 10000 },
         );
 
         const json = response.data;
@@ -51,6 +52,7 @@ export const getQuestionByUserId = async (userId, currentPage, filterArgs) => {
     try {
         const response = await axiosInstance.get(
             `/questions/customers/${userId}?page=${currentPage}&${filterArgs}`,
+            { timeout: 10000 },
         );
 
         const json = response.data;

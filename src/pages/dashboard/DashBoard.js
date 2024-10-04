@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
     Box,
     CircularProgress,
-    Drawer,
     List,
     ListItem,
     ListItemText,
@@ -12,95 +11,61 @@ import {
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PersonIcon from '@mui/icons-material/Person';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import InquiryMonthlyOrderChart from '../../components/organisms/InquiryMonthlyOrderChart';
-import InquiryProgressCountChart from '../../components/organisms/InquiryProgressCountChart';
-import InquiryOrderCountChart from '../../components/organisms/InquiryOrderCountChart';
-import InquiryProductProgressChart from '../../components/organisms/InquiryProductProgressChart';
+import DepartmentByMonth from '../../components/organisms/DepartmentByMonth';
+import MyInquiryList from '../../components/molecules/MyInquiryList';
+import { InquiryOrderCountTotalChart } from '../../components/organisms/InquiryOrderCountTotalChart';
+import { InquiryOrderCountManagerChart } from '../../components/organisms/InquiryOrderCountManagerChart';
+import { InquiryProgressCountTotalChart } from '../../components/organisms/InquiryProgressCountTotalChart';
+import { InquiryProgressCountManagerChart } from '../../components/organisms/InquiryProgressCountManagerChart';
+import { InquiryOrderPeriodChart } from '../../components/organisms/InquiryOrderPeriodChart';
+import { InquiryProductProgressChart } from '../../components/organisms/InquiryProductProgressChart';
 import {
     getAverageMonthly,
     getCountsByProgress,
     getPercentageCompletedOrNot,
     getCountByProductType,
+    getCountsOfAnswers,
+    getCountsOfCol,
 } from '../../apis/api/chart';
 import profile from '../../assets/css/icons/profile.svg';
 import { useAuth } from '../../hooks/useAuth';
 import { getCookie } from '../../apis/utils/cookies';
-import {
-    Dashboard_Container,
-    Dashboard_Item,
-} from '../../assets/css/Chart.css';
-import DepartmentByMonth from '../../components/organisms/DepartmentByMonth';
-import MyInquiryList from '../../components/molecules/MyInquiryList';
 
 export default function DashBoard() {
     const { userId } = useAuth();
     const name = getCookie('userName');
 
     const [isLoading, setLoading] = useState(true);
-    const [items, setItems] = useState([]);
     const [activeTab, setActiveTab] = useState('Dashboard');
+
+    const [orderPeriod, setOrderPeriod] = useState([]);
+    const [progressCount, setProgressCount] = useState([]);
+    const [orderCount, setOrderCount] = useState([]);
+    const [productType, setProductType] = useState([]);
+    const [answerCount, setAnswerCount] = useState([]);
+    const [colCount, setColCount] = useState([]);
 
     const fetchData = async () => {
         try {
-            const [monthlyOrder, progressCount, orderCount, productType] =
-                await Promise.all([
-                    getAverageMonthly(), // 월별 Inquiry 접수건 주문 체결 소요일 평균
-                    getCountsByProgress(), // 전체 Inquiry 검토 현황별 건수
-                    getPercentageCompletedOrNot(), // Inquiry 주문 완료 및 미완료 비중
-                    getCountByProductType(), // 전체 제품별 주문 처리 현황
-                ]);
-
-            setItems([
-                {
-                    id: '1',
-                    content: (
-                        <InquiryMonthlyOrderChart
-                            data={monthlyOrder}
-                            name={name}
-                        />
-                    ),
-                },
-                {
-                    id: '2',
-                    content: (
-                        <InquiryProgressCountChart
-                            data={progressCount}
-                            name={name}
-                        />
-                    ),
-                },
-                {
-                    id: '3',
-                    content: (
-                        <InquiryOrderCountChart data={orderCount} name={name} />
-                    ),
-                },
-                {
-                    id: '4',
-                    content: (
-                        <InquiryProductProgressChart
-                            data={productType}
-                            name={name}
-                        />
-                    ),
-                },
+            const [a, b, c, d, e, f] = await Promise.all([
+                getAverageMonthly(),
+                getCountsByProgress(),
+                getPercentageCompletedOrNot(),
+                getCountByProductType(),
+                getCountsOfAnswers(),
+                getCountsOfCol(),
             ]);
+            setOrderPeriod(a);
+            setProgressCount(b);
+            setOrderCount(c);
+            setProductType(d);
+            setAnswerCount(e);
+            setColCount(f);
         } catch (error) {
             console.error('대시보드 데이터 조회 실패: ', error);
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleOnDragEnd = (result) => {
-        if (!result.destination) return;
-
-        const reorderedItems = Array.from(items);
-        const [removed] = reorderedItems.splice(result.source.index, 1);
-        reorderedItems.splice(result.destination.index, 0, removed);
-
-        setItems(reorderedItems);
     };
 
     const handleTabChange = (tab) => {
@@ -129,45 +94,34 @@ export default function DashBoard() {
                         </Box>
                     ) : (
                         <>
-                        <DepartmentByMonth />
-                        <MyInquiryList />
-                        <DragDropContext onDragEnd={handleOnDragEnd}>
-                            <Droppable
-                                droppableId="droppable"
-                                direction="vertical"
-                            >
-                                {(provided) => (
-                                    <div
-                                        {...provided.droppableProps}
-                                        ref={provided.innerRef}
-                                        className={Dashboard_Container}
-                                    >
-                                        {items.map((item, index) => (
-                                            <Draggable
-                                                key={item.id}
-                                                draggableId={item.id}
-                                                index={index}
-                                            >
-                                                {(provided) => (
-                                                    <div
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                        className={
-                                                            Dashboard_Item
-                                                        }
-                                                    >
-                                                        {item.content}
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        ))}
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-                        </DragDropContext>
-                      </>
+                            <DepartmentByMonth />
+                            <MyInquiryList />
+                            <InquiryOrderCountTotalChart
+                                orderCount={orderCount}
+                                name={name}
+                            />
+
+                            <InquiryOrderCountManagerChart
+                                orderCount={orderCount}
+                                name={name}
+                            />
+                            <InquiryOrderPeriodChart
+                                orderPeriod={orderPeriod}
+                                name={name}
+                            />
+                            <InquiryProgressCountTotalChart
+                                progressCount={progressCount}
+                                name={name}
+                            />
+                            <InquiryProgressCountManagerChart
+                                progressCount={progressCount}
+                                name={name}
+                            />
+                            <InquiryProductProgressChart
+                                data={productType}
+                                name={name}
+                            />
+                        </>
                     )}
                 </>
             );
@@ -244,7 +198,7 @@ export default function DashBoard() {
                     flexGrow: 1,
                     p: 3,
                     backgroundColor: '#F4F5FB',
-                    height: '100vh',
+                    height: '100%',
                 }}
             >
                 {renderContent()}
