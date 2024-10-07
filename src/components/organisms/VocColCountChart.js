@@ -2,7 +2,7 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import { Dashboard_Item } from '../../assets/css/Chart.css';
 
-export const InquiryOrderPeriodChart = ({ orderPeriod, name }) => {
+export const VocColCountChart = ({ colCount, name }) => {
     // const data = [
     //     {
     //         id: '전체',
@@ -10,51 +10,51 @@ export const InquiryOrderPeriodChart = ({ orderPeriod, name }) => {
     //         data: [
     //             {
     //                 x: '1월',
-    //                 y: orderPeriod.total[0][1],
+    //                 y: colCount.total[0][1],
     //             },
     //             {
     //                 x: '2월',
-    //                 y: orderPeriod.total[1][1],
+    //                 y: colCount.total[1][1],
     //             },
     //             {
     //                 x: '3월',
-    //                 y: orderPeriod.total[2][1],
+    //                 y: colCount.total[2][1],
     //             },
     //             {
     //                 x: '4월',
-    //                 y: orderPeriod.total[3][1],
+    //                 y: colCount.total[3][1],
     //             },
     //             {
     //                 x: '5월',
-    //                 y: orderPeriod.total[4][1],
+    //                 y: colCount.total[4][1],
     //             },
     //             {
     //                 x: '6월',
-    //                 y: orderPeriod.total[5][1],
+    //                 y: colCount.total[5][1],
     //             },
     //             {
     //                 x: '7월',
-    //                 y: orderPeriod.total[6][1],
+    //                 y: colCount.total[6][1],
     //             },
     //             {
     //                 x: '8월',
-    //                 y: orderPeriod.total[7][1],
+    //                 y: colCount.total[7][1],
     //             },
     //             {
     //                 x: '9월',
-    //                 y: orderPeriod.total[8][1],
+    //                 y: colCount.total[8][1],
     //             },
     //             {
     //                 x: '10월',
-    //                 y: orderPeriod.total[9][1],
+    //                 y: colCount.total[9][1],
     //             },
     //             {
     //                 x: '11월',
-    //                 y: orderPeriod.total[10][1],
+    //                 y: colCount.total[10][1],
     //             },
     //             {
     //                 x: '12월',
-    //                 y: orderPeriod.total[11][1],
+    //                 y: colCount.total[11][1],
     //             },
     //         ],
     //     },
@@ -64,74 +64,57 @@ export const InquiryOrderPeriodChart = ({ orderPeriod, name }) => {
     //         data: [
     //             {
     //                 x: '1월',
-    //                 y: orderPeriod.manager[0][1],
+    //                 y: colCount.manager[0][1],
     //             },
     //             {
     //                 x: '2월',
-    //                 y: orderPeriod.manager[1][1],
+    //                 y: colCount.manager[1][1],
     //             },
     //             {
     //                 x: '3월',
-    //                 y: orderPeriod.manager[2][1],
+    //                 y: colCount.manager[2][1],
     //             },
     //             {
     //                 x: '4월',
-    //                 y: orderPeriod.manager[3][1],
+    //                 y: colCount.manager[3][1],
     //             },
     //             {
     //                 x: '5월',
-    //                 y: orderPeriod.manager[4][1],
+    //                 y: colCount.manager[4][1],
     //             },
     //             {
     //                 x: '6월',
-    //                 y: orderPeriod.manager[5][1],
+    //                 y: colCount.manager[5][1],
     //             },
     //             {
     //                 x: '7월',
-    //                 y: orderPeriod.manager[6][1],
+    //                 y: colCount.manager[6][1],
     //             },
     //             {
     //                 x: '8월',
-    //                 y: orderPeriod.manager[7][1],
+    //                 y: colCount.manager[7][1],
     //             },
     //             {
     //                 x: '9월',
-    //                 y: orderPeriod.manager[8][1],
+    //                 y: colCount.manager[8][1],
     //             },
     //             {
     //                 x: '10월',
-    //                 y: orderPeriod.manager[9][1],
+    //                 y: colCount.manager[9][1],
     //             },
     //             {
     //                 x: '11월',
-    //                 y: orderPeriod.manager[10][1],
+    //                 y: colCount.manager[10][1],
     //             },
     //             {
     //                 x: '12월',
-    //                 y: orderPeriod.manager[11][1],
+    //                 y: colCount.manager[11][1],
     //             },
     //         ],
     //     },
     // ];
 
     const data = [
-        {
-            id: '담당자',
-            data: [
-                { x: '1월', y: 30 },
-                { x: '2월', y: 25 },
-                { x: '3월', y: 40 },
-                { x: '4월', y: 12 },
-                { x: '5월', y: 20 },
-                { x: '6월', y: 45 },
-                { x: '7월', y: 60 },
-                { x: '8월', y: 18 },
-                { x: '9월', y: 55 },
-                { x: '10월', y: 25 },
-                { x: '11월', y: 40 },
-                { x: '12월', y: 50 },
-            ],
-        },
         {
             id: '전체',
             data: [
@@ -149,6 +132,23 @@ export const InquiryOrderPeriodChart = ({ orderPeriod, name }) => {
                 { x: '12월', y: 95 },
             ],
         },
+        {
+            id: '담당자',
+            data: [
+                { x: '1월', y: 30 },
+                { x: '2월', y: 25 },
+                { x: '3월', y: 40 },
+                { x: '4월', y: 12 },
+                { x: '5월', y: 20 },
+                { x: '6월', y: 45 },
+                { x: '7월', y: 60 },
+                { x: '8월', y: 18 },
+                { x: '9월', y: 55 },
+                { x: '10월', y: 25 },
+                { x: '11월', y: 40 },
+                { x: '12월', y: 50 },
+            ],
+        },
     ];
 
     return (
@@ -159,13 +159,13 @@ export const InquiryOrderPeriodChart = ({ orderPeriod, name }) => {
                 height: '12.5vw',
             }}
         >
-            <span>월별 Inquiry 접수건 주문 체결 소요일 평균</span>
+            <span>월별 협업 처리 건수</span>
             <ResponsiveLine
                 data={data}
                 theme={{
                     legends: { text: { fontSize: 12 } },
                 }}
-                margin={{ top: 20, right: 10, bottom: 80, left: 10 }}
+                margin={{ top: 10, right: 10, bottom: 70, left: 10 }}
                 xScale={{ type: 'point' }}
                 yScale={{
                     type: 'linear',
@@ -175,8 +175,7 @@ export const InquiryOrderPeriodChart = ({ orderPeriod, name }) => {
                     reverse: false,
                 }}
                 yFormat=" >-.2f"
-                curve="natural"
-                colors={['#FEF6C0', '#FF8484']}
+                colors={['#0079FF', '#A7D1FF']}
                 colorBy="index"
                 axisTop={null}
                 axisRight={null}
@@ -187,28 +186,28 @@ export const InquiryOrderPeriodChart = ({ orderPeriod, name }) => {
                 }}
                 axisLeft={null}
                 enableGridY={false}
-                lineWidth={0}
-                pointSize={0}
-                pointColor={{ theme: 'background' }}
+                pointSize={10}
+                pointBorderWidth={2}
+                pointColor="#ffffff"
                 pointBorderColor={{ from: 'serieColor' }}
                 pointLabel="data.yFormatted"
                 pointLabelYOffset={-12}
                 enableArea={true}
-                areaOpacity={1}
+                areaOpacity={0}
                 areaBaselineValue={11}
                 enableTouchCrosshair={true}
                 useMesh={true}
                 legends={[
                     {
                         data: [
-                            { label: '담당자 평균', color: '#FF8484' },
-                            { label: `${name} 평균`, color: '#FEF6C0' },
+                            { label: '담당자 평균', color: '#0079FF' },
+                            { label: `${name} 평균`, color: '#A7D1FF' },
                         ],
                         anchor: 'bottom',
                         direction: 'row',
                         justify: true,
                         translateX: 0,
-                        translateY: 50,
+                        translateY: 45,
                         itemsSpacing: 20,
                         itemWidth: 80,
                         itemHeight: 0,

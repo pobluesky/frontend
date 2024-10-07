@@ -319,6 +319,29 @@ export const processInquiryData = (data) => {
     return formattedData;
 };
 
+// progress 가공
+export const processProgressData = (progress) => {
+    switch (progress) {
+        case 'SUBMIT':
+            return '문의제출';
+        case 'RECEIPT':
+            return '문의접수';
+        case 'FIRST_REVIEW_COMPLETED':
+            return '1차검토완료';
+        case 'QUALITY_REVIEW_REQUEST':
+            return'품질검토요청';
+        case 'QUALITY_REVIEW_RESPONSE':
+            return '품질검토접수';
+        case 'QUALITY_REVIEW_COMPLETED':
+            return '품질검토완료';
+        case 'FINAL_REVIEW_COMPLETED':
+            return '최종검토완료';
+        default:
+            return '-';
+    }
+};
+
+
 // FormData 객체 생성 함수 - inquiry
 export const createFormInquiryData = (formData) => {
     const form = new FormData();

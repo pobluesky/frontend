@@ -30,7 +30,7 @@ export const getSalesManagerInquiriesByParameter = async (queryParams) => {
                 timeout: 10000,
             }
         );
-        console.log('getManagerInquiriesByParameter: ', response.data.data);
+        // console.log('getManagerInquiriesByParameter: ', response.data.data);
         return processInquiries(response.data.data);
     } catch (error) {
         throw error;
@@ -47,7 +47,7 @@ export const getQualityManagerInquiriesByParameter = async (queryParams) => {
         const response = await axiosInstance.get(
             `/inquiries/managers/quality/inquiries?${query}`
         );
-        console.log('getManagerInquiriesByParameter: ', response.data.data);
+        // console.log('getManagerInquiriesByParameter: ', response.data.data);
         return processInquiries(response.data.data);
     } catch (error) {
         throw error;

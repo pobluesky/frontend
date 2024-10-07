@@ -111,7 +111,7 @@ function Row({ row, role }) {
                 <TableCell className="custom-table-cell" align="left">{row.country}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.corporate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.corporationCode}</TableCell>
-                <TableCell className="custom-table-cell" align="center">{row.industry}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.industry}</TableCell>
                 <TableCell className="custom-table-cell" align="left">
                     <InquiryDetails>
                         <Typography variant="body2" fontWeight="bold" sx={{ fontSize: '14px' }}>
@@ -122,7 +122,7 @@ function Row({ row, role }) {
                         </Typography>
                     </InquiryDetails>
                 </TableCell>
-                <TableCell className="custom-table-cell" align="center">{row.createdDate}</TableCell>
+                <TableCell className="custom-table-cell" align="left">{row.createdDate}</TableCell>
                 <TableCell className="custom-table-cell" align="left">{row.progress}</TableCell>
                 <TableCell
                     className="custom-table-cell"

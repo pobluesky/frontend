@@ -4,8 +4,9 @@ import {
     createFormOCRData,
     processHistoryData,
     processInquiries,
-    processInquiryData,
+    processInquiryData, processProgressData,
 } from '../utils/inquiryUtils';
+import { format } from 'date-fns';
 
 // 고객사 inquiry list 가져오기 (summary)
 export const getInquiry = async (userId, page = 0) => {
@@ -252,6 +253,23 @@ export const postOCR = async (userId, file, productType) => {
         return response.data;
     } catch (error) {
         console.log('Error posting inquiry:', error);
+        throw error;
+    }
+};
+
+// inquiry logs 조회, timestamp는 가공하기
+export const getInquiryLogs = async (inquiryId) => {
+    try {
+        const response = await axiosInstance.get(
+            `/managers/inquiries/dashboard/${inquiryId}/logs`,
+        );
+        const logs = response.data.data.logs.map((log) => ({
+            progress: processProgressData(log.progress),
+            timestamp: format(new Date(log.timestamp), 'yyyy-MM-dd HH:mm:ss'),
+        }));
+
+        return logs;
+    } catch (error) {
         throw error;
     }
 };

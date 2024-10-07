@@ -30,7 +30,7 @@ const FileGetItem = ({ pastFile, filePath, currentFile }) => {
 
     return (
         <div className={_FileItem}>
-            {(typeof pastFile === 'undefined' || pastFile === null) &&
+            {(typeof pastFile === 'undefined' || pastFile === null || pastFile === '') &&
             typeof currentFile === 'undefined' ? (
                 <div style={{ display: 'flex', marginLeft: '25px' }}>
                     <div className={_FileNameColumn}>첨부파일명</div>|

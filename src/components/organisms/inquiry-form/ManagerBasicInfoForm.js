@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ToggleBar from '../../molecules/ToggleBar';
 import { Grid, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { Container, Sheet, Opend } from '../../../assets/css/Form.css';
+import { getInquiryDetailByManagers } from '../../../apis/api/inquiry';
 
 const ManagerBasicInfoForm = ({
     formData,
@@ -52,6 +53,7 @@ const ManagerBasicInfoForm = ({
                     salesManagerName={salesManagerName}
                     qualityManagerName={qualityManagerName}
                     onManagerSelect={onManagerSelect}
+                    inquiryType={inquiryType}
                 />
                 {isChecked && (
                     <div className={Opend}>

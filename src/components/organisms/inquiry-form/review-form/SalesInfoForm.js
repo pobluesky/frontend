@@ -12,6 +12,8 @@ const SalesInfoForm = ({
     handleFormDataChange,
     handleIsPreview,
     isPreviewData,
+    register,
+    errors,
 }) => {
     if(!formData) {
         return;
@@ -48,6 +50,8 @@ const SalesInfoForm = ({
 
                             <Grid item xs={3}>
                                 <Select
+                                    {...register('contract', { required: true })}
+                                    error={!!errors.contract}
                                     value={contract}
                                     onChange={(e) => handleFormDataChange(
                                         'contract', e.target.value)}
@@ -68,6 +72,8 @@ const SalesInfoForm = ({
                             </Grid>
                             <Grid item xs={9}>
                                 <TextField
+                                    {...register('thicknessNotify', { required: true })}
+                                    error={!!errors.thicknessNotify}
                                     type="text"
                                     value={thicknessNotify}
                                     onChange={(e) => handleFormDataChange(

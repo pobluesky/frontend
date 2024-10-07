@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Toggle from '../atoms/Toggle';
 import { _ToggleOpen, _ToggleClose } from '../../assets/css/Form.css';
 import { Button, Chip } from '@mui/material';
 import ManagerModal from './ManagerModal';
 import { useAuth } from '../../hooks/useAuth';
 import { _reviewButton } from '../../assets/css/Form.css';
+import { useParams } from 'react-router-dom';
 
 const ToggleBar = ({
     title,
@@ -19,6 +20,7 @@ const ToggleBar = ({
     onManagerSelect,
     handleIsPreview,
     isPreviewData,
+    inquiryType,
 }) => {
 
     const borderRadius = isChecked ? '7px 7px 0 0' : '7px 7px 7px 7px';
@@ -27,8 +29,11 @@ const ToggleBar = ({
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    const [managerInfo, setManagerInfo] = useState([]);
     const { role } = useAuth();
+    const { id } = useParams();
+    const realId = id.slice(-2);
+
+    const [managerInfo, setManagerInfo] = useState([]);
 
     const handleSelect = (selectedData) => {
         closeModal();
@@ -51,6 +56,7 @@ const ToggleBar = ({
                             color: '#ffffff',
                             fontSize: '24px',
                             fontWeight: 'bold',
+                            alignContent: 'center'
                         }}
                     >
                         &nbsp;&nbsp;{title}
@@ -116,7 +122,7 @@ const ToggleBar = ({
                         </>
                     )}
 
-                    {(role === 'sales' && title === '기본정보' && progress === 'FIRST_REVIEW_COMPLETED') && (
+                    {(role === 'sales' && title === '기본정보' && progress === 'FIRST_REVIEW_COMPLETED' && inquiryType === 'COMMON_INQUIRY') && (
                         <>
                             <Button
                                 style={{
@@ -197,6 +203,36 @@ const ToggleBar = ({
                         </>
                     )}
 
+                    {(role === 'sales' && title === '기본정보' && progress === 'FIRST_REVIEW_COMPLETED' && inquiryType === 'QUOTE_INQUIRY') && (
+                        <>
+                            <Button
+                                style={{
+                                    marginLeft: 'auto',
+                                    color: '#ffffff',
+                                    backgroundColor: '#03507D',
+                                    fontSize: '17px',
+                                    fontWeight: '900',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                }}
+                                disabled
+                            >
+                                <Chip
+                                    label="판매담당자"
+                                    style={{
+                                        marginRight: '10px',
+                                        backgroundColor: '#007FFF',
+                                        color: '#ffffff',
+                                        fontSize: '15px',
+                                        fontWeight: '700',
+                                    }}
+                                    size="medium"
+                                />
+                                {salesManagerName}
+                            </Button>
+                        </>
+                    )}
+
                     {(title === '기본정보' && !isForm && role === 'customer' && !isUpdate) && (
                         <Button
                             style={{
@@ -224,7 +260,7 @@ const ToggleBar = ({
                             {salesManagerName}
                         </Button>
                     )}
-                    {(title === '기본정보' && !isForm && progress !== 'FIRST_REVIEW_COMPLETED' && (role === 'sales' || role === 'quality')) && (
+                    {(title === '기본정보' && !isForm && progress !== 'FIRST_REVIEW_COMPLETED' && (role === 'sales' || role === 'quality') && inquiryType === 'QUOTE_INQUIRY') && (
                         <>
                         <Button
                             style={{
@@ -251,30 +287,59 @@ const ToggleBar = ({
                             />
                             {salesManagerName}
                         </Button>
-                        <Button
-                            style={{
-                                color: '#ffffff',
-                                backgroundColor: '#03507D',
-                                fontSize: '17px',
-                                fontWeight: '900',
-                                display: 'flex',
-                                alignItems: 'center',
-                            }}
-                            disabled
-                        >
-                            <Chip
-                                label="품질담당자"
+                        </>
+                    )}
+                    {(title === '기본정보' && !isForm && progress !== 'FIRST_REVIEW_COMPLETED' && (role === 'sales' || role === 'quality') && inquiryType === 'COMMON_INQUIRY') && (
+                        <>
+                            <Button
                                 style={{
-                                    marginRight: '10px',
-                                    backgroundColor: '#007FFF',
+                                    marginLeft: 'auto',
                                     color: '#ffffff',
-                                    fontSize: '15px',
-                                    fontWeight: '700',
+                                    backgroundColor: '#03507D',
+                                    fontSize: '17px',
+                                    fontWeight: '900',
+                                    display: 'flex',
+                                    alignItems: 'center',
                                 }}
-                                size="medium"
-                            />
-                            {qualityManagerName}
-                        </Button>
+                                disabled
+                            >
+                                <Chip
+                                    label="판매담당자"
+                                    style={{
+                                        marginRight: '10px',
+                                        backgroundColor: '#007FFF',
+                                        color: '#ffffff',
+                                        fontSize: '15px',
+                                        fontWeight: '700',
+                                    }}
+                                    size="medium"
+                                />
+                                {salesManagerName}
+                            </Button>
+                            <Button
+                                style={{
+                                    color: '#ffffff',
+                                    backgroundColor: '#03507D',
+                                    fontSize: '17px',
+                                    fontWeight: '900',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                }}
+                                disabled
+                            >
+                                <Chip
+                                    label="품질담당자"
+                                    style={{
+                                        marginRight: '10px',
+                                        backgroundColor: '#007FFF',
+                                        color: '#ffffff',
+                                        fontSize: '15px',
+                                        fontWeight: '700',
+                                    }}
+                                    size="medium"
+                                />
+                                {qualityManagerName}
+                            </Button>
                         </>
                     )}
                     {isPreviewData && (

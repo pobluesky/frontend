@@ -3,7 +3,12 @@ import ToggleBar from '../../../molecules/ToggleBar';
 import { Container, Sheet, Opend } from '../../../../assets/css/Form.css';
 import ReviewText from './ReviewText';
 
-const ReviewTextForm = ({ formData, handleFormDataChange }) => {
+const ReviewTextForm = ({
+    formData,
+    handleFormDataChange,
+    register,
+    errors,
+}) => {
     if(!formData) {
         return;
     }
@@ -23,6 +28,8 @@ const ReviewTextForm = ({ formData, handleFormDataChange }) => {
                         <ReviewText
                             formData={formData}
                             handleFormDataChange={handleFormDataChange}
+                            register={register}
+                            errors={errors}
                         />
                     </div>
                 ) : (

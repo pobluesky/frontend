@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
-import PersonIcon from '@mui/icons-material/Person';
 import DepartmentByMonth from '../../components/organisms/DepartmentByMonth';
 import MyInquiryList from '../../components/molecules/MyInquiryList';
 import { InquiryOrderCountTotalChart } from '../../components/organisms/InquiryOrderCountTotalChart';
@@ -19,6 +18,8 @@ import { InquiryProgressCountTotalChart } from '../../components/organisms/Inqui
 import { InquiryProgressCountManagerChart } from '../../components/organisms/InquiryProgressCountManagerChart';
 import { InquiryOrderPeriodChart } from '../../components/organisms/InquiryOrderPeriodChart';
 import { InquiryProductProgressChart } from '../../components/organisms/InquiryProductProgressChart';
+import { VocAnswerCountChart } from '../../components/organisms/VocAnswerCountChart';
+import { VocColCountChart } from '../../components/organisms/VocColCountChart';
 import {
     getAverageMonthly,
     getCountsByProgress,
@@ -95,40 +96,88 @@ export default function DashBoard() {
                     ) : (
                         <>
                             <DepartmentByMonth />
-                            <MyInquiryList />
                             <InquiryOrderCountTotalChart
                                 orderCount={orderCount}
                                 name={name}
                             />
+                            <div
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'auto 1fr auto',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div style={{ justifySelf: 'start' }}>
+                                    <InquiryOrderCountTotalChart
+                                        orderCount={orderCount}
+                                        name={name}
+                                    />
+                                </div>
+                                <div style={{ justifySelf: 'center' }}>
+                                    <InquiryOrderCountManagerChart
+                                        orderCount={orderCount}
+                                        name={name}
+                                    />
+                                </div>
+                                <div style={{ justifySelf: 'end' }}>
+                                    <InquiryOrderPeriodChart
+                                        orderPeriod={orderPeriod}
+                                        name={name}
+                                    />
+                                </div>
+                            </div>
+                            <div
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'auto auto',
+                                }}
+                            >
+                                <div style={{ justifySelf: 'start' }}>
+                                    <InquiryProgressCountTotalChart
+                                        progressCount={progressCount}
+                                        name={name}
+                                    />
+                                </div>
+                                <div style={{ justifySelf: 'end' }}>
+                                    <InquiryProgressCountManagerChart
+                                        progressCount={progressCount}
+                                        name={name}
+                                    />
+                                </div>
+                            </div>
 
-                            <InquiryOrderCountManagerChart
-                                orderCount={orderCount}
-                                name={name}
-                            />
-                            <InquiryOrderPeriodChart
-                                orderPeriod={orderPeriod}
-                                name={name}
-                            />
-                            <InquiryProgressCountTotalChart
-                                progressCount={progressCount}
-                                name={name}
-                            />
-                            <InquiryProgressCountManagerChart
-                                progressCount={progressCount}
-                                name={name}
-                            />
-                            <InquiryProductProgressChart
-                                data={productType}
-                                name={name}
-                            />
+                            <div
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'auto 1fr auto',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div style={{ justifySelf: 'start' }}>
+                                    <InquiryProductProgressChart
+                                        data={productType}
+                                        name={name}
+                                    />
+                                </div>
+                                <div style={{ justifySelf: 'center' }}>
+                                    <VocAnswerCountChart
+                                        answerCount={answerCount}
+                                        name={name}
+                                    />
+                                </div>
+                                <div style={{ justifySelf: 'end' }}>
+                                    <VocColCountChart
+                                        colCount={colCount}
+                                        name={name}
+                                    />
+                                </div>
+                            </div>
                         </>
                     )}
                 </>
             );
         } else if (activeTab === 'Inquiry Log') {
-            return <div>Inquiry Log 페이지</div>;
-        } else if (activeTab === 'User Info') {
-            return <div>User Info 페이지</div>;
+            return <MyInquiryList />;
         }
     };
 
@@ -168,7 +217,6 @@ export default function DashBoard() {
                     {[
                         { text: 'Dashboard', icon: <DashboardIcon /> },
                         { text: 'Inquiry Log', icon: <ReceiptIcon /> },
-                        { text: 'User Info', icon: <PersonIcon /> },
                     ].map(({ text, icon }) => (
                         <ListItem
                             button

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'; // 둥글둥글한 아이콘 추가
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { quoteSteps, commonSteps } from './StepTracker';
 
 const MyStepTracker = ({ currentStep, inquiryType }) => {
@@ -11,7 +11,6 @@ const MyStepTracker = ({ currentStep, inquiryType }) => {
     }, [inquiryType]);
 
     const iconSize = 50;
-    const progressColor = '#628db7';
 
     return (
         <Container>
@@ -61,8 +60,8 @@ const Step = styled.div`
 `;
 
 const Circle = styled.div`
-  width: 2.6vw;
-  height: 2.6vw;
+  width: 2vw;
+  height: 2vw;
   border-radius: 50%;
   background-color: ${props => (props.completed ? '#1a90ff' : '#cccccc')};
   color: #fff;
@@ -75,7 +74,7 @@ const Circle = styled.div`
 `;
 
 const Text = styled.div`
-  font-size: 1.6vh;
+  font-size: 1.3vh;
   color: ${props => (props.completed ? '#1a90ff' : '#cccccc')};
   margin: 0.8vh 0 0 -0.35vw;
   font-weight: 600;
@@ -86,6 +85,6 @@ const ArrowWrapper = styled.div`
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 15%;
-  left: ${(props) => (props.inquiryType === '품질+견적 문의' ? '75%' : '85%')};
+  top: 10%;
+  left: ${(props) => (props.inquiryType === '품질+견적 문의' ? '60%' : '80%')};
 `;

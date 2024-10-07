@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Circle = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 4.5vh;
+  height: 4.5vh;
   border-radius: 50%;
   background-color: ${({ bgColor }) => bgColor || '#eeeeee'};
   display: flex;

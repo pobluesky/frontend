@@ -114,6 +114,7 @@ const InquiryHistoryForm = ({
                 borderRadius: '7px',
                 marginBottom: '100px',
                 backgroundColor: '#ffffff',
+                boxShadow: 'none'
             }}
         >
             <LineItemToggleBar

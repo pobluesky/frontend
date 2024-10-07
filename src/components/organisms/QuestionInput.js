@@ -53,7 +53,7 @@ function QuestionInput({ selectedType, inquiryId, questionDetail }) {
                     return;
                 }
                 // 문의 관련 질문인 경우
-                await postQuestionByUserIdAboutInquiry(
+                const response = await postQuestionByUserIdAboutInquiry(
                     file,
                     questionData,
                     userId,
@@ -62,15 +62,19 @@ function QuestionInput({ selectedType, inquiryId, questionDetail }) {
                 setMessage('질문이 등록되었습니다.');
                 canShowSuccessAlert(true);
                 setTimeout(() => {
-                    navigate('/voc-list/question');
+                    navigate(`/voc-form/answer/${response.data.questionId}`);
                 }, '2000');
             } else {
                 // 문의와 무관한 질문인 경우
-                await postQuestionByUserId(file, questionData, userId);
+                const response = await postQuestionByUserId(
+                    file,
+                    questionData,
+                    userId,
+                );
                 setMessage('질문이 등록되었습니다.');
                 canShowSuccessAlert(true);
                 setTimeout(() => {
-                    navigate('/voc-list/question');
+                    navigate(`/voc-form/answer/${response.data.questionId}`);
                 }, '2000');
             }
         } catch (error) {

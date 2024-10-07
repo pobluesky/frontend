@@ -30,7 +30,7 @@ const DepartmentInquiryCount = ({ departmentName, inquiryCount, changeRate, prev
                 height: '75px',
             }}
         >
-            <Typography variant="h8" sx={{ fontWeight: 'bold', color: '#333' }}>
+            <Typography sx={{ fontWeight: 'bold', color: '#333', fontSize: '15px' }}>
                 {departmentName}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 1 }}>
@@ -48,7 +48,7 @@ const DepartmentInquiryCount = ({ departmentName, inquiryCount, changeRate, prev
                     <ArrowDownwardIcon sx={{ color: '#f44336' }} />
                 )}
             </Box>
-            <Typography variant="body2" sx={{ color: '#777', marginTop: 1 }}>
+            <Typography sx={{ color: '#777', marginTop: 1, fontSize: '13px' }}>
                 {changeDescription}
             </Typography>
         </Box>

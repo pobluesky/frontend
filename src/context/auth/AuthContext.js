@@ -6,61 +6,22 @@ import { userEmail, userPassword } from '../../index';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [didLogin, setDidLogin] = useState(false);
-    const [role, setRole] = useState(null);
     const [, setToken] = useState(null);
+    const [role, setRole] = useState(null);
     const [userId, setUserId] = useState(null);
-    const [isInitiated, setIsInitiated] = useState(false);
+    const [didLogin, setDidLogin] = useState(false);
 
     const [, setGlobalEmail] = useRecoilState(userEmail);
     const [, setGlobalPassword] = useRecoilState(userPassword);
 
-    const removeUserInfo = () => {
+    const logout = () => {
+        window.location.href = '/login';
+
+        removeCookie('accessToken', { path: '/' });
+        removeCookie('refreshToken', { path: '/' });
         removeCookie('userName', { path: '/' });
         removeCookie('userRole', { path: '/' });
         removeCookie('userId', { path: '/' });
-    };
-
-    useEffect(() => {
-        const token = getCookie('accessToken');
-        const currentUserRole = getCookie('userRole');
-        const currentUserId = getCookie('userId');
-
-        if (token) {
-            setToken(token);
-            setDidLogin(true);
-            setRole(currentUserRole);
-            setUserId(currentUserId);
-            setIsInitiated(true);
-            return;
-        }
-
-        removeUserInfo();
-    }, []);
-
-    /*
-    useEffect(() => {
-        if (
-            typeof getCookie('accessToken') === 'undefined' ||
-            (isInitiated && !didLogin)
-        ) {
-            removeUserInfo();
-        }
-    }, [didLogin, isInitiated]);
-    */
-
-    if (
-        typeof getCookie('accessToken') === 'undefined' ||
-        (isInitiated && !didLogin)
-    ) {
-        removeUserInfo();
-    }
-
-    const logout = () => {
-        removeCookie('accessToken', { path: '/' });
-        removeCookie('refreshToken', { path: '/' });
-
-        removeUserInfo();
 
         setRole(null);
         setToken(null);
@@ -74,6 +35,16 @@ export const AuthProvider = ({ children }) => {
         localStorage.clear();
         sessionStorage.clear();
     };
+
+    useEffect(() => {
+        if (getCookie('accessToken')) {
+            setToken(getCookie('accessToken'));
+            setDidLogin(true);
+            setRole(getCookie('userRole'));
+            setUserId(getCookie('userId'));
+            return;
+        }
+    }, []);
 
     return (
         <AuthContext.Provider

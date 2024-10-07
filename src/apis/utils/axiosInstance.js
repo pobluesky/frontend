@@ -37,7 +37,11 @@ axiosInstance.interceptors.response.use(
             try {
                 const refreshToken = getCookie('refreshToken');
                 if (!refreshToken) {
-                    removeCookie('accessToken', {path: '/'});
+                    removeCookie('accessToken', { path: '/' });
+                    removeCookie('userName', { path: '/' });
+                    removeCookie('userRole', { path: '/' });
+                    removeCookie('userId', { path: '/' });
+                    window.location.href = '/';
                     return Promise.reject(error);
                 }
 
@@ -75,12 +79,12 @@ axiosInstance.interceptors.response.use(
 
                 return { ...updatedResponse, userRole: newRole };
             } catch (err) {
-                removeCookie('accessToken', {
-                    path: '/'
-                });
-                removeCookie('refreshToken', {
-                    path: '/'
-                });
+                removeCookie('accessToken', { path: '/' });
+                removeCookie('refreshToken', { path: '/' });
+                removeCookie('userName', { path: '/' });
+                removeCookie('userRole', { path: '/' });
+                removeCookie('userId', { path: '/' });
+                window.location.href = '/';
                 return Promise.reject(err);
             }
         }

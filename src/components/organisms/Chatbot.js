@@ -30,7 +30,7 @@ import {
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import ChatbotIcon from '../../assets/css/icons/ChatbotIcon.png';
-import Poseokho from '../../assets/css/icons/poseokho.png';
+import Poseokho from '../../assets/css/icons/Poseokho.png';
 import profile from '../../assets/css/icons/profile.svg';
 import pobluesky from '../../assets/css/icons/pobluesky.png';
 import { postChatbot } from '../../apis/api/chatbot';

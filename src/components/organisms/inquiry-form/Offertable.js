@@ -2,7 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Input from '../../atoms/Input';
 import { Offer_Table } from '../../../assets/css/Form.css';
 
-function OfferTable({ rows, onRowSelect, onInputChange, selectedRows = [], isPreviewData, receipts = [] }) {
+function OfferTable({
+    rows,
+    onRowSelect,
+    onInputChange,
+    selectedRows = [],
+    isPreviewData,
+    receipts = [],
+}) {
     const columnSample = [
         '',
         'Product',

@@ -7,7 +7,7 @@ import {
     InquiryHistoryFormItem,
 } from '../../components/organisms/inquiry-form';
 import {
-    getInquiryDetailByManagers,
+    getInquiryDetailByManagers, putProgress,
 } from '../../apis/api/inquiry';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserInfoByCustomers } from '../../apis/api/auth';
@@ -34,6 +34,7 @@ import {
 import { useAuth } from '../../hooks/useAuth';
 import { CircularProgress, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { QualityCompleteAlert } from '../../utils/actions';
 
 function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const { id } = useParams();
@@ -42,6 +43,8 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
     const navigate = useNavigate();
 
     const {
+        register,
+        handleSubmit,
         formState: { errors },
         setValue,
     } = useForm();
@@ -192,8 +195,8 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         }
     }, [inquiriesDataDetail, userInfo]);
 
-    const handleSubmit = async (event) => {
-        if (event) {
+    const handleQualitySubmit = async (event) => {
+        if (event && event.preventDefault) {
             event.preventDefault();
         }
         if (id) {
@@ -224,6 +227,8 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                         `Inquiry ${realId}번 문의의 품질 검토가 완료되었습니다. 최종 검토 내용과 OfferSheet를 작성해 주세요.`,
                 })
                 console.log('Quality posted successfully:', qualityResponse);
+                updateProgress("QUALITY_REVIEW_COMPLETED");
+                QualityCompleteAlert();
                 setTimeout(() => {
                     navigate(`/inq-list/${role}`);
                 }, '1500');
@@ -240,6 +245,15 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         }));
         setValue(field, value);
     };
+
+    const updateProgress = async (nextProgress) => {
+        try {
+            const response = await putProgress(realId, nextProgress);
+            console.log('Progress updated successfully:', response);
+        } catch (error) {
+            console.log('Error updating progress:', error);
+        }
+    }
 
     useEffect(() => {
         if (currentProgress === 'QUALITY_REVIEW_REQUEST') {
@@ -282,7 +296,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                 <>
                     <RequestBar
                         requestBarTitle={requestTitle}
-                        onQualityCompleteSubmit={handleSubmit}
+                        onQualityCompleteSubmit={handleSubmit(handleQualitySubmit)}
                     />
                     <ManagerBasicInfoForm
                         formData={inquiriesDataDetail}
@@ -303,6 +317,8 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
                                                handleFormDataChange={handleFormDataChange}
                                                isPreviewData={true}
                                                handleIsPreview={handlePreviewReviewData}
+                                               register={register}
+                                               errors={errors}
                         />
                     )}
 

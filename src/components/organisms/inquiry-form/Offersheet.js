@@ -5,10 +5,10 @@ import TextEditor from '../../atoms/TextEditor';
 import Category from '../../atoms/Category';
 import Input from '../../atoms/Input';
 import OfferTable from '../../organisms/inquiry-form/Offertable';
-import { Offer_Sheet } from '../../../assets/css/Form.css';
 import OfferTableItem from '../../organisms/inquiry-form/OffertableItem';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
+import { Offer_Sheet } from '../../../assets/css/Form.css';
 
 function Offersheet({
     formData,
@@ -20,7 +20,7 @@ function Offersheet({
     isPreviewData,
     receipts,
 }) {
-    if(!formData || !inquiryData) {
+    if (!formData || !inquiryData) {
         return;
     }
 
@@ -51,52 +51,58 @@ function Offersheet({
     };
 
     const deleteRows = () => {
-        const remainingRows = rows.filter(row => !selectedRows.includes(row.id));
+        const remainingRows = rows.filter(
+            (row) => !selectedRows.includes(row.id),
+        );
         setRows(remainingRows);
         setSelectedRows([]);
     };
 
     const copyRows = () => {
-        const copiedRows = selectedRows.map(id => {
-            const rowToCopy = rows.find(row => row.id === id);
+        const copiedRows = selectedRows.map((id) => {
+            const rowToCopy = rows.find((row) => row.id === id);
             return { ...rowToCopy, id: Date.now() + Math.random() };
         });
         setRows([...rows, ...copiedRows]);
         setSelectedRows([]);
-        onLineItemsChange([...rows, ...copiedRows].map(row => ({
-            id: row.id,
-            ...Object.fromEntries(lineItems.map((label, index) => [label, row.items[index]]))
-        })));
+        onLineItemsChange(
+            [...rows, ...copiedRows].map((row) => ({
+                id: row.id,
+                ...Object.fromEntries(
+                    lineItems.map((label, index) => [label, row.items[index]]),
+                ),
+            })),
+        );
     };
 
     const handleRowSelect = (id) => {
-        setSelectedRows(prevSelected =>
+        setSelectedRows((prevSelected) =>
             prevSelected.includes(id)
-                ? prevSelected.filter(rowId => rowId !== id)
-                : [...prevSelected, id]
+                ? prevSelected.filter((rowId) => rowId !== id)
+                : [...prevSelected, id],
         );
     };
 
     const handleInputChange = (rowId, field, value) => {
-        setRows(prevRows =>
-            prevRows.map(row =>
+        setRows((prevRows) =>
+            prevRows.map((row) =>
                 row.id === rowId
                     ? { ...row, items: { ...row.items, [field]: value } }
-                    : row
-            )
+                    : row,
+            ),
         );
 
-        const updatedRows = rows.map(row =>
+        const updatedRows = rows.map((row) =>
             row.id === rowId
                 ? { ...row, items: { ...row.items, [field]: value } }
-                : row
+                : row,
         );
 
         onLineItemsChange(
-            updatedRows.map(row => ({
+            updatedRows.map((row) => ({
                 id: row.id,
-                ...row.items
-            }))
+                ...row.items,
+            })),
         );
     };
 
@@ -114,9 +120,13 @@ function Offersheet({
                 bottom: { style: 'thin', color: { argb: '000000' } },
                 right: { style: 'thin', color: { argb: '000000' } },
             },
-            fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'B5B5B2' } },
+            fill: {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'B5B5B2' },
+            },
             font: { bold: true, size: 18 },
-        }
+        };
 
         const columnStyle = {
             alignment: { vertical: 'middle', horizontal: 'center' },
@@ -126,9 +136,13 @@ function Offersheet({
                 bottom: { style: 'thin', color: { argb: '000000' } },
                 right: { style: 'thin', color: { argb: '000000' } },
             },
-            fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'E8E8E7' } },
+            fill: {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'E8E8E7' },
+            },
             font: { bold: true, size: 14 },
-        }
+        };
 
         const dataStyle = {
             alignment: { vertical: 'middle', horizontal: 'center' },
@@ -139,11 +153,15 @@ function Offersheet({
                 right: { style: 'thin', color: { argb: '000000' } },
             },
             font: { size: 14 },
-        }
+        };
 
         const offerTableHeadStyle = {
-            font: { bold: true, size: 11, color: { argb: 'FFFFFF'} },
-            fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '808080' } },
+            font: { bold: true, size: 11, color: { argb: 'FFFFFF' } },
+            fill: {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: '808080' },
+            },
             alignment: { vertical: 'middle', horizontal: 'center' },
             border: {
                 top: { style: 'thin' },
@@ -165,12 +183,27 @@ function Offersheet({
         };
 
         // 병합된 셀 범위에 테두리 적용하는 함수
-        const applyBorderToMergedCells = (worksheet, startCell, endCell, style) => {
-            const [startColumn, startRow] = worksheet.getCell(startCell).address.match(/([A-Z]+)(\d+)/).slice(1);
-            const [endColumn, endRow] = worksheet.getCell(endCell).address.match(/([A-Z]+)(\d+)/).slice(1);
+        const applyBorderToMergedCells = (
+            worksheet,
+            startCell,
+            endCell,
+            style,
+        ) => {
+            const [startColumn, startRow] = worksheet
+                .getCell(startCell)
+                .address.match(/([A-Z]+)(\d+)/)
+                .slice(1);
+            const [endColumn, endRow] = worksheet
+                .getCell(endCell)
+                .address.match(/([A-Z]+)(\d+)/)
+                .slice(1);
 
             for (let row = parseInt(startRow); row <= parseInt(endRow); row++) {
-                for (let col = startColumn.charCodeAt(0); col <= endColumn.charCodeAt(0); col++) {
+                for (
+                    let col = startColumn.charCodeAt(0);
+                    col <= endColumn.charCodeAt(0);
+                    col++
+                ) {
                     const cellAddress = String.fromCharCode(col) + row;
                     const cell = worksheet.getCell(cellAddress);
                     cell.border = style.border;
@@ -181,13 +214,13 @@ function Offersheet({
         // OfferSheet 제목
         worksheet.mergeCells('B2:M3');
         worksheet.getCell('B2').value = 'OfferSheet';
-        worksheet.getCell('B2').style =  { ...titleStyle, border: undefined };
+        worksheet.getCell('B2').style = { ...titleStyle, border: undefined };
         applyBorderToMergedCells(worksheet, 'B2', 'M3', titleStyle);
 
         // 고객사명
         worksheet.mergeCells('B4:C5');
         worksheet.getCell('B4').value = '고객사명';
-        worksheet.getCell('B4').style =  { ...columnStyle, border: undefined };
+        worksheet.getCell('B4').style = { ...columnStyle, border: undefined };
         worksheet.columns[1].width = 16;
         worksheet.columns[2].width = 16;
         applyBorderToMergedCells(worksheet, 'B4', 'C5', columnStyle);
@@ -203,7 +236,7 @@ function Offersheet({
         // 판매계약자
         worksheet.mergeCells('F4:G5');
         worksheet.getCell('F4').value = '판매계약자';
-        worksheet.getCell('F4').style =  { ...columnStyle, border: undefined };
+        worksheet.getCell('F4').style = { ...columnStyle, border: undefined };
         worksheet.columns[5].width = 16;
         worksheet.columns[6].width = 16;
         applyBorderToMergedCells(worksheet, 'F4', 'G5', columnStyle);
@@ -219,7 +252,7 @@ function Offersheet({
         // 의뢰인명
         worksheet.mergeCells('J4:K4');
         worksheet.getCell('J4').value = '의뢰인명';
-        worksheet.getCell('J4').style =  { ...columnStyle, border: undefined };
+        worksheet.getCell('J4').style = { ...columnStyle, border: undefined };
         worksheet.columns[9].width = 16;
         applyBorderToMergedCells(worksheet, 'J4', 'K4', columnStyle);
 
@@ -233,7 +266,7 @@ function Offersheet({
         // 의뢰인 E-mail
         worksheet.mergeCells('J5:K5');
         worksheet.getCell('J5').value = '의뢰인 E-mail';
-        worksheet.getCell('J5').style  =  { ...columnStyle, border: undefined };
+        worksheet.getCell('J5').style = { ...columnStyle, border: undefined };
         worksheet.columns[11].width = 16;
         applyBorderToMergedCells(worksheet, 'J5', 'K5', columnStyle);
 
@@ -247,7 +280,7 @@ function Offersheet({
         // Product Details
         worksheet.mergeCells('B6:M7');
         worksheet.getCell('B6').value = 'Product Details';
-        worksheet.getCell('B6').style  =  { ...columnStyle, border: undefined };
+        worksheet.getCell('B6').style = { ...columnStyle, border: undefined };
         applyBorderToMergedCells(worksheet, 'B6', 'M7', columnStyle);
 
         // Product OfferTable
@@ -263,7 +296,7 @@ function Offersheet({
             'Price',
             'Edge',
             'Unit Weight Max',
-            'Unit Weight Min'
+            'Unit Weight Min',
         ];
 
         // B8부터 오른쪽으로 한 칸씩 데이터 입력
@@ -294,13 +327,14 @@ function Offersheet({
                 const cell = worksheet.getCell(9 + rowIndex, 2 + colIndex); // B9부터 시작
                 cell.value = data;
 
-                if (colIndex === 0) { // 첫 번째 데이터가 row.product
+                if (colIndex === 0) {
+                    // 첫 번째 데이터가 row.product
                     cell.style = {
                         ...offerTableBodyStyle,
                         fill: {
                             type: 'pattern',
                             pattern: 'solid',
-                            fgColor: { argb: 'F1F8E9' }
+                            fgColor: { argb: 'F1F8E9' },
                         },
                     };
                 } else {
@@ -315,13 +349,29 @@ function Offersheet({
         // Price Terms
         worksheet.mergeCells(`B${lastRow}:C${lastRow + 1}`);
         worksheet.getCell(`B${lastRow}`).value = 'Price Terms';
-        worksheet.getCell(`B${lastRow}`).style = { ...columnStyle, border: undefined };
-        applyBorderToMergedCells(worksheet, `B${lastRow}`, `C${lastRow + 1}`, columnStyle);
+        worksheet.getCell(`B${lastRow}`).style = {
+            ...columnStyle,
+            border: undefined,
+        };
+        applyBorderToMergedCells(
+            worksheet,
+            `B${lastRow}`,
+            `C${lastRow + 1}`,
+            columnStyle,
+        );
 
         worksheet.mergeCells(`D${lastRow}:M${lastRow + 1}`);
         worksheet.getCell(`D${lastRow}`).value = formData.priceTerms;
-        worksheet.getCell(`D${lastRow}`).style = { ...dataStyle, border: undefined };
-        applyBorderToMergedCells(worksheet, `D${lastRow}`, `M${lastRow + 1}`, dataStyle);
+        worksheet.getCell(`D${lastRow}`).style = {
+            ...dataStyle,
+            border: undefined,
+        };
+        applyBorderToMergedCells(
+            worksheet,
+            `D${lastRow}`,
+            `M${lastRow + 1}`,
+            dataStyle,
+        );
 
         // 다음 섹션들을 Price Terms 이후에 동적으로 배치
         const sections = [
@@ -330,36 +380,60 @@ function Offersheet({
             { label: 'Destination', value: formData.destination },
             { label: 'Validity', value: formData.validity },
             { label: 'Remark', value: formData.remark },
-            { label: 'Additional Message', value: formData.message || '전달사항 없음' },
+            {
+                label: 'Additional Message',
+                value: formData.message || '전달사항 없음',
+            },
         ];
 
         let startRow = lastRow + 2;
 
-        sections.forEach(section => {
+        sections.forEach((section) => {
             worksheet.mergeCells(`B${startRow}:C${startRow + 1}`);
             worksheet.getCell(`B${startRow}`).value = section.label;
-            worksheet.getCell(`B${startRow}`).style = { ...columnStyle, border: undefined };
-            applyBorderToMergedCells(worksheet, `B${startRow}`, `C${startRow + 1}`, columnStyle);
+            worksheet.getCell(`B${startRow}`).style = {
+                ...columnStyle,
+                border: undefined,
+            };
+            applyBorderToMergedCells(
+                worksheet,
+                `B${startRow}`,
+                `C${startRow + 1}`,
+                columnStyle,
+            );
 
             // HTML 콘텐츠를 Plain Text로 변환
-            const plainText = section.label === 'Additional Message' ? htmlToText(section.value, { wordwrap: 130 }) : section.value;
+            const plainText =
+                section.label === 'Additional Message'
+                    ? htmlToText(section.value, { wordwrap: 130 })
+                    : section.value;
 
             worksheet.mergeCells(`D${startRow}:M${startRow + 1}`);
             worksheet.getCell(`D${startRow}`).value = plainText;
-            worksheet.getCell(`D${startRow}`).style = { ...dataStyle, border: undefined };
-            applyBorderToMergedCells(worksheet, `D${startRow}`, `M${startRow + 1}`, dataStyle);
+            worksheet.getCell(`D${startRow}`).style = {
+                ...dataStyle,
+                border: undefined,
+            };
+            applyBorderToMergedCells(
+                worksheet,
+                `D${startRow}`,
+                `M${startRow + 1}`,
+                dataStyle,
+            );
 
             startRow += 2; // 다음 섹션을 위해 두 행씩 이동
         });
 
         // 엑셀 파일 생성 및 다운로드
         const buffer = await workbook.xlsx.writeBuffer();
-        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const blob = new Blob([buffer], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
         saveAs(blob, `${inquiryData.name}님의 OfferSheet.xlsx`);
     };
 
     return (
-        <div className={Offer_Sheet} style={{ marginTop: '-2vh' }}>
+        <div className={Offer_Sheet} style={{ margin: '-2vh 0 4vh 0' }}>
             <div>
                 {/* 토글 바 */}
                 <ToggleBar
@@ -391,7 +465,9 @@ function Offersheet({
                                             color: '#FFFFFF',
                                         },
                                     }}
-                                >엑셀로 추출</Button>
+                                >
+                                    엑셀로 추출
+                                </Button>
                             ) : (
                                 <>
                                     <Button
@@ -411,7 +487,9 @@ function Offersheet({
                                                 color: '#FFFFFF',
                                             },
                                         }}
-                                    >행 추가</Button>
+                                    >
+                                        행 추가
+                                    </Button>
                                     <Button
                                         variant="outlined"
                                         onClick={deleteRows}
@@ -429,7 +507,9 @@ function Offersheet({
                                                 color: '#FFFFFF',
                                             },
                                         }}
-                                    >행 삭제</Button>
+                                    >
+                                        행 삭제
+                                    </Button>
                                     <Button
                                         variant="outlined"
                                         onClick={copyRows}
@@ -447,7 +527,9 @@ function Offersheet({
                                                 color: '#FFFFFF',
                                             },
                                         }}
-                                    >행 복사</Button>
+                                    >
+                                        행 복사
+                                    </Button>
                                 </>
                             )}
                         </div>
@@ -459,14 +541,14 @@ function Offersheet({
                             inputMaxHeight={'120px'}
                             value={formData.message}
                             onChange={(content) =>
-                                handleFormDataChange(
-                                    'message', content)}
+                                handleFormDataChange('message', content)
+                            }
                         />
                         {/* 고객사 카테고리 */}
                         <div>
                             <Category categoryName={'1. 고객사'} />
                             <Input
-                                width={'314px'}
+                                width={'12vw'}
                                 height={'28px'}
                                 border={'solid 1px #c1c1c1'}
                                 borderRadius={'8px'}
@@ -478,9 +560,7 @@ function Offersheet({
                         <div>
                             <Category categoryName={'2. Offer-Sheet'} />
                             {isOfferSheetItem === true ? (
-                                <OfferTableItem
-                                    lineItems={lineItemData}
-                                />
+                                <OfferTableItem lineItems={lineItemData} />
                             ) : (
                                 <OfferTable
                                     rows={rows}
@@ -497,7 +577,7 @@ function Offersheet({
                             <div>
                                 <Category categoryName={'3. Price Term'} />
                                 <Input
-                                    width={'214px'}
+                                    width={'12vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -505,14 +585,17 @@ function Offersheet({
                                     value={formData.priceTerms}
                                     onChange={(e) =>
                                         handleFormDataChange(
-                                            'priceTerms', e.target.value)}
+                                            'priceTerms',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
                             </div>
                             <div>
                                 <Category categoryName={'4. Shipment'} />
                                 <Input
                                     type="date"
-                                    width={'125px'}
+                                    width={'12vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -520,13 +603,16 @@ function Offersheet({
                                     value={formData.shipment}
                                     onChange={(e) =>
                                         handleFormDataChange(
-                                            'shipment', e.target.value)}
+                                            'shipment',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
                             </div>
                             <div>
                                 <Category categoryName={'5. Payment Term'} />
                                 <Input
-                                    width={'314px'}
+                                    width={'14vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -534,13 +620,16 @@ function Offersheet({
                                     value={formData.paymentTerms}
                                     onChange={(e) =>
                                         handleFormDataChange(
-                                            'paymentTerms', e.target.value)}
+                                            'paymentTerms',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
                             </div>
                             <div>
                                 <Category categoryName={'6. Destination'} />
                                 <Input
-                                    width={'214px'}
+                                    width={'12vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -548,14 +637,17 @@ function Offersheet({
                                     value={formData.destination}
                                     onChange={(e) =>
                                         handleFormDataChange(
-                                            'destination', e.target.value)}
+                                            'destination',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
                             </div>
                             <div>
                                 <Category categoryName={'7. Validity'} />
                                 <Input
                                     type="date"
-                                    width={'125px'}
+                                    width={'12vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -563,13 +655,16 @@ function Offersheet({
                                     value={formData.validity}
                                     onChange={(e) =>
                                         handleFormDataChange(
-                                            'validity', e.target.value)}
+                                            'validity',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
                             </div>
                             <div>
                                 <Category categoryName={'8. Remark'} />
                                 <Input
-                                    width={'314px'}
+                                    width={'14vw'}
                                     height={'28px'}
                                     border={'solid 1px #c1c1c1'}
                                     borderRadius={'8px'}
@@ -577,7 +672,10 @@ function Offersheet({
                                     value={formData.remark}
                                     onChange={(e) =>
                                         handleFormDataChange(
-                                            'remark', e.target.value)}
+                                            'remark',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
                             </div>
                         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../atoms/Button';
 import pobluesky from '../../assets/css/icons/pobluesky.png';
@@ -14,7 +14,10 @@ import {
     getNotificationByCustomers,
     getNotificationByManagers,
 } from '../../apis/api/notification';
-import { Header_Container } from '../../assets/css/Header.css';
+import {
+    Header_Container,
+    Header_Container_Not_Hover,
+} from '../../assets/css/Header.css';
 
 export const MenuLink = styled(Link)`
     text-decoration: none;
@@ -22,8 +25,6 @@ export const MenuLink = styled(Link)`
 `;
 
 function MyHeader() {
-    const navigate = useNavigate();
-
     const name = getCookie('userName');
     const userId = getCookie('userId');
     const role = getCookie('userRole');
@@ -126,11 +127,9 @@ function MyHeader() {
     );
 
     useEffect(() => {
+        fetchNotificationsCount();
         setOpenInfoModal(false);
         setOpenNotifyModal(false);
-    }, [location]);
-
-    useEffect(() => {
         setCurPage(location.pathname.substring(1, 4));
     }, [location]);
 
@@ -145,14 +144,6 @@ function MyHeader() {
         window.addEventListener('mouseup', clickOutside);
         return () => window.removeEventListener('mouseup', clickOutside);
     }, []);
-
-    useEffect(() => {
-        if (userId && role && name) {
-            fetchNotificationsCount();
-            return;
-        }
-        navigate('/');
-    }, [userId, role, name]);
 
     // 뒤로 가기 방지
     useEffect(() => {
@@ -199,7 +190,7 @@ function MyHeader() {
                                     src={pobluesky}
                                     alt="poscodx"
                                     onClick={() => {
-                                        navigate('/');
+                                        window.location.href = '/';
                                     }}
                                 />
                             </div>
@@ -215,7 +206,9 @@ function MyHeader() {
                             {!didLogin && (isJoinPage || isMainPage) && (
                                 <div>
                                     <Button
-                                        onClick={() => navigate('/login')}
+                                        onClick={() =>
+                                            (window.location.href = '/login')
+                                        }
                                         btnName={'로그인'}
                                         width={'84px'}
                                         height={'36px'}
@@ -231,7 +224,9 @@ function MyHeader() {
                             {!didLogin && isLoginPage && (
                                 <div>
                                     <Button
-                                        onClick={() => navigate('/join')}
+                                        onClick={() =>
+                                            (window.location.href = '/join')
+                                        }
                                         btnName={'회원가입'}
                                         width={'84px'}
                                         height={'36px'}
@@ -246,7 +241,7 @@ function MyHeader() {
                             )}
                             {didLogin && (
                                 <>
-                                    <div>
+                                    <div className={Header_Container_Not_Hover}>
                                         <button
                                             ref={infoButtonRef}
                                             onClick={toggleInfoModal}
@@ -255,7 +250,7 @@ function MyHeader() {
                                         </button>
                                     </div>
                                     <div>{name}</div>
-                                    <div>
+                                    <div className={Header_Container_Not_Hover}>
                                         <button
                                             ref={notificationButtonRef}
                                             onClick={toggleNotifyModal}

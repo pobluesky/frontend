@@ -13,6 +13,8 @@ const FinalReviewTextForm = ({
     handleFormDataChange,
     handleIsPreview,
     isPreviewData,
+    // register,
+    // errors,
 }) => {
     if(!formData) {
         return;
@@ -41,6 +43,8 @@ const FinalReviewTextForm = ({
                             rows={4}
                             variant="outlined"
                             placeholder="내용을 입력해 주세요"
+                            // {...register('finalReviewText', { required: true })}
+                            // error={!!errors.finalReviewText}
                             value={finalReviewText}
                             onChange={(e) =>
                                 handleFormDataChange(

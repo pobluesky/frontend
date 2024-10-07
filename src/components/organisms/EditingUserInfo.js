@@ -68,14 +68,14 @@ export default function EditingUserInfo({
             top: document.body.scrollHeight,
             behavior: 'smooth',
         });
-    }, [])
+    }, []);
 
     const navigate = useNavigate();
 
     const userId = getCookie('userId');
     const role = getCookie('userRole');
     const { logout } = useAuth();
-    
+
     const [email, setEmail] = useState(userDetail.email);
     const [phone, setPhone] = useState(userDetail.phone);
     const [password, setPassword] = useState('');
@@ -90,7 +90,6 @@ export default function EditingUserInfo({
             setTryEdit(!tryEdit);
         }
     };
-
 
     const fetchPutUserInfo = async () => {
         try {
@@ -118,7 +117,6 @@ export default function EditingUserInfo({
             setGlobalEmail(response.data.email);
             alert('회원정보가 변경되어, 로그아웃됩니다.');
             logout();
-            navigate('/login');
         } catch (error) {
             console.error(
                 `${role === 'customer' ? '고객사' : '담당자'} 정보 수정 실패: `,

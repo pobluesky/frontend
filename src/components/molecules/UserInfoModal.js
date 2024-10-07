@@ -1,24 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '../atoms/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { User_Modal_Container } from '../../assets/css/Header.css';
 
 function UserInfoModal() {
-    const navigate = useNavigate();
     const { logout } = useAuth();
-
-    const handleLogout = () => {
-        logout();
-        navigate('/');
-    };
 
     return (
         <div className={User_Modal_Container}>
             <div>
                 <Button
                     onClick={() => {
-                        navigate('/account');
+                        window.location.href = '/account';
                     }}
                     btnName={'회원정보'}
                     width={'fit-content'}
@@ -32,7 +25,7 @@ function UserInfoModal() {
                 <Button
                     onClick={() => {
                         window.confirm('로그아웃 하시겠습니까?')
-                            ? handleLogout()
+                            ? logout()
                             : '';
                     }}
                     btnName={'로그아웃'}

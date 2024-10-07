@@ -15,7 +15,7 @@ body {
 /* 오퍼 시트 *******************************************************/
 /******************************************************************/
 .Offer_Sheet {
-    display: grid;
+    display: flex;
     margin: 0 0 36px 0;
 }
 
@@ -23,25 +23,26 @@ body {
 .Offer_Sheet > div:first-child {
     width: 95vw;
     height: max-content;
-    margin: 0 auto 24px auto;
+    margin: 0 auto 2vh auto;
     border: solid #c1c1c1 1px;
-    border-radius: 20px;
+    border-radius: 7px;
     background-color: #ffffff;
 }
 
 /* 행 추가, 행 삭제, 행 복사 */
 .Offer_Sheet > div:first-child > div:nth-child(2) > div:first-child {
-    display: grid;
-    grid-template-columns: 108px 108px 96px;
+    width: 85vw;
+    margin: 24px auto 24px auto;
+    display: flex;
+    /* grid-template-columns: 108px 108px 96px; */
     justify-content: right;
-    margin: 24px 40px 16px 0;
 }
 
 /* 고객사 카테고리 + Input */
 .Offer_Sheet > div:first-child > div:nth-child(2) > div:nth-child(3) {
     display: grid;
     width: 85vw;
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 14vw 1fr;
     margin: 16px auto 0 auto;
 }
 
@@ -58,14 +59,15 @@ body {
     width: 85vw;
     margin: 16px auto 0 auto;
     grid-template-rows: 48px 72px;
-    grid-template-columns: 1.2fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 /* Price Term, Payment Terms */
 .Offer_Sheet > div:first-child > div:nth-child(2) > div:nth-child(5) > div {
     display: grid;
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 1fr 1fr;
 }
+
 /******************************************************************/
 /* 오퍼 시트에 포함되는 오퍼 테이블 **********************************/
 /******************************************************************/
@@ -113,32 +115,6 @@ body {
 .Offer_Table > div::-webkit-scrollbar-thumb {
     background-color: #c1c1c1;
     border-radius: 10px;
-}
-
-/******************************************************************/
-/* 오퍼 시트에 포함되는 오퍼 테이블 외 정보 **************************/
-/******************************************************************/
-.Offer_Sheet_Terms {
-    display: grid;
-    grid-template-columns: 144px 1fr;
-}
-
-/* CIF */
-.Offer_Sheet_Terms > div:first-child select {
-    width: 120px;
-}
-
-/* Busan Seaport */
-.Offer_Sheet_Terms > div:nth-child(2) select {
-    width: 188px;
-}
-
-.Offer_Sheet_Terms > div:first-child select,
-.Offer_Sheet_Terms > div:nth-child(2) select {
-    color: #03507d;
-    border: solid 1px #c1c1c1;
-    border-radius: 8px;
-    padding: 4px;
 }
 
 /******************************************************************/
@@ -515,8 +491,8 @@ body {
 
 ._reviewButton {
     margin-left: auto;
-    background-color: #03507D;
-    color: #03507D;
+    background-color: #03507d;
+    color: #03507d;
     font-size: 14px;
     border-radius: 10px;
     border: none;

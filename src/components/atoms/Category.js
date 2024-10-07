@@ -4,7 +4,7 @@ function Category({ categoryName }) {
     return (
         <div
             style={{
-                width: '132px',
+                width: '10vw',
                 height: '28px',
                 lineHeight: '28px',
                 textAlign: 'left',

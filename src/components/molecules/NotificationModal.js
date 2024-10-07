@@ -181,7 +181,9 @@ const NotificationModal = ({ onUpdateNotificationsCount }) => {
                                 count={Math.ceil(newNotificationList.length / notificationsPerPage)}
                                 page={currentPage}
                                 onChange={handlePageChange}
-                                sx={{ marginTop: 2, display: 'flex', justifyContent: 'center', fontSize: '11px' }}
+                                sx={{ margin: '7px 0 0 0', display: 'flex', justifyContent: 'center', fontSize: '8px', padding: 0 }}
+                                siblingCount={0}
+                                boundaryCount={1}
                             />
                         </div>
                     ) : (

@@ -9,6 +9,8 @@ const QualityReviewTextForm = ({
     handleFormDataChange,
     handleIsPreview,
     isPreviewData,
+    register,
+    errors,
 }) => { // 품질검토 작성
 
     const lineItems = {
@@ -40,6 +42,8 @@ const QualityReviewTextForm = ({
                     <QualityText
                         formData={formData}
                         handleFormDataChange={handleFormDataChange}
+                        register={register}
+                        errors={errors}
                     />
 
                     {/* 컬럼 라벨 */}
@@ -52,6 +56,8 @@ const QualityReviewTextForm = ({
                     </div>
                     <QualityForm formData={formData}
                                  handleFormDataChange={handleFormDataChange}
+                                 register={register}
+                                 errors={errors}
                     />
                 </div>
             </div>

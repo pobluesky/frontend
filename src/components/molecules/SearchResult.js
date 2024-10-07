@@ -1,15 +1,12 @@
 import React from 'react';
-import {
-    _Text,
-    _searchCount,
-} from '../../assets/css/Inquiry.css';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { _Text, _searchCount } from '../../assets/css/Inquiry.css';
 
 const SearchResult = ({ searchResult }) => {
-    const { role } = useAuth();
     const navigate = useNavigate();
+    const { role } = useAuth();
 
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -18,7 +15,7 @@ const SearchResult = ({ searchResult }) => {
                 <span className={_searchCount}>{searchResult}</span>
                 &nbsp;건
             </p>
-            { role === 'customer' && (
+            {role === 'customer' && (
                 <Button
                     variant="contained"
                     color="secondary"
@@ -38,7 +35,9 @@ const SearchResult = ({ searchResult }) => {
                         },
                     }}
                     onClick={() => navigate('/inq-form/customer')}
-                        >Inquiry 등록</Button>
+                >
+                    Inquiry 등록
+                </Button>
             )}
         </div>
     );

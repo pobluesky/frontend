@@ -108,6 +108,14 @@
     cursor: pointer;
 }
 
+.Header_Container button:hover {
+    background-color: #f3f3f3 !important;
+}
+
+.Header_Container_Not_Hover button:hover {
+    background-color: transparent !important;
+}
+
 /******************************************************************/
 /* 사용자 정보 모달 ************************************************/
 /******************************************************************/
@@ -147,7 +155,7 @@
     top: 5px;
     left: 50%;
     transform: translate(-50%);
-    z-index: 1;
+    z-index: 10;
     pointer-events: none;
 }
 

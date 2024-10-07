@@ -40,55 +40,62 @@ export const InquiryProgressCountTotalChart = ({ progressCount }) => {
         {
             id: '문의 제출',
             label: '문의 제출',
-            value: submit,
+            전체: submit,
         },
         {
             id: '문의 접수',
             label: '문의 접수',
-            value: receipt,
+            전체: receipt,
         },
         {
             id: '1차검토완료',
             label: '1차검토완료',
-            value: first_review_completed,
+            전체: first_review_completed,
         },
         {
             id: '품질검토요청',
             label: '품질검토요청',
-            value: quality_review_request,
+            전체: quality_review_request,
         },
         {
             id: '품질검토접수',
             label: '품질검토접수',
-            value: quality_review_response,
+            전체: quality_review_response,
         },
         {
             id: '품질검토완료',
             label: '품질검토완료',
-            value: quality_review_completed,
+            전체: quality_review_completed,
         },
         {
             id: '최종검토완료',
             label: '최종검토완료',
-            value: final_review_completed,
+            전체: final_review_completed,
         },
     ];
 
     return (
         <div
             className={Dashboard_Item}
-            style={{ width: 'auto', aspectRatio: '1.8 / 1', height: '20vw' }}
+            style={{
+                aspectRatio: '2.2 / 1',
+                height: '16vw',
+            }}
         >
+            <span>담당자 전체 제품별 주문 처리 현황</span>
             <ResponsiveBar
                 data={data}
-                margin={{ top: 50, right: 0, bottom: 50, left: 0 }}
+                theme={{
+                    legends: { text: { fontSize: 12 } },
+                }}
+                keys={['전체']}
+                margin={{ top: 30, right: 0, bottom: 80, left: 0 }}
                 padding={0.3}
                 valueScale={{ type: 'linear' }}
                 indexScale={{ type: 'band', round: true }}
-                colors={['#1A91FF']}
+                colors={['#21CDC7']}
                 colorBy="index"
                 borderRadius={15}
-                borderColor="#000000"
                 axisTop={null}
                 axisRight={null}
                 axisBottom={{
@@ -106,6 +113,24 @@ export const InquiryProgressCountTotalChart = ({ progressCount }) => {
                     from: 'color',
                     modifiers: [['darker', '1.6']],
                 }}
+                legends={[
+                    {
+                        data: [{ label: '담당자 평균', color: '#21CDC7' }],
+                        anchor: 'bottom',
+                        direction: 'row',
+                        justify: true,
+                        translateX: 0,
+                        translateY: 55,
+                        itemsSpacing: 50,
+                        itemWidth: 100,
+                        itemHeight: 0,
+                        itemTextColor: '#000000',
+                        itemDirection: 'left-to-right',
+                        itemOpacity: 1,
+                        symbolSize: 12,
+                        symbolShape: 'circle',
+                    },
+                ]}
             />
         </div>
     );
