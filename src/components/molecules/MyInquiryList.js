@@ -23,7 +23,6 @@ import {
 import { BorderLinearProgress } from './BorderLinearProgress';
 import { getUserInfoByManagers } from '../../apis/api/auth';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 import {
     getInquiryDetailByManagers,
     getInquiryLogs,
