@@ -56,7 +56,7 @@ module.exports = function () {
             proxy: [
                 {
                     context: ['/api'],
-                    target: 'https://ApiGateWayALB-544361737.ap-northeast-2.elb.amazonaws.com',
+                    target: 'https://test-1933938309.ap-northeast-2.elb.amazonaws.com',
                     changeOrigin: true,
                 },
             ],
