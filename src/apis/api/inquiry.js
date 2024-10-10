@@ -261,7 +261,7 @@ export const postOCR = async (userId, file, productType) => {
 export const getInquiryLogs = async (inquiryId) => {
     try {
         const response = await axiosInstance.get(
-            `/managers/inquiries/dashboard/${inquiryId}/logs`,
+            `/inquiries/managers/inquiries/dashboard/${inquiryId}/logs`,
         );
         const logs = response.data.data.logs.map((log) => ({
             progress: processProgressData(log.progress),
