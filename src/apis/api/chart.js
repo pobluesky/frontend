@@ -4,7 +4,7 @@ import axiosInstance from '../utils/axiosInstance';
 export const getAverageMonthly = async () => {
     try {
         const response = await axiosInstance.get(
-            '/managers/inquiries/dashboard/average-monthly',
+            '/inquiries/managers/inquiries/dashboard/average-monthly',
         );
 
         if (response.status === 200) {
@@ -25,7 +25,7 @@ export const getAverageMonthly = async () => {
 export const getCountByProductType = async () => {
     try {
         const response = await axiosInstance.get(
-            '/managers/inquiries/dashboard/counts-by-productType',
+            '/inquiries/managers/inquiries/dashboard/counts-by-productType',
         );
 
         if (response.status === 200) {
@@ -46,7 +46,7 @@ export const getCountByProductType = async () => {
 export const getPercentageCompletedOrNot = async () => {
     try {
         const response = await axiosInstance.get(
-            '/managers/inquiries/dashboard/percentage-completed-uncompleted',
+            '/inquiries/managers/inquiries/dashboard/percentage-completed-uncompleted',
         );
 
         if (response.status === 200) {
@@ -67,7 +67,7 @@ export const getPercentageCompletedOrNot = async () => {
 export const getCountsByProgress = async () => {
     try {
         const response = await axiosInstance.get(
-            '/managers/inquiries/dashboard/counts-by-progress',
+            '/inquiries/managers/inquiries/dashboard/counts-by-progress',
         );
 
         if (response.status === 200) {
@@ -88,7 +88,7 @@ export const getCountsByProgress = async () => {
 export const getMonthlyDepartmentCounts = async (date) => {
     try {
         const response = await axiosInstance.get(
-            `/managers/inquiries/dashboard/counts-by-department`,
+            `/inquiries/managers/inquiries/dashboard/counts-by-department`,
             {
                 params: { date },
             },
