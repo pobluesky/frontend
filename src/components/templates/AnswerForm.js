@@ -14,7 +14,7 @@ import {
 import { getFileDownloadUrl } from '../../apis/api/file';
 import { getCookie } from '../../apis/utils/cookies';
 
-export default function AnswerForm() {
+export default function AnswerForm({ setVocNo }) {
     useEffect(() => {
         fetchGetQuestionDetail(questionId);
     }, [questionId]);
@@ -42,6 +42,14 @@ export default function AnswerForm() {
                           questionId,
                       );
                       setQuestionDetail(response.data);
+                      setVocNo(
+                          response.data.createdDate
+                              .substring(0, 10)
+                              .replace(/-/g, '') +
+                              response.data.questionId
+                                  .toString()
+                                  .padStart(3, '0'),
+                      );
                       if (response.data.filePath != null) {
                           const url = await getFileDownloadUrl(
                               response.data.filePath,
@@ -68,6 +76,14 @@ export default function AnswerForm() {
                           questionId,
                       );
                       setQuestionDetail(response.data);
+                      setVocNo(
+                          response.data.createdDate
+                              .substring(0, 10)
+                              .replace(/-/g, '') +
+                              response.data.questionId
+                                  .toString()
+                                  .padStart(3, '0'),
+                      );
                       if (response.data.filePath != null) {
                           const url = await getFileDownloadUrl(
                               response.data.filePath,

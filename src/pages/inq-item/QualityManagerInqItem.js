@@ -283,7 +283,7 @@ function QualityManagerInqItem() { // 품질담당자 Inquiry 조회 페이지
         <div className={InqTableContainer}>
             <ManagerInqPath
                 largeCategory={'Inquiry'}
-                mediumCategory={'Inquiry 조회'}
+                mediumCategory={'품질설계연계조회'}
                 smallCategory={id}
                 role={'quality'}
             />

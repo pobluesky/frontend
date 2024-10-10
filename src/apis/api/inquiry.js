@@ -1,10 +1,9 @@
 import axiosInstance from '../utils/axiosInstance';
 import {
     createFormInquiryData,
-    createFormOCRData,
     processHistoryData,
     processInquiries,
-    processInquiryData, processProgressData,
+    processProgressData,
 } from '../utils/inquiryUtils';
 import { format } from 'date-fns';
 

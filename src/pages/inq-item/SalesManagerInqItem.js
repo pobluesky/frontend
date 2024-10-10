@@ -159,12 +159,14 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     };
 
     const getUserInfo = async () => {
-        try {
-            const response = await getUserInfoByCustomers(realId);
-            setUserInfo(response.data.data);
-            return response.data.data;
-        } catch (error) {
-            console.log('Error fetching User Info:', error);
+        if (formData.customerId) {
+            try {
+                const response = await getUserInfoByCustomers(formData.customerId);
+                setUserInfo(response.data.data);
+                return response.data.data;
+            } catch (error) {
+                console.log('Error fetching User Info:', error);
+            }
         }
     }
 
@@ -223,7 +225,7 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
         };
 
         fetchData();
-    }, [id]);
+    }, []);
 
     useEffect(() => {
         if (inquiriesDataDetail && userInfo) {
@@ -404,8 +406,11 @@ function SalesManagerInqItem() { // 판매담당자 Inquiry 조회 페이지
     const allocateByQualityManagerId = async () => {
         try {
             await assignQualityManagerByUserId(realId, selectedQualityManagerId);
+            console.log("realId: ", realId)
+            console.log("selectedQualityManagerId: ", selectedQualityManagerId)
+            console.log("품질담당자 할당 성공")
         } catch (error) {
-            console.error('Inquiry 품질 담당자 배정 실패: ', error);
+            console.log('Inquiry 품질 담당자 배정 실패: ', error);
         }
     };
 

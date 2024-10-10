@@ -30,8 +30,6 @@ const ToggleBar = ({
     const closeModal = () => setIsModalOpen(false);
 
     const { role } = useAuth();
-    const { id } = useParams();
-    // const realId = id.slice(-2);
 
     const [managerInfo, setManagerInfo] = useState([]);
 

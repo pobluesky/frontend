@@ -7,7 +7,7 @@ import ColResViewer from '../organisms/ColResViewer';
 import { getCookie } from '../../apis/utils/cookies';
 import { getFileDownloadUrl } from '../../apis/api/file';
 
-export default function ColResForm() {
+export default function ColResForm({ setColNo }) {
     const role = getCookie('userRole');
 
     const location = useLocation();
@@ -61,7 +61,15 @@ export default function ColResForm() {
                 'questionDetail',
                 JSON.stringify(location.state.questionDetail),
             );
+            setColNo(
+                questionDetail.createdDate.substring(0, 10).replace(/-/g, '') +
+                    questionDetail.colId.toString().padStart(3, '0'),
+            );
         }
+        setColNo(
+            questionDetail.createdDate.substring(0, 10).replace(/-/g, '') +
+                questionDetail.colId.toString().padStart(3, '0'),
+        );
     }, [location.state]);
 
     return (

@@ -81,7 +81,6 @@ function RequestBar({
         } else if (btnName === '품질검토요청') {
             onQualitySubmit();
             onAllocate();
-            updateProgress("QUALITY_REVIEW_REQUEST");
             QualityReviewCompleteAlert();
         } else if (btnName === '품질검토접수') {
             updateProgress('QUALITY_REVIEW_RESPONSE');

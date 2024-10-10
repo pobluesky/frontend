@@ -23,7 +23,6 @@
 }
 
 .Dashboard_Item .Gauge_Chart_Text span {
-    background-color: pink;
     margin: 0 20px;
     font-weight: bold;
     cursor: pointer;

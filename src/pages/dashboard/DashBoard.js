@@ -96,10 +96,6 @@ export default function DashBoard() {
                     ) : (
                         <>
                             <DepartmentByMonth />
-                            <InquiryOrderCountTotalChart
-                                orderCount={orderCount}
-                                name={name}
-                            />
                             <div
                                 style={{
                                     display: 'grid',
@@ -246,7 +242,7 @@ export default function DashBoard() {
                     flexGrow: 1,
                     p: 3,
                     backgroundColor: '#F4F5FB',
-                    height: '100%',
+                    height: '150vh',
                 }}
             >
                 {renderContent()}

@@ -39,7 +39,7 @@
 .Question_Type_Selector {
     width: 1320px;
     height: fit-content;
-    margin: 36px auto 0 auto;
+    margin: 0 auto 0 auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
@@ -296,7 +296,7 @@
     width: 1320px;
     border: 1px solid #adb0b4;
     border-radius: 8px;
-    margin: 36px auto 0 auto;
+    margin: 0 auto 0 auto;
     padding: 16px 0;
 }
 
@@ -533,7 +533,7 @@
 .Question_Viewer {
     width: 1320px;
     height: fit-content;
-    margin: 36px auto 0 auto;
+    margin: 0 auto 0 auto;
     border: solid 1px #c1c1c1;
     border-radius: 20px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;

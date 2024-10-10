@@ -8,26 +8,21 @@ function VocPath({ largeCategory, mediumCategory, smallCategory }) {
         <div
             style={{
                 width: '95%',
-                margin: '50px 0 0 50px',
+                margin: '10px 0 0 0',
+                padding: '50px 50px 30px 50px',
                 color: '#616161',
                 fontSize: '20px',
                 display: 'flex',
                 alignItems: 'center',
             }}
         >
-            <Link to="/voc-main" className={_Link}>
-                <span>{largeCategory}</span>
-            </Link>
+            <span>{largeCategory}</span>
             <img src={arrow} alt="arrow" />
             <Link to="/voc-list/question" className={_Link}>
                 <span>{mediumCategory}</span>
             </Link>
-            {smallCategory && (
-                <img src={arrow} alt="arrow" />
-            )}
-            <Link to="/voc-list/question" className={_Link}>
-                <span>{smallCategory}</span>
-            </Link>
+            {smallCategory && <img src={arrow} alt="arrow" />}
+            <span>{smallCategory}</span>
         </div>
     );
 }

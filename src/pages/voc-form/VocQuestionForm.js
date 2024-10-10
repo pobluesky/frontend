@@ -21,7 +21,11 @@ export default function VocQuestionForm() {
 
     return (
         <>
-            <VocPath largeCategory={'문의'} mediumCategory={'문의 등록'} />
+            <VocPath
+                largeCategory={'VoC'}
+                mediumCategory={'문의 목록'}
+                smallCategory={'문의 등록'}
+            />
             <QuestionForm questionDetail={questionDetail} />
         </>
     );
